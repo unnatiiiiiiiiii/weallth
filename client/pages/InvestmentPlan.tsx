@@ -217,7 +217,7 @@ export default function InvestmentPlan() {
       </main>
 
       {/* Success Dialog */}
-            <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="sr-only">Success Message</DialogTitle>
@@ -235,7 +235,7 @@ export default function InvestmentPlan() {
       </Dialog>
 
       {/* Download Success Dialog */}
-            <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
+      <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="sr-only">Download Success</DialogTitle>
@@ -253,12 +253,10 @@ export default function InvestmentPlan() {
       </Dialog>
 
       {/* Adjust Goal Dialog */}
-            <Dialog open={showAdjustDialog} onOpenChange={setShowAdjustDialog}>
+      <Dialog open={showAdjustDialog} onOpenChange={setShowAdjustDialog}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
+          <DialogHeader className="flex items-center justify-between border-b pb-4">
             <DialogTitle className="text-lg font-semibold text-gray-900">Adjust Your Goal</DialogTitle>
-          </DialogHeader>
-          <div className="flex items-center justify-between border-b pb-4">
             <Button 
               variant="ghost" 
               size="icon"
@@ -267,7 +265,7 @@ export default function InvestmentPlan() {
             >
               <X className="h-4 w-4" />
             </Button>
-          </div>
+          </DialogHeader>
           
           <div className="space-y-6 py-4">
             <div className="space-y-2">
