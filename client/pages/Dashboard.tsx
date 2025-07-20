@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { TrendingUp, Target, DollarSign, User, Settings, MessageSquare, LogOut, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Goal {
   id: string;
@@ -21,6 +22,7 @@ interface Goal {
 }
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [userProfile, setUserProfile] = useState({
     fullName: "liza",
@@ -53,8 +55,16 @@ export default function Dashboard() {
     }
   ]);
 
-  const handleSaveProfile = () => {
+    const handleSaveProfile = () => {
     setIsProfileOpen(false);
+  };
+
+  const handleAddNewGoal = () => {
+    navigate("/goal-selection");
+  };
+
+  const handleLogout = () => {
+    navigate("/login");
   };
 
   return (
@@ -97,7 +107,7 @@ export default function Dashboard() {
                   <MessageSquare className="w-4 h-4 mr-2" />
                   Send Feedback
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-orange-600">
+                                <DropdownMenuItem className="text-orange-600" onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
                 </DropdownMenuItem>
@@ -125,7 +135,10 @@ export default function Dashboard() {
             </div>
           </div>
           
-          <Button className="bg-wealth-blue hover:bg-wealth-blue/90 text-white">
+                    <Button
+            onClick={handleAddNewGoal}
+            className="bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+          >
             <span className="mr-2">+</span>
             Add New Goal
           </Button>
