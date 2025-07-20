@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -217,8 +217,11 @@ export default function InvestmentPlan() {
       </main>
 
       {/* Success Dialog */}
-      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+            <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="sr-only">Success Message</DialogTitle>
+          </DialogHeader>
           <div className="text-center py-6">
             <p className="text-gray-900">{successMessage}</p>
             <Button 
@@ -232,8 +235,11 @@ export default function InvestmentPlan() {
       </Dialog>
 
       {/* Download Success Dialog */}
-      <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
+            <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
         <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="sr-only">Download Success</DialogTitle>
+          </DialogHeader>
           <div className="text-center py-6">
             <p className="text-gray-900">{successMessage}</p>
             <Button 
@@ -247,10 +253,12 @@ export default function InvestmentPlan() {
       </Dialog>
 
       {/* Adjust Goal Dialog */}
-      <Dialog open={showAdjustDialog} onOpenChange={setShowAdjustDialog}>
+            <Dialog open={showAdjustDialog} onOpenChange={setShowAdjustDialog}>
         <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-gray-900">Adjust Your Goal</DialogTitle>
+          </DialogHeader>
           <div className="flex items-center justify-between border-b pb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Adjust Your Goal</h3>
             <Button 
               variant="ghost" 
               size="icon"
