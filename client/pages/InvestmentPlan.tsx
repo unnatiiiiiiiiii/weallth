@@ -1,62 +1,229 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { TrendingUp, ArrowLeft, Zap, Download, Calendar, DollarSign, X } from "lucide-react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ArrowLeft, TrendingUp, Play, Calendar, Download, Target, Zap, CheckCircle, Info, ExternalLink, Check, Minus, X, PieChart } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getCurrentUser } from "@/lib/auth";
+import { saveGoal, getUserProfile } from "@/lib/storage";
+import { calculateGoalRequirements } from "@/lib/calculations";
+
+interface InvestmentRecommendation {
+  type: string;
+  name: string;
+  amount: number;
+  description: string;
+  risk: string;
+  icon: string;
+}
 
 export default function InvestmentPlan() {
-  const { goalId } = useParams<{ goalId: string }>();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { goalTitle, targetAmount, monthlySaving } = location.state || {};
-  
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [showDownloadDialog, setShowDownloadDialog] = useState(false);
-  const [showAdjustDialog, setShowAdjustDialog] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [adjustedAmount, setAdjustedAmount] = useState(targetAmount || 100000);
-  const [adjustedMonths, setAdjustedMonths] = useState(340);
+  const { goalId } = useParams();
+  const [user, setUser] = useState<any>(null);
+  const [selectedGoal, setSelectedGoal] = useState('');
+  const [goalData, setGoalData] = useState<any>(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [recommendations, setRecommendations] = useState<InvestmentRecommendation[]>([]);
+  const [showTimelineAdjuster, setShowTimelineAdjuster] = useState(false);
+  const [sipStarted, setSipStarted] = useState(false);
+  const [adjustedTimeline, setAdjustedTimeline] = useState(12);
+  const [adjustedAmount, setAdjustedAmount] = useState(0);
+
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+    setUser(currentUser);
+
+    // Get goal data from localStorage
+    const storedGoalData = localStorage.getItem('goalData');
+    if (storedGoalData) {
+      const parsed = JSON.parse(storedGoalData);
+      setGoalData(parsed);
+      setSelectedGoal(parsed.selectedGoal);
+      setAdjustedTimeline(parsed.timeline);
+      setAdjustedAmount(parsed.targetAmount);
+      
+      // Generate recommendations based on timeline
+      const recs = getInvestmentRecommendations(parsed);
+      setRecommendations(recs);
+    }
+
+    // Get user profile
+    const profile = getUserProfile();
+    if (profile) {
+      setUserData(profile);
+    }
+
+    // Get goal from URL if available
+    const decodedGoal = goalId ? decodeURIComponent(goalId) : '';
+    if (decodedGoal && !selectedGoal) {
+      setSelectedGoal(decodedGoal);
+    }
+  }, [navigate, goalId, selectedGoal]);
+
+  const getInvestmentRecommendations = (data: any): InvestmentRecommendation[] => {
+    const isShortTerm = data.timeline <= 18;
+    const isLongTerm = data.timeline >= 36;
+    const calculations = data.calculations || calculateGoalRequirements(data);
+    
+    if (isShortTerm) {
+      return [
+        {
+          type: 'SIP',
+          name: 'Balanced Mutual Fund SIP',
+          amount: Math.round(calculations.monthlySaving * 0.8),
+          description: 'Mid-risk balanced funds for steady growth',
+          risk: 'Moderate',
+          icon: 'trending-up'
+        },
+        {
+          type: 'Emergency',
+          name: 'Liquid Fund',
+          amount: Math.round(calculations.monthlySaving * 0.2),
+          description: 'Emergency support and liquidity buffer',
+          risk: 'Low',
+          icon: 'shield'
+        }
+      ];
+    } else if (isLongTerm) {
+      return [
+        {
+          type: 'SIP',
+          name: 'Equity Mutual Fund SIP',
+          amount: Math.round(calculations.monthlySaving * 0.7),
+          description: 'High-growth equity funds for long-term wealth',
+          risk: 'High',
+          icon: 'trending-up'
+        },
+        {
+          type: 'Diversification',
+          name: 'Debt Fund Allocation',
+          amount: Math.round(calculations.monthlySaving * 0.3),
+          description: 'Stable debt instruments for risk balance',
+          risk: 'Low',
+          icon: 'pie-chart'
+        }
+      ];
+    } else {
+      return [
+        {
+          type: 'SIP',
+          name: 'Hybrid Fund SIP',
+          amount: Math.round(calculations.monthlySaving * 0.75),
+          description: 'Balanced equity-debt mix for moderate growth',
+          risk: 'Moderate',
+          icon: 'trending-up'
+        },
+        {
+          type: 'Fixed',
+          name: 'Fixed Deposit',
+          amount: Math.round(calculations.monthlySaving * 0.25),
+          description: 'Guaranteed returns with capital protection',
+          risk: 'Very Low',
+          icon: 'lock'
+        }
+      ];
+    }
+  };
 
   const handleStartSIP = () => {
-    setSuccessMessage(`🎉 SIP of ₹${monthlySaving}/month started successfully for ${goalTitle || 'Gadget Purchase'}! Redirecting to dashboard...`);
-    setShowSuccessDialog(true);
-    setTimeout(() => {
-      setShowSuccessDialog(false);
+    setSipStarted(true);
+    
+    // Save the goal
+    const newGoal = {
+      name: selectedGoal,
+      targetAmount: goalData.targetAmount,
+      timeline: goalData.timeline,
+      currentInvestment: goalData.currentInvestment,
+      monthlySaving: goalData.calculations.monthlySaving,
+      dateSet: new Date().toISOString(),
+      sipActive: true
+    };
+    
+    const savedGoal = saveGoal(newGoal);
+    if (savedGoal) {
+      setTimeout(() => {
+        alert(`🎉 SIP of ₹${goalData.calculations.monthlySaving.toLocaleString()}/month started successfully for ${selectedGoal}! Redirecting to dashboard...`);
+        navigate("/dashboard");
+      }, 1000);
+    }
+  };
+
+  const handleSetGoal = () => {
+    const newGoal = {
+      name: selectedGoal,
+      targetAmount: goalData.targetAmount,
+      timeline: goalData.timeline,
+      currentInvestment: goalData.currentInvestment,
+      monthlySaving: goalData.calculations.monthlySaving,
+      dateSet: new Date().toISOString(),
+      sipActive: false
+    };
+    
+    const savedGoal = saveGoal(newGoal);
+    if (savedGoal) {
       navigate("/dashboard");
-    }, 3000);
+    }
   };
 
   const handleDownloadReport = () => {
-    setSuccessMessage("Investment report downloaded successfully!");
-    setShowDownloadDialog(true);
-    setTimeout(() => {
-      setShowDownloadDialog(false);
-    }, 2000);
+    generatePDFReport();
+  };
+
+  const generatePDFReport = () => {
+    const reportContent = `
+      Weallth - Investment Plan Report
+      ==============================
+      
+      Goal: ${selectedGoal}
+      Target Amount: ₹${goalData.targetAmount.toLocaleString()}
+      Timeline: ${goalData.timeline} months
+      Current Investment: ₹${goalData.currentInvestment.toLocaleString()}
+      Monthly Saving Required: ₹${goalData.calculations.monthlySaving.toLocaleString()}
+      
+      Investment Strategy:
+      ${recommendations.map(rec => `- ${rec.name}: ₹${rec.amount.toLocaleString()}/month (${rec.risk} Risk)`).join('\n')}
+      
+      Generated by Weallth - Erfinden Technologies
+      Date: ${new Date().toLocaleDateString()}
+    `;
+
+    const blob = new Blob([reportContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Wealth_Plan_${selectedGoal.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleAdjustTimeline = () => {
-    setShowAdjustDialog(true);
+    const newMonthlySaving = Math.round((adjustedAmount - goalData.currentInvestment) / adjustedTimeline);
+    alert(`Goal adjusted! New monthly saving: ₹${newMonthlySaving.toLocaleString()}`);
+    setShowTimelineAdjuster(false);
   };
 
-  const handleUpdateGoal = () => {
-    setShowAdjustDialog(false);
-    // Update the calculation with new values
-  };
+  if (!user || !goalData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-wealth-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="animate-spin h-8 w-8 border-4 border-white border-t-transparent rounded-full"></div>
+          </div>
+          <h1 className="text-xl font-semibold text-gray-900">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
-  const handleSaveGoalOnly = () => {
-    navigate("/dashboard");
-  };
-
-  const handleBack = () => {
-    navigate(`/goal-planning/${goalId}`);
-  };
-
-  const newMonthlySaving = Math.ceil(adjustedAmount / adjustedMonths);
+  const progress = (goalData.currentInvestment / goalData.targetAmount) * 100;
 
   return (
     <div className="min-h-screen bg-wealth-gray-bg">
@@ -68,252 +235,285 @@ export default function InvestmentPlan() {
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">Wealith</h1>
-              <p className="text-sm text-wealth-gray">by Effusion Technologies</p>
+              <h1 className="text-xl font-semibold text-gray-900">Weallth</h1>
+              <p className="text-sm text-wealth-gray">by Erfinden Technologies</p>
             </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="text-wealth-gray hover:text-gray-900">
-              Dashboard
+            <Button variant="ghost" onClick={() => navigate("/dashboard")} className="text-wealth-gray hover:text-gray-900">
+              Goal Dashboard
             </Button>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-900 font-medium">liza</span>
+            
+            {/* Step Progress */}
+            <div className="hidden md:flex items-center gap-2">
+              {[1, 2, 3, 4].map((step) => (
+                <div key={step} className="flex items-center">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                    step <= 4 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'
+                  }`}>
+                    {step}
+                  </div>
+                  {step < 4 && <div className={`w-8 h-0.5 ${step < 4 ? 'bg-blue-600' : 'bg-gray-200'}`}></div>}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </header>
 
-      <main className="p-6 max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Investment Plan</h2>
-          <p className="text-wealth-gray">Personalized recommendations for {goalTitle || "Start a Side Hustle"}</p>
-        </div>
+      {/* Main Content */}
+      <main className="p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Investment Plan</h2>
+            <p className="text-gray-600">Personalized recommendations for {selectedGoal}</p>
+          </div>
 
-        {/* Goal Summary */}
-        <Card className="bg-white border-0 shadow-sm mb-6">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{goalTitle || "Start a Side Hustle"}</h3>
-              <div className="text-right">
-                <p className="text-sm text-wealth-gray">Monthly Saving</p>
-                <p className="text-xl font-bold text-wealth-green">₹{monthlySaving || 833}</p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-wealth-gray">Target: ₹{(targetAmount || 100000).toLocaleString()}</span>
-                <span className="text-gray-900 font-medium">Progress: 0%</span>
-              </div>
-              <Progress value={0} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Goal Summary */}
+            <div className="lg:col-span-3">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">{selectedGoal}</h3>
+                      <p className="text-gray-600">Target: ₹{goalData.targetAmount.toLocaleString()}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-gray-600">Monthly Saving</p>
+                      <p className="text-xl font-bold text-green-600">₹{goalData.calculations.monthlySaving.toLocaleString()}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="mb-4">
+                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                      <span>Progress</span>
+                      <span>{Math.round(progress)}%</span>
+                    </div>
+                    <Progress value={progress} className="h-3" />
+                  </div>
 
-        {/* Investment Strategy */}
-        <Card className="bg-white border-0 shadow-sm mb-6">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">Recommended Investment Strategy</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-wealth-gray-light rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-wealth-blue-light rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-wealth-blue" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-900">Equity Mutual Fund SIP</h4>
-                  <p className="text-sm text-wealth-gray">High-growth equity funds for long-term wealth</p>
-                  <span className="inline-block mt-1 px-2 py-1 bg-red-100 text-red-700 text-xs rounded">High Risk</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-lg font-bold text-wealth-green">₹{Math.ceil((monthlySaving || 833) * 0.7)}/month</p>
-                <Button variant="link" className="text-wealth-blue p-0 h-auto text-sm">
-                  Learn More →
-                </Button>
-              </div>
+                  <div className="grid grid-cols-4 gap-4">
+                    <div className="text-center p-3 bg-blue-50 rounded-lg">
+                      <p className="text-xs text-blue-600">Target</p>
+                      <p className="font-bold text-gray-900">₹{goalData.targetAmount.toLocaleString()}</p>
+                    </div>
+                    <div className="text-center p-3 bg-green-50 rounded-lg">
+                      <p className="text-xs text-green-600">Invested</p>
+                      <p className="font-bold text-green-600">₹{goalData.currentInvestment.toLocaleString()}</p>
+                    </div>
+                    <div className="text-center p-3 bg-orange-50 rounded-lg">
+                      <p className="text-xs text-orange-600">Remaining</p>
+                      <p className="font-bold text-orange-600">₹{goalData.calculations.remainingAmount.toLocaleString()}</p>
+                    </div>
+                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                      <p className="text-xs text-purple-600">Timeline</p>
+                      <p className="font-bold text-purple-600">{goalData.timeline} months</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
-            <div className="flex items-center justify-between p-4 border border-wealth-gray-light rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-900">Debt Fund Allocation</h4>
-                  <p className="text-sm text-wealth-gray">Stable debt instruments for risk balance</p>
-                  <span className="inline-block mt-1 px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Low Risk</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-lg font-bold text-wealth-green">₹{Math.floor((monthlySaving || 833) * 0.3)}/month</p>
-                <Button variant="link" className="text-wealth-blue p-0 h-auto text-sm">
-                  Learn More →
-                </Button>
-              </div>
+            {/* Investment Recommendations */}
+            <div className="lg:col-span-2">
+              <Card>
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Recommended Investment Strategy</h3>
+                  <div className="space-y-4">
+                    {recommendations.map((rec, index) => (
+                      <div key={index} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
+                        <div className="flex items-start gap-3">
+                          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <TrendingUp className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-medium text-gray-900">{rec.name}</h4>
+                              <span className="text-sm font-semibold text-green-600">
+                                ₹{rec.amount.toLocaleString()}/month
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-2">{rec.description}</p>
+                            <div className="flex justify-between items-center">
+                              <span className={`text-xs px-2 py-1 rounded ${
+                                rec.risk === 'High' ? 'bg-red-100 text-red-700' :
+                                rec.risk === 'Moderate' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-green-100 text-green-700'
+                              }`}>
+                                {rec.risk} Risk
+                              </span>
+                              <button className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+                                Learn More
+                                <ExternalLink className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Take Action */}
-        <Card className="bg-white border-0 shadow-sm mb-6">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-wealth-blue" />
-              <CardTitle className="text-lg font-semibold text-gray-900">Take Action</CardTitle>
+            {/* Action Buttons */}
+            <div className="lg:col-span-1">
+              <Card>
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-blue-600" />
+                    Take Action
+                  </h3>
+                  
+                  <div className="space-y-3">
+                    <Button 
+                      onClick={handleStartSIP} 
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white transform hover:scale-105 transition-all duration-300"
+                      disabled={sipStarted}
+                    >
+                      {sipStarted ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          SIP Started!
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-4 h-4 mr-2" />
+                          Start SIP Now
+                        </>
+                      )}
+                    </Button>
+                    
+                    <Button 
+                      onClick={() => setShowTimelineAdjuster(true)} 
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Adjust Timeline
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleSetGoal} 
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Target className="w-4 h-4 mr-2" />
+                      Save Goal Only
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleDownloadReport} 
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Report
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Tips */}
+              <Card className="mt-6">
+                <CardContent className="p-6">
+                  <h4 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
+                    <Info className="w-4 h-4 text-blue-600" />
+                    Investment Tips
+                  </h4>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-green-600 mt-0.5" />
+                      <p className="text-gray-600">Start your SIP on the 1st of every month for better tracking</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-green-600 mt-0.5" />
+                      <p className="text-gray-600">Review and rebalance your portfolio quarterly</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-green-600 mt-0.5" />
+                      <p className="text-gray-600">Increase SIP amount by 10-15% annually as income grows</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <Button 
-              onClick={handleStartSIP}
-              className="w-full bg-wealth-blue hover:bg-wealth-blue/90 text-white py-3"
-            >
-              <span className="mr-2">▶</span>
-              Start SIP Now
+          </div>
+
+          {/* Navigation */}
+          <div className="flex justify-center mt-8">
+            <Button onClick={() => navigate(`/goal-planning/${encodeURIComponent(selectedGoal)}`)} variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Planning
             </Button>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <Button 
-                variant="outline" 
-                onClick={handleAdjustTimeline}
-                className="flex items-center justify-center gap-2 border-wealth-gray-light text-wealth-gray hover:bg-wealth-gray-light"
-              >
-                <Calendar className="w-4 h-4" />
-                Adjust Timeline
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                onClick={handleSaveGoalOnly}
-                className="flex items-center justify-center gap-2 border-wealth-gray-light text-wealth-gray hover:bg-wealth-gray-light"
-              >
-                <DollarSign className="w-4 h-4" />
-                Save Goal Only
-              </Button>
-            </div>
-
-            <Button 
-              variant="outline" 
-              onClick={handleDownloadReport}
-              className="w-full flex items-center justify-center gap-2 border-wealth-gray-light text-wealth-gray hover:bg-wealth-gray-light"
-            >
-              <Download className="w-4 h-4" />
-              Download Report
-            </Button>
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-center">
-          <Button 
-            variant="outline" 
-            onClick={handleBack}
-            className="flex items-center gap-2 border-wealth-gray-light text-wealth-gray hover:bg-wealth-gray-light"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Planning
-          </Button>
+          </div>
         </div>
       </main>
 
-      {/* Success Dialog */}
-      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent className="sm:max-w-md">
+      {/* Timeline Adjuster Modal */}
+      <Dialog open={showTimelineAdjuster} onOpenChange={setShowTimelineAdjuster}>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle className="sr-only">Success Message</DialogTitle>
-          </DialogHeader>
-          <div className="text-center py-6">
-            <p className="text-gray-900">{successMessage}</p>
-            <Button 
-              className="mt-4 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
-              onClick={() => setShowSuccessDialog(false)}
-            >
-              OK
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Download Success Dialog */}
-      <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="sr-only">Download Success</DialogTitle>
-          </DialogHeader>
-          <div className="text-center py-6">
-            <p className="text-gray-900">{successMessage}</p>
-            <Button 
-              className="mt-4 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
-              onClick={() => setShowDownloadDialog(false)}
-            >
-              OK
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Adjust Goal Dialog */}
-      <Dialog open={showAdjustDialog} onOpenChange={setShowAdjustDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader className="flex items-center justify-between border-b pb-4">
-            <DialogTitle className="text-lg font-semibold text-gray-900">Adjust Your Goal</DialogTitle>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={() => setShowAdjustDialog(false)}
-              className="h-8 w-8"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            <div className="flex justify-between items-center">
+              <DialogTitle>Adjust Your Goal</DialogTitle>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => setShowTimelineAdjuster(false)}
+                className="h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </DialogHeader>
           
-          <div className="space-y-6 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="adjustAmount" className="text-sm font-medium">Target Amount (₹)</Label>
-              <Input
-                id="adjustAmount"
+          <div className="space-y-4 py-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Target Amount (₹)
+              </label>
+              <input
+                type="number"
                 value={adjustedAmount}
                 onChange={(e) => setAdjustedAmount(parseInt(e.target.value) || 0)}
-                className="border-wealth-gray-light"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-
-            <div className="space-y-4">
-              <Label className="text-sm font-medium">Timeline: {adjustedMonths} months</Label>
-              <div className="px-2">
-                <Slider
-                  value={[adjustedMonths]}
-                  onValueChange={(value) => setAdjustedMonths(value[0])}
-                  max={600}
-                  min={6}
-                  step={6}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-wealth-gray mt-1">
-                  <span>6 months</span>
-                  <span>50 years</span>
-                </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Timeline: {adjustedTimeline} months
+              </label>
+              <input
+                type="range"
+                min="6"
+                max="600"
+                value={adjustedTimeline}
+                onChange={(e) => setAdjustedTimeline(parseInt(e.target.value))}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>6 months</span>
+                <span>50 years</span>
               </div>
             </div>
-
-            <div className="bg-wealth-blue-light p-3 rounded-lg">
-              <p className="text-sm text-wealth-gray">New Monthly Saving Required</p>
-              <p className="text-xl font-bold text-wealth-blue">₹{newMonthlySaving.toLocaleString()}</p>
+            
+            <div className="bg-blue-50 rounded-lg p-4">
+              <p className="text-sm text-blue-600 mb-1">New Monthly Saving Required</p>
+              <p className="text-xl font-bold text-blue-900">
+                ₹{Math.round((adjustedAmount - goalData.currentInvestment) / adjustedTimeline).toLocaleString()}
+              </p>
             </div>
           </div>
-
-          <div className="flex gap-3 pt-4">
-            <Button 
-              variant="outline" 
-              className="flex-1 border-wealth-gray-light text-wealth-gray hover:bg-wealth-gray-light"
-              onClick={() => setShowAdjustDialog(false)}
-            >
+          
+          <div className="flex gap-3 mt-6">
+            <Button onClick={() => setShowTimelineAdjuster(false)} variant="outline" className="flex-1">
               Cancel
             </Button>
-            <Button 
-              className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
-              onClick={handleUpdateGoal}
-            >
+            <Button onClick={handleAdjustTimeline} className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white">
               Update Goal
             </Button>
           </div>
