@@ -19,9 +19,19 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
+                primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+        },
+        wealth: {
+          blue: "hsl(var(--wealth-blue))",
+          "blue-light": "hsl(var(--wealth-blue-light))",
+          purple: "hsl(var(--wealth-purple))",
+          green: "hsl(var(--wealth-green))",
+          "green-light": "hsl(var(--wealth-green-light))",
+          gray: "hsl(var(--wealth-gray))",
+          "gray-light": "hsl(var(--wealth-gray-light))",
+          "gray-bg": "hsl(var(--wealth-gray-bg))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
