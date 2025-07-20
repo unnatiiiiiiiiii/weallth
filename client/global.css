@@ -53,7 +53,17 @@
 
     --sidebar-border: 220 13% 91%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Wealith Design System */
+    --wealth-blue: 223 86% 49%;
+    --wealth-blue-light: 223 86% 96%;
+    --wealth-purple: 267 85% 69%;
+    --wealth-green: 154 64% 46%;
+    --wealth-green-light: 154 64% 95%;
+    --wealth-gray: 220 9% 46%;
+    --wealth-gray-light: 220 13% 91%;
+    --wealth-gray-bg: 210 20% 98%;
   }
 
   .dark {
@@ -90,8 +100,18 @@
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
+        --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Wealith Design System - Dark Mode */
+    --wealth-blue: 223 86% 49%;
+    --wealth-blue-light: 223 86% 15%;
+    --wealth-purple: 267 85% 69%;
+    --wealth-green: 154 64% 46%;
+    --wealth-green-light: 154 64% 15%;
+    --wealth-gray: 220 9% 70%;
+    --wealth-gray-light: 220 13% 25%;
+    --wealth-gray-bg: 220 9% 9%;
   }
 }
 
