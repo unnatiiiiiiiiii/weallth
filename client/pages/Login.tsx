@@ -27,7 +27,7 @@ export default function Login() {
             <div className="w-16 h-16 bg-wealth-blue rounded-full flex items-center justify-center mx-auto mb-4">
               <TrendingUp className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Wealith</h1>
+                        <h1 className="text-2xl font-bold text-wealth-blue mb-2">Wealith</h1>
             <p className="text-wealth-gray">Welcome back to your financial journey!</p>
           </div>
 
