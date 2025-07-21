@@ -34,7 +34,20 @@ export default function InvestmentFormModal({ strategy, isOpen, onClose, onConfi
     goalId: undefined
   });
   
-  const goals = getGoals();
+    const goals = getGoals();
+
+  // Reset form when modal opens with new strategy
+  useEffect(() => {
+    if (strategy && isOpen) {
+      setFormData({
+        strategyId: strategy.id,
+        strategyName: strategy.name,
+        amount: strategy.minInvestment,
+        investmentType: 'personal',
+        goalId: undefined
+      });
+    }
+  }, [strategy, isOpen]);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
