@@ -11,6 +11,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { saveUserProfile, getUserProfile } from "@/lib/storage";
 
 interface OnboardingData {
+  userType: 'personal' | 'professional';
   fullName: string;
   age: number;
   occupation: string;
