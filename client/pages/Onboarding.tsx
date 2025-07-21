@@ -27,7 +27,8 @@ export default function Onboarding() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [user, setUser] = useState<any>(null);
-  const [data, setData] = useState<OnboardingData>({
+    const [data, setData] = useState<OnboardingData>({
+    userType: 'personal',
     fullName: '',
     age: 25,
     occupation: '',
