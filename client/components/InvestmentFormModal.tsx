@@ -190,7 +190,7 @@ export default function InvestmentFormModal({ strategy, isOpen, onClose, onConfi
                 <Select 
                                     value={formData.goalId || "none"} 
                   onValueChange={(value) => 
-                    setFormData(prev => ({ ...prev, goalId: value || undefined }))
+                                        setFormData(prev => ({ ...prev, goalId: value === "none" ? undefined : value }))
                   }
                 >
                   <SelectTrigger>
