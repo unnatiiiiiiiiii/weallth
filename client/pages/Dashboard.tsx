@@ -42,7 +42,8 @@ export default function Dashboard() {
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
     const [selectedStrategy, setSelectedStrategy] = useState<InvestmentStrategy | null>(null);
   const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
-  const [isInvestmentFormOpen, setIsInvestmentFormOpen] = useState(false);
+    const [isInvestmentFormOpen, setIsInvestmentFormOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
   const [userProfile, setUserProfile] = useState({
     fullName: "",
     email: "",
