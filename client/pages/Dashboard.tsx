@@ -217,10 +217,10 @@ export default function Dashboard() {
           </div>
           
           <div className="flex items-center gap-4">
-                        <Button
+                                    <Button
               variant="ghost"
               className="text-wealth-gray hover:text-gray-900"
-              onClick={() => navigate("/goal-planning")}
+              onClick={() => setActiveTab("goals")}
             >
               Goal Dashboard
             </Button>
