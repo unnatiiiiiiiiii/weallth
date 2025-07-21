@@ -10,6 +10,7 @@ interface InvestmentStrategyModalProps {
   strategy: InvestmentStrategy | null;
   isOpen: boolean;
   onClose: () => void;
+  onInvest: (strategy: InvestmentStrategy) => void;
 }
 
 export default function InvestmentStrategyModal({ strategy, isOpen, onClose }: InvestmentStrategyModalProps) {
