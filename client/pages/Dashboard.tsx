@@ -257,7 +257,7 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="p-6">
-        <Tabs defaultValue="overview" className="space-y-6">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="goals">My Goals</TabsTrigger>
