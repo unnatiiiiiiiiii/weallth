@@ -13,7 +13,7 @@ interface InvestmentStrategyModalProps {
   onInvest: (strategy: InvestmentStrategy) => void;
 }
 
-export default function InvestmentStrategyModal({ strategy, isOpen, onClose }: InvestmentStrategyModalProps) {
+export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onInvest }: InvestmentStrategyModalProps) {
   if (!strategy) return null;
 
   return (
