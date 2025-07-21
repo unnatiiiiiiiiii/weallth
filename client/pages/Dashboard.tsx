@@ -352,7 +352,7 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setIsPortfolioTrackerOpen(true)}>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
