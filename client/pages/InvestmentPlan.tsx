@@ -191,14 +191,14 @@ export default function InvestmentPlan() {
       <header className="bg-white border-b border-wealth-gray-light px-6 py-4 shadow-sm">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
-                        <Button
-              onClick={() => navigate('/dashboard')}
+                                    <Button
+              onClick={() => navigate('/goal-planning')}
               variant="ghost"
               size="sm"
               className="flex items-center gap-2 text-wealth-gray hover:text-gray-900"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Dashboard
+              Back to Goals
             </Button>
             
             <div className="w-8 h-8 bg-wealth-blue rounded-lg flex items-center justify-center">
