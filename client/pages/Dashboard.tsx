@@ -165,7 +165,8 @@ export default function Dashboard() {
     setIsStrategyModalOpen(true);
   };
 
-  const handleInvestClick = (strategy: InvestmentStrategy) => {
+    const handleInvestClick = (strategy: InvestmentStrategy) => {
+    console.log('Investment clicked for strategy:', strategy.name);
     setSelectedStrategy(strategy);
     setIsStrategyModalOpen(false);
     setIsInvestmentFormOpen(true);
