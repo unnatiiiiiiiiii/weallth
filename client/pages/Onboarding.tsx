@@ -73,8 +73,9 @@ export default function Onboarding() {
     }
   };
 
-  const handleComplete = () => {
+    const handleComplete = () => {
     const profileData = {
+      userType: data.userType,
       fullName: data.fullName,
       email: user.email,
       phoneNumber: '',
