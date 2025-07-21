@@ -386,7 +386,7 @@ export default function Dashboard() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => navigate("/goal-planning")}
+                                        onClick={() => setActiveTab("goals")}
                     className="text-blue-600 hover:text-blue-700"
                   >
                     View All
