@@ -336,7 +336,7 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -349,6 +349,53 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Recent Goals */}
+            {goals.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Recent Goals</h3>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate("/goal-planning")}
+                    className="text-blue-600 hover:text-blue-700"
+                  >
+                    View All
+                  </Button>
+                </div>
+
+                <div className="grid gap-4">
+                  {goals.slice(0, 3).map((goal) => {
+                    const progress = (goal.currentInvestment / goal.targetAmount) * 100;
+                    return (
+                      <Card key={goal.id} className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="font-medium text-gray-900">{goal.name}</h4>
+                            <Badge className="bg-blue-100 text-blue-800 text-xs">
+                              {goal.timeline} months
+                            </Badge>
+                          </div>
+
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-600">Progress</span>
+                              <span className="font-medium">{Math.round(progress)}%</span>
+                            </div>
+                            <Progress value={progress} className="h-2" />
+                            <div className="flex justify-between text-sm text-gray-600">
+                              <span>₹{goal.currentInvestment.toLocaleString()}</span>
+                              <span>₹{goal.targetAmount.toLocaleString()}</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="goals" className="space-y-6">
