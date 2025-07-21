@@ -171,7 +171,7 @@ export default function Dashboard() {
     setIsInvestmentFormOpen(true);
   };
 
-  const handleInvestmentConfirm = (investmentData: InvestmentFormData) => {
+    const handleInvestmentConfirm = (investmentData: InvestmentFormData) => {
     const result = saveInvestment({
       strategyId: investmentData.strategyId,
       strategyName: investmentData.strategyName,
@@ -182,9 +182,16 @@ export default function Dashboard() {
     });
 
     if (result) {
-      alert(`Successfully started investment in ${investmentData.strategyName} with ₹${investmentData.amount.toLocaleString()}!`);
+      // Refresh investments list
+      const updatedInvestments = getInvestments();
+      setInvestments(updatedInvestments);
+
+      alert(`Successfully started investment in ${investmentData.strategyName} with ₹${investmentData.amount.toLocaleString()}! You can track it in your portfolio.`);
       setIsInvestmentFormOpen(false);
       setSelectedStrategy(null);
+
+      // Optionally switch to overview tab to show updated stats
+      setActiveTab("overview");
     } else {
       alert('Failed to start investment. Please try again.');
     }
@@ -284,7 +291,7 @@ export default function Dashboard() {
                   </Avatar>
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                      Welcome back, {userProfile.fullName}! <span>���</span>
+                      Welcome back, {userProfile.fullName}! <span>🎯</span>
                     </h2>
                     <p className="text-wealth-gray">Track your financial goals and build your wealth journey</p>
                   </div>
