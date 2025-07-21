@@ -640,16 +640,18 @@ export default function Dashboard() {
         onInvest={handleInvestClick}
       />
 
-      {/* Investment Form Modal */}
-      <InvestmentFormModal
-        strategy={selectedStrategy}
-        isOpen={isInvestmentFormOpen}
-        onClose={() => {
-          setIsInvestmentFormOpen(false);
-          setSelectedStrategy(null);
-        }}
-        onConfirm={handleInvestmentConfirm}
-      />
+            {/* Investment Form Modal */}
+      {selectedStrategy && (
+        <InvestmentFormModal
+          strategy={selectedStrategy}
+          isOpen={isInvestmentFormOpen}
+          onClose={() => {
+            setIsInvestmentFormOpen(false);
+            setSelectedStrategy(null);
+          }}
+          onConfirm={handleInvestmentConfirm}
+        />
+      )}
 
       {/* Edit Goal Modal */}
       <Dialog open={!!editingGoal} onOpenChange={(open) => !open && setEditingGoal(null)}>
