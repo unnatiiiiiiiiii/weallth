@@ -884,6 +884,149 @@ export default function Dashboard() {
               </div>
             </form>
           )}
+                </DialogContent>
+      </Dialog>
+
+      {/* Portfolio Tracker Modal */}
+      <Dialog open={isPortfolioTrackerOpen} onOpenChange={setIsPortfolioTrackerOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <PieChart className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <DialogTitle className="text-xl font-bold">Portfolio Tracker</DialogTitle>
+                  <p className="text-sm text-gray-600">Track all your investments in one place</p>
+                </div>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setIsPortfolioTrackerOpen(false)}>
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </DialogHeader>
+
+          <div className="mt-6 space-y-6">
+            {/* Portfolio Summary */}
+            <div className="grid md:grid-cols-3 gap-4">
+              <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+                <CardContent className="p-4 text-center">
+                  <h3 className="text-sm font-medium text-blue-600 mb-2">Total Invested</h3>
+                  <p className="text-2xl font-bold text-blue-800">
+                    ₹{investments.reduce((sum, inv) => sum + inv.amount, 0).toLocaleString()}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+                <CardContent className="p-4 text-center">
+                  <h3 className="text-sm font-medium text-green-600 mb-2">Active Investments</h3>
+                  <p className="text-2xl font-bold text-green-800">
+                    {investments.filter(inv => inv.status === 'active').length}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+                <CardContent className="p-4 text-center">
+                  <h3 className="text-sm font-medium text-purple-600 mb-2">Expected Returns</h3>
+                  <p className="text-2xl font-bold text-purple-800">
+                    ₹{Math.round(investments.reduce((sum, inv) => sum + inv.amount, 0) * 0.12).toLocaleString()}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Investments List */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Investments</h3>
+
+              {investments.length === 0 ? (
+                <div className="text-center py-12">
+                  <PieChart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No Investments Yet</h3>
+                  <p className="text-gray-600 mb-4">Start investing to track your portfolio here</p>
+                  <Button
+                    onClick={() => {
+                      setIsPortfolioTrackerOpen(false);
+                      setActiveTab("personal-strategies");
+                    }}
+                    className="bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+                  >
+                    Explore Investment Strategies
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {investments.map((investment) => (
+                    <Card key={investment.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h4 className="font-medium text-gray-900">{investment.strategyName}</h4>
+                              <Badge className={`text-xs ${
+                                investment.status === 'active' ? 'bg-green-100 text-green-800' :
+                                investment.status === 'paused' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
+                                {investment.status}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs">
+                                {investment.investmentType}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              Started: {new Date(investment.startDate).toLocaleDateString()}
+                            </p>
+                          </div>
+
+                          <div className="text-right">
+                            <p className="text-lg font-semibold text-gray-900">
+                              ₹{investment.amount.toLocaleString()}
+                            </p>
+                            <p className="text-sm text-green-600">
+                              +₹{Math.round(investment.amount * 0.12).toLocaleString()} (12% p.a.)
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Portfolio Insights */}
+            {investments.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Portfolio Insights</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <Card className="bg-blue-50 border-blue-200">
+                    <CardContent className="p-4">
+                      <h4 className="font-medium text-blue-900 mb-2">Investment Distribution</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Personal: {investments.filter(inv => inv.investmentType === 'personal').length}</span>
+                          <span>Professional: {investments.filter(inv => inv.investmentType === 'professional').length}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-green-50 border-green-200">
+                    <CardContent className="p-4">
+                      <h4 className="font-medium text-green-900 mb-2">Growth Potential</h4>
+                      <p className="text-sm text-green-700">
+                        Your portfolio is positioned for long-term wealth creation with diversified investments.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
