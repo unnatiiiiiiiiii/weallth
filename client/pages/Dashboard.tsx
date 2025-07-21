@@ -152,9 +152,34 @@ export default function Dashboard() {
     navigate("/login");
   };
 
-  const handleStrategyClick = (strategy: InvestmentStrategy) => {
+    const handleStrategyClick = (strategy: InvestmentStrategy) => {
     setSelectedStrategy(strategy);
     setIsStrategyModalOpen(true);
+  };
+
+  const handleInvestClick = (strategy: InvestmentStrategy) => {
+    setSelectedStrategy(strategy);
+    setIsStrategyModalOpen(false);
+    setIsInvestmentFormOpen(true);
+  };
+
+  const handleInvestmentConfirm = (investmentData: InvestmentFormData) => {
+    const result = saveInvestment({
+      strategyId: investmentData.strategyId,
+      strategyName: investmentData.strategyName,
+      amount: investmentData.amount,
+      investmentType: investmentData.investmentType,
+      status: 'active',
+      goalId: investmentData.goalId
+    });
+
+    if (result) {
+      alert(`Successfully started investment in ${investmentData.strategyName} with ₹${investmentData.amount.toLocaleString()}!`);
+      setIsInvestmentFormOpen(false);
+      setSelectedStrategy(null);
+    } else {
+      alert('Failed to start investment. Please try again.');
+    }
   };
 
   const totalInvested = goals.reduce((sum, goal) => sum + goal.currentInvestment, 0);
