@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
 import { saveGoal, getUserProfile } from "@/lib/storage";
 import { calculateGoalRequirements } from "@/lib/calculations";
+import { generateDetailedInvestmentReport } from "@/lib/reportGenerator";
 
 interface InvestmentRecommendation {
   type: string;
