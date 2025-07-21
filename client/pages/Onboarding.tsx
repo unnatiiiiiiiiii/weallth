@@ -319,7 +319,7 @@ export default function Onboarding() {
                 <div className="space-y-6">
                   <div>
                     <Label htmlFor="monthlySalary" className="text-sm font-medium text-gray-700 mb-2 block">
-                      Monthly Salary (₹)
+                      Monthly Salary (��)
                     </Label>
                     <Input
                       id="monthlySalary"
@@ -446,8 +446,8 @@ export default function Onboarding() {
                     <Label className="text-sm font-medium text-gray-700 mb-3 block">
                       Select your primary financial goals (choose multiple)
                     </Label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {personalGoals.map((goal) => (
+                                        <div className="grid grid-cols-2 gap-3">
+                      {currentGoals.map((goal) => (
                         <div
                           key={goal}
                           onClick={() => toggleGoal(goal)}
