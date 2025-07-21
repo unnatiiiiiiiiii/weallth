@@ -188,7 +188,7 @@ export default function InvestmentFormModal({ strategy, isOpen, onClose, onConfi
               <div>
                 <Label htmlFor="goalId" className="text-sm font-medium">Link to Goal (Optional)</Label>
                 <Select 
-                  value={formData.goalId || ""} 
+                                    value={formData.goalId || "none"} 
                   onValueChange={(value) => 
                     setFormData(prev => ({ ...prev, goalId: value || undefined }))
                   }
