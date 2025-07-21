@@ -44,7 +44,8 @@ export default function Dashboard() {
   const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
       const [isInvestmentFormOpen, setIsInvestmentFormOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
-  const [isPortfolioTrackerOpen, setIsPortfolioTrackerOpen] = useState(false);
+    const [isPortfolioTrackerOpen, setIsPortfolioTrackerOpen] = useState(false);
+  const [investments, setInvestments] = useState<any[]>([]);
   const [userProfile, setUserProfile] = useState({
     fullName: "",
     email: "",
