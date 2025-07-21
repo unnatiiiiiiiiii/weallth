@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser, getCurrentUser } from "@/lib/auth";
+import { getUserProfile } from "@/lib/storage";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -43,8 +44,14 @@ export default function Login() {
 
     setLoading(false);
 
-    if (result.success) {
-      navigate("/dashboard");
+        if (result.success) {
+      // Check if user has completed onboarding
+      const profile = getUserProfile();
+      if (profile && profile.monthlySalary > 0) {
+        navigate("/dashboard");
+      } else {
+        navigate("/onboarding");
+      }
     } else {
       setError(result.error);
     }
