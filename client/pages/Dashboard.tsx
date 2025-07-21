@@ -613,7 +613,7 @@ export default function Dashboard() {
         </Tabs>
       </main>
 
-      {/* Investment Strategy Modal */}
+            {/* Investment Strategy Modal */}
       <InvestmentStrategyModal
         strategy={selectedStrategy}
         isOpen={isStrategyModalOpen}
@@ -621,6 +621,18 @@ export default function Dashboard() {
           setIsStrategyModalOpen(false);
           setSelectedStrategy(null);
         }}
+        onInvest={handleInvestClick}
+      />
+
+      {/* Investment Form Modal */}
+      <InvestmentFormModal
+        strategy={selectedStrategy}
+        isOpen={isInvestmentFormOpen}
+        onClose={() => {
+          setIsInvestmentFormOpen(false);
+          setSelectedStrategy(null);
+        }}
+        onConfirm={handleInvestmentConfirm}
       />
 
       {/* Edit Goal Modal */}
