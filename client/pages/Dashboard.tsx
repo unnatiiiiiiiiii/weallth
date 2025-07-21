@@ -284,7 +284,7 @@ export default function Dashboard() {
                   </Avatar>
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                      Welcome back, {userProfile.fullName}! <span>🎯</span>
+                      Welcome back, {userProfile.fullName}! <span>���</span>
                     </h2>
                     <p className="text-wealth-gray">Track your financial goals and build your wealth journey</p>
                   </div>
@@ -1027,6 +1027,206 @@ export default function Dashboard() {
                 </div>
               </div>
             )}
+          </div>
+                </DialogContent>
+      </Dialog>
+
+      {/* Smart Suggestions Modal */}
+      <Dialog open={isSmartSuggestionsOpen} onOpenChange={setIsSmartSuggestionsOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Lightbulb className="w-5 h-5 text-purple-600" />
+                </div>
+                <div>
+                  <DialogTitle className="text-xl font-bold">Smart Investment Suggestions</DialogTitle>
+                  <p className="text-sm text-gray-600">Get personalized advice based on your profile</p>
+                </div>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setIsSmartSuggestionsOpen(false)}>
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </DialogHeader>
+
+          <div className="mt-6 space-y-6">
+            {/* Current Profile Analysis */}
+            <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-purple-900 mb-4">Your Investment Profile</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-medium text-purple-800 mb-2">Financial Status</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-purple-600">Monthly Salary:</span>
+                        <span className="font-medium">₹{userProfile.monthlySalary.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-purple-600">Available for Investment:</span>
+                        <span className="font-medium">₹{availableForInvestment.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-purple-600">Current Goals:</span>
+                        <span className="font-medium">{goals.length}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-purple-800 mb-2">Investment Activity</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-purple-600">Active Investments:</span>
+                        <span className="font-medium">{investments.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-purple-600">Total Invested:</span>
+                        <span className="font-medium">₹{investments.reduce((sum, inv) => sum + inv.amount, 0).toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-purple-600">Savings Rate:</span>
+                        <span className="font-medium">{userProfile.monthlySalary > 0 ? Math.round((availableForInvestment / userProfile.monthlySalary) * 100) : 0}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Personalized Suggestions */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Personalized Suggestions</h3>
+              <div className="space-y-4">
+                {/* Suggestion 1: Based on Savings Rate */}
+                <Card className="border-l-4 border-l-blue-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                        <TrendingUp className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900 mb-2">
+                          {availableForInvestment > 20000 ? "Excellent Savings Potential!" :
+                           availableForInvestment > 10000 ? "Good Savings Capacity" :
+                           "Focus on Building Emergency Fund"}
+                        </h4>
+                        <p className="text-sm text-gray-600 mb-3">
+                          {availableForInvestment > 20000 ?
+                            "With ₹" + availableForInvestment.toLocaleString() + " available monthly, consider diversifying across equity SIPs, debt funds, and tax-saving investments." :
+                           availableForInvestment > 10000 ?
+                            "You can start with SIP investments of ₹5,000-10,000 in equity mutual funds for long-term wealth creation." :
+                            "Build an emergency fund of 6 months expenses first, then start with small SIPs of ₹1,000-2,000."}
+                        </p>
+                        <div className="flex gap-2">
+                          <Badge className="bg-blue-100 text-blue-800 text-xs">
+                            {availableForInvestment > 20000 ? "High Priority" : availableForInvestment > 10000 ? "Medium Priority" : "Foundation"}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Suggestion 2: Based on Goals */}
+                <Card className="border-l-4 border-l-green-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mt-1">
+                        <Target className="w-4 h-4 text-green-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900 mb-2">
+                          {goals.length === 0 ? "Start Goal-Based Planning" :
+                           goals.length <= 2 ? "Add More Specific Goals" :
+                           "Review Goal Priorities"}
+                        </h4>
+                        <p className="text-sm text-gray-600 mb-3">
+                          {goals.length === 0 ?
+                            "Set specific financial goals like buying a house, car, or retirement planning to create targeted investment strategies." :
+                           goals.length <= 2 ?
+                            "Consider adding goals for emergency fund, vacation, or professional development to diversify your planning." :
+                            "You have multiple goals. Prioritize them based on timeline and importance to optimize your investments."}
+                        </p>
+                        <div className="flex gap-2">
+                          <Badge className="bg-green-100 text-green-800 text-xs">Goal Planning</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Suggestion 3: Investment Strategy */}
+                <Card className="border-l-4 border-l-purple-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mt-1">
+                        <PieChart className="w-4 h-4 text-purple-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900 mb-2">
+                          {investments.length === 0 ? "Start Your Investment Journey" :
+                           investments.length <= 2 ? "Diversify Your Portfolio" :
+                           "Optimize Your Investments"}
+                        </h4>
+                        <p className="text-sm text-gray-600 mb-3">
+                          {investments.length === 0 ?
+                            "Begin with SIP in large-cap equity funds for stability and growth. Consider ELSS for tax benefits." :
+                           investments.length <= 2 ?
+                            "Add mid-cap funds for higher growth potential and debt funds for stability to balance your portfolio." :
+                            "Review your investment performance and rebalance based on changing goals and market conditions."}
+                        </p>
+                        <div className="flex gap-2">
+                          <Badge className="bg-purple-100 text-purple-800 text-xs">Strategy</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Suggestion 4: Tax Planning */}
+                <Card className="border-l-4 border-l-orange-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mt-1">
+                        <DollarSign className="w-4 h-4 text-orange-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900 mb-2">Tax-Efficient Planning</h4>
+                        <p className="text-sm text-gray-600 mb-3">
+                          Maximize your tax savings with ELSS investments (₹1.5L limit under 80C), PPF for long-term wealth,
+                          and consider NPS for additional ₹50K deduction under 80CCD(1B).
+                        </p>
+                        <div className="flex gap-2">
+                          <Badge className="bg-orange-100 text-orange-800 text-xs">Tax Saving</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 pt-4 border-t">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => setIsSmartSuggestionsOpen(false)}
+              >
+                Close
+              </Button>
+              <Button
+                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+                onClick={() => {
+                  setIsSmartSuggestionsOpen(false);
+                  setActiveTab("personal-strategies");
+                }}
+              >
+                Explore Strategies
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
