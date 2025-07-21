@@ -307,8 +307,8 @@ export default function Onboarding() {
                 </div>
               )}
 
-              {/* Step 2: Financial Information */}
-              {currentStep === 2 && (
+                            {/* Step 3: Financial Information */}
+              {currentStep === 3 && (
                 <div className="space-y-6">
                   <div>
                     <Label htmlFor="monthlySalary" className="text-sm font-medium text-gray-700 mb-2 block">
@@ -380,8 +380,8 @@ export default function Onboarding() {
                 </div>
               )}
 
-              {/* Step 3: Investment Preferences */}
-              {currentStep === 3 && (
+                            {/* Step 4: Investment Preferences */}
+              {currentStep === 4 && (
                 <div className="space-y-6">
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 block">
@@ -432,8 +432,8 @@ export default function Onboarding() {
                 </div>
               )}
 
-              {/* Step 4: Primary Goals */}
-              {currentStep === 4 && (
+                            {/* Step 5: Primary Goals */}
+              {currentStep === 5 && (
                 <div className="space-y-6">
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 block">
