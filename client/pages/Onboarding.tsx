@@ -125,10 +125,17 @@ export default function Onboarding() {
     }));
   };
 
-  const personalGoals = [
+    const personalGoals = [
     'Buy a Car', 'Buy a House', 'Go on Vacation', 'Emergency Fund',
     'Wedding Planning', 'Child Education', 'Retirement', 'Healthcare'
   ];
+
+  const professionalGoals = [
+    'Business Expansion', 'Office Setup', 'Equipment Purchase', 'Staff Training',
+    'Marketing Investment', 'Technology Upgrade', 'Working Capital', 'Professional Development'
+  ];
+
+  const currentGoals = data.userType === 'personal' ? personalGoals : professionalGoals;
 
   if (!user) {
     return (
