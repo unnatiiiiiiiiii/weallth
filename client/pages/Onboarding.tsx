@@ -40,7 +40,7 @@ export default function Onboarding() {
     primaryGoals: []
   });
 
-  const totalSteps = 4;
+    const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
 
   useEffect(() => {
