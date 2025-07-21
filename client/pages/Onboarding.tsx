@@ -96,15 +96,17 @@ export default function Onboarding() {
     }
   };
 
-  const canProceed = () => {
+    const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return data.fullName.trim() && data.age >= 18 && data.occupation.trim();
+        return data.userType !== undefined;
       case 2:
-        return data.monthlySalary > 0;
+        return data.fullName.trim() && data.age >= 18 && data.occupation.trim();
       case 3:
-        return true; // Risk tolerance and experience always have defaults
+        return data.monthlySalary > 0;
       case 4:
+        return true; // Risk tolerance and experience always have defaults
+      case 5:
         return data.primaryGoals.length > 0;
       default:
         return false;
