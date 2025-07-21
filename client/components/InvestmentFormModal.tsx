@@ -49,14 +49,28 @@ export default function InvestmentFormModal({ strategy, isOpen, onClose, onConfi
     }
   }, [strategy, isOpen]);
   
-  const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (strategy && formData.amount >= strategy.minInvestment) {
+
+    if (!strategy) {
+      alert('Please select a strategy first.');
+      return;
+    }
+
+    if (formData.amount < strategy.minInvestment) {
+      alert(`Minimum investment amount is ₹${strategy.minInvestment.toLocaleString()}`);
+      return;
+    }
+
+    try {
       onConfirm({
         ...formData,
         strategyId: strategy.id,
         strategyName: strategy.name
       });
+    } catch (error) {
+      console.error('Error submitting investment form:', error);
+      alert('An error occurred while processing your investment. Please try again.');
     }
   };
 
