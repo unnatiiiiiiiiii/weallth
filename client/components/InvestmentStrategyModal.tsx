@@ -266,7 +266,10 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
             <Button onClick={onClose} variant="outline" className="flex-1">
               Close
             </Button>
-            <Button className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white">
+                        <Button
+              className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+              onClick={() => onInvest(strategy)}
+            >
               <ExternalLink className="w-4 h-4 mr-2" />
               Start Investing
             </Button>
