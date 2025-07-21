@@ -77,7 +77,23 @@ export default function InvestmentFormModal({ strategy, isOpen, onClose, onConfi
   const projectedReturns = formData.amount * 0.12; // 12% annual return estimation
   const isAmountValid = strategy ? formData.amount >= strategy.minInvestment : false;
 
-  if (!strategy) return null;
+    if (!strategy) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Error</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-gray-600">No investment strategy selected. Please go back and select a strategy.</p>
+          </div>
+          <div className="flex justify-end">
+            <Button onClick={onClose}>Close</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
