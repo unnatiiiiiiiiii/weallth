@@ -173,23 +173,26 @@ export default function Onboarding() {
       <main className="p-6">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              {currentStep === 1 && <User className="w-8 h-8 text-white" />}
-              {currentStep === 2 && <DollarSign className="w-8 h-8 text-white" />}
-              {currentStep === 3 && <Target className="w-8 h-8 text-white" />}
-              {currentStep === 4 && <CheckCircle className="w-8 h-8 text-white" />}
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              {currentStep === 1 && <Target className="w-8 h-8 text-white" />}
+              {currentStep === 2 && <User className="w-8 h-8 text-white" />}
+              {currentStep === 3 && <DollarSign className="w-8 h-8 text-white" />}
+              {currentStep === 4 && <Target className="w-8 h-8 text-white" />}
+              {currentStep === 5 && <CheckCircle className="w-8 h-8 text-white" />}
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {currentStep === 1 && "Tell us about yourself"}
-              {currentStep === 2 && "Your financial information"}
-              {currentStep === 3 && "Investment preferences"}
-              {currentStep === 4 && "Your primary goals"}
+              {currentStep === 1 && "Choose your investment type"}
+              {currentStep === 2 && "Tell us about yourself"}
+              {currentStep === 3 && "Your financial information"}
+              {currentStep === 4 && "Investment preferences"}
+              {currentStep === 5 && "Your primary goals"}
             </h2>
             <p className="text-gray-600">
-              {currentStep === 1 && "Let's start with some basic information"}
-              {currentStep === 2 && "Help us understand your financial situation"}
-              {currentStep === 3 && "What's your investment style?"}
-              {currentStep === 4 && "What are you planning to achieve?"}
+              {currentStep === 1 && "Are you investing for personal or professional purposes?"}
+              {currentStep === 2 && "Let's start with some basic information"}
+              {currentStep === 3 && "Help us understand your financial situation"}
+              {currentStep === 4 && "What's your investment style?"}
+              {currentStep === 5 && "What are you planning to achieve?"}
             </p>
           </div>
 
