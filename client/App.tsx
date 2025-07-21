@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import GoalSelection from "./pages/GoalSelection";
 import GoalPlanning from "./pages/GoalPlanning";
 import InvestmentPlan from "./pages/InvestmentPlan";
+import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,7 +25,8 @@ const App = () => (
       <BrowserRouter>
                 <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={<Login />} />
+          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/goal-selection" element={<GoalSelection />} />
           <Route path="/goal-planning/:goalId" element={<GoalPlanning />} />
