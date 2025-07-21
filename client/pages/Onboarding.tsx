@@ -196,10 +196,74 @@ export default function Onboarding() {
             </p>
           </div>
 
-          <Card className="shadow-xl border-0">
+                    <Card className="shadow-xl border-0">
             <CardContent className="p-8">
-              {/* Step 1: Personal Information */}
+              {/* Step 1: User Type Selection */}
               {currentStep === 1 && (
+                <div className="space-y-6">
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                      Choose your investment approach
+                    </Label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div
+                        onClick={() => setData(prev => ({ ...prev, userType: 'personal' }))}
+                        className={`p-6 border rounded-lg cursor-pointer transition-all ${
+                          data.userType === 'personal'
+                            ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <User className="w-8 h-8 text-blue-600" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">Personal</h3>
+                          <p className="text-sm text-gray-600">
+                            Investment for personal financial goals like house, car, vacation, retirement, etc.
+                          </p>
+                          <div className="mt-4 text-sm text-blue-600 font-medium">
+                            ✓ Personal goals tracking
+                            <br />
+                            ✓ Individual tax benefits
+                            <br />
+                            ✓ Flexible investment options
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        onClick={() => setData(prev => ({ ...prev, userType: 'professional' }))}
+                        className={`p-6 border rounded-lg cursor-pointer transition-all ${
+                          data.userType === 'professional'
+                            ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <TrendingUp className="w-8 h-8 text-purple-600" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">Professional</h3>
+                          <p className="text-sm text-gray-600">
+                            Investment for business growth, professional development, and advanced strategies.
+                          </p>
+                          <div className="mt-4 text-sm text-purple-600 font-medium">
+                            ✓ Business-focused strategies
+                            <br />
+                            ✓ Advanced investment options
+                            <br />
+                            ✓ Professional advisory
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: Personal Information */}
+              {currentStep === 2 && (
                 <div className="space-y-6">
                   <div>
                     <Label htmlFor="fullName" className="text-sm font-medium text-gray-700 mb-2 block">
