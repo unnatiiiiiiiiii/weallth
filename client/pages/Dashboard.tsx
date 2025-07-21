@@ -16,10 +16,11 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser, logoutUser } from "@/lib/auth";
-import { getGoals, updateGoal, deleteGoal, saveFeedback, getUserProfile, saveUserProfile } from "@/lib/storage";
+import { getGoals, updateGoal, deleteGoal, saveFeedback, getUserProfile, saveUserProfile, saveInvestment } from "@/lib/storage";
 import { getInvestmentStrategies, type InvestmentStrategy } from "@/lib/investmentStrategies";
 import { getRiskLevelColor } from "@/lib/utils";
 import InvestmentStrategyModal from "@/components/InvestmentStrategyModal";
+import InvestmentFormModal, { type InvestmentFormData } from "@/components/InvestmentFormModal";
 
 interface Goal {
   id: string;
