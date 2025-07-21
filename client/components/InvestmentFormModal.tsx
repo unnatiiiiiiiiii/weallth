@@ -197,7 +197,7 @@ export default function InvestmentFormModal({ strategy, isOpen, onClose, onConfi
                     <SelectValue placeholder="Select a goal to link this investment" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Goal</SelectItem>
+                                        <SelectItem value="none">No Goal</SelectItem>
                     {goals.map((goal) => (
                       <SelectItem key={goal.id} value={goal.id}>
                         {goal.name} - ₹{goal.targetAmount.toLocaleString()}
