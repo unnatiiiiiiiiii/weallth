@@ -189,7 +189,11 @@ export default function Dashboard() {
           </div>
           
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="text-wealth-gray hover:text-gray-900">
+                        <Button
+              variant="ghost"
+              className="text-wealth-gray hover:text-gray-900"
+              onClick={() => navigate("/goal-planning")}
+            >
               Goal Dashboard
             </Button>
             
