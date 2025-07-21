@@ -154,8 +154,54 @@ export function saveUserProfile(profileData: UserProfile): boolean {
     
     localStorage.setItem(`weallth_profile_${currentUser.id}`, JSON.stringify(profileData));
     return true;
-  } catch (error) {
+    } catch (error) {
     console.error('Error saving user profile:', error);
     return false;
+  }
+}
+
+interface InvestmentData {
+  id: string;
+  strategyId: string;
+  strategyName: string;
+  amount: number;
+  investmentType: 'personal' | 'professional';
+  status: 'active' | 'paused' | 'completed';
+  startDate: string;
+  userId: string;
+  goalId?: string;
+}
+
+export function saveInvestment(investment: Omit<InvestmentData, 'id' | 'userId' | 'startDate'>): InvestmentData | false {
+  try {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return false;
+
+    const investments = JSON.parse(localStorage.getItem(`weallth_investments_${currentUser.id}`) || '[]');
+    const newInvestment: InvestmentData = {
+      ...investment,
+      id: Date.now().toString(),
+      userId: currentUser.id,
+      startDate: new Date().toISOString()
+    };
+
+    investments.push(newInvestment);
+    localStorage.setItem(`weallth_investments_${currentUser.id}`, JSON.stringify(investments));
+    return newInvestment;
+  } catch (error) {
+    console.error('Error saving investment:', error);
+    return false;
+  }
+}
+
+export function getInvestments(): InvestmentData[] {
+  try {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return [];
+
+    return JSON.parse(localStorage.getItem(`weallth_investments_${currentUser.id}`) || '[]');
+  } catch (error) {
+    console.error('Error getting investments:', error);
+    return [];
   }
 }
