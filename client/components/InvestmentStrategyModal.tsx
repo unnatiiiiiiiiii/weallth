@@ -1,8 +1,23 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { X, ExternalLink, TrendingUp, Shield, AlertTriangle, Users, Calculator, FileText, Clock } from "lucide-react";
+import {
+  X,
+  ExternalLink,
+  TrendingUp,
+  Shield,
+  AlertTriangle,
+  Users,
+  Calculator,
+  FileText,
+  Clock,
+} from "lucide-react";
 import type { InvestmentStrategy } from "@/lib/investmentStrategies";
 import { getRiskLevelColor } from "@/lib/utils";
 
@@ -13,7 +28,12 @@ interface InvestmentStrategyModalProps {
   onInvest: (strategy: InvestmentStrategy) => void;
 }
 
-export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onInvest }: InvestmentStrategyModalProps) {
+export default function InvestmentStrategyModal({
+  strategy,
+  isOpen,
+  onClose,
+  onInvest,
+}: InvestmentStrategyModalProps) {
   if (!strategy) return null;
 
   return (
@@ -26,13 +46,21 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
               <div>
-                <DialogTitle className="text-xl font-bold">{strategy.name}</DialogTitle>
+                <DialogTitle className="text-xl font-bold">
+                  {strategy.name}
+                </DialogTitle>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="outline" className="text-xs">{strategy.category}</Badge>
-                  <Badge className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}>
+                  <Badge variant="outline" className="text-xs">
+                    {strategy.category}
+                  </Badge>
+                  <Badge
+                    className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
+                  >
                     {strategy.riskLevel} Risk
                   </Badge>
-                  <Badge variant="outline" className="text-xs">{strategy.expectedReturn} Returns</Badge>
+                  <Badge variant="outline" className="text-xs">
+                    {strategy.expectedReturn} Returns
+                  </Badge>
                 </div>
               </div>
             </div>
@@ -62,20 +90,30 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
                     </h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-blue-600">Minimum Investment:</span>
-                        <span className="font-medium">₹{strategy.minInvestment.toLocaleString()}</span>
+                        <span className="text-blue-600">
+                          Minimum Investment:
+                        </span>
+                        <span className="font-medium">
+                          ₹{strategy.minInvestment.toLocaleString()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-blue-600">Expected Returns:</span>
-                        <span className="font-medium">{strategy.expectedReturn}</span>
+                        <span className="font-medium">
+                          {strategy.expectedReturn}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-blue-600">Investment Timeline:</span>
+                        <span className="text-blue-600">
+                          Investment Timeline:
+                        </span>
                         <span className="font-medium">{strategy.timeline}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-blue-600">Risk Level:</span>
-                        <span className="font-medium">{strategy.riskLevel}</span>
+                        <span className="font-medium">
+                          {strategy.riskLevel}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -87,7 +125,11 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {strategy.platforms.map((platform, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-xs"
+                        >
                           {platform}
                         </Badge>
                       ))}
@@ -97,17 +139,24 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
 
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-3">Description</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">
+                      Description
+                    </h4>
                     <p className="text-gray-600 text-sm leading-relaxed">
                       {strategy.detailedDescription}
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-3">Popular Examples</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">
+                      Popular Examples
+                    </h4>
                     <div className="space-y-2">
                       {strategy.examples.slice(0, 4).map((example, index) => (
-                        <div key={index} className="bg-gray-50 rounded p-2 text-sm text-gray-700">
+                        <div
+                          key={index}
+                          className="bg-gray-50 rounded p-2 text-sm text-gray-700"
+                        >
                           {example}
                         </div>
                       ))}
@@ -132,25 +181,37 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
 
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="bg-green-50 rounded-lg p-4">
-                  <h5 className="font-medium text-green-900 mb-2">Conservative Allocation</h5>
+                  <h5 className="font-medium text-green-900 mb-2">
+                    Conservative Allocation
+                  </h5>
                   <div className="text-2xl font-bold text-green-700">
                     {strategy.allocation.conservative}%
                   </div>
-                  <p className="text-xs text-green-600 mt-1">of monthly investment amount</p>
+                  <p className="text-xs text-green-600 mt-1">
+                    of monthly investment amount
+                  </p>
                 </div>
                 <div className="bg-yellow-50 rounded-lg p-4">
-                  <h5 className="font-medium text-yellow-900 mb-2">Moderate Allocation</h5>
+                  <h5 className="font-medium text-yellow-900 mb-2">
+                    Moderate Allocation
+                  </h5>
                   <div className="text-2xl font-bold text-yellow-700">
                     {strategy.allocation.moderate}%
                   </div>
-                  <p className="text-xs text-yellow-600 mt-1">of monthly investment amount</p>
+                  <p className="text-xs text-yellow-600 mt-1">
+                    of monthly investment amount
+                  </p>
                 </div>
                 <div className="bg-red-50 rounded-lg p-4">
-                  <h5 className="font-medium text-red-900 mb-2">Aggressive Allocation</h5>
+                  <h5 className="font-medium text-red-900 mb-2">
+                    Aggressive Allocation
+                  </h5>
                   <div className="text-2xl font-bold text-red-700">
                     {strategy.allocation.aggressive}%
                   </div>
-                  <p className="text-xs text-red-600 mt-1">of monthly investment amount</p>
+                  <p className="text-xs text-red-600 mt-1">
+                    of monthly investment amount
+                  </p>
                 </div>
               </div>
             </TabsContent>
@@ -195,7 +256,10 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
                 </h4>
                 <div className="grid md:grid-cols-2 gap-2">
                   {strategy.marketRisks.map((risk, index) => (
-                    <div key={index} className="bg-red-50 border border-red-200 rounded p-2">
+                    <div
+                      key={index}
+                      className="bg-red-50 border border-red-200 rounded p-2"
+                    >
                       <span className="text-sm text-red-700">{risk}</span>
                     </div>
                   ))}
@@ -211,7 +275,10 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
                 </h4>
                 <div className="grid md:grid-cols-2 gap-3">
                   {strategy.whoShouldInvest.map((criteria, index) => (
-                    <div key={index} className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div
+                      key={index}
+                      className="bg-blue-50 border border-blue-200 rounded-lg p-3"
+                    >
                       <span className="text-sm text-blue-800">{criteria}</span>
                     </div>
                   ))}
@@ -219,10 +286,14 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
               </div>
 
               <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
-                <h5 className="font-medium text-purple-900 mb-2">Investment Recommendation</h5>
+                <h5 className="font-medium text-purple-900 mb-2">
+                  Investment Recommendation
+                </h5>
                 <p className="text-sm text-purple-700 leading-relaxed">
-                  This investment strategy is most suitable for investors who {strategy.whoShouldInvest.join(', ').toLowerCase()}. 
-                  Consider your risk tolerance, investment timeline, and financial goals before investing.
+                  This investment strategy is most suitable for investors who{" "}
+                  {strategy.whoShouldInvest.join(", ").toLowerCase()}. Consider
+                  your risk tolerance, investment timeline, and financial goals
+                  before investing.
                 </p>
               </div>
             </TabsContent>
@@ -253,10 +324,13 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
               </div>
 
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h5 className="font-medium text-yellow-900 mb-2">Important Note</h5>
+                <h5 className="font-medium text-yellow-900 mb-2">
+                  Important Note
+                </h5>
                 <p className="text-xs text-yellow-800">
-                  Tax implications may vary based on your individual circumstances and changes in tax laws. 
-                  Please consult with a qualified tax advisor for personalized advice.
+                  Tax implications may vary based on your individual
+                  circumstances and changes in tax laws. Please consult with a
+                  qualified tax advisor for personalized advice.
                 </p>
               </div>
             </TabsContent>
@@ -266,7 +340,7 @@ export default function InvestmentStrategyModal({ strategy, isOpen, onClose, onI
             <Button onClick={onClose} variant="outline" className="flex-1">
               Close
             </Button>
-                        <Button
+            <Button
               className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
               onClick={() => onInvest(strategy)}
             >

@@ -14,7 +14,7 @@ export interface Goal {
   monthlySaving: number;
   createdAt: string;
   updatedAt: string;
-  status: 'active' | 'completed' | 'paused';
+  status: "active" | "completed" | "paused";
   userId: string;
   sipActive?: boolean;
   dateSet?: string;
@@ -27,8 +27,8 @@ export interface UserProfile {
   monthlySalary: number;
   fixedExpenses: number;
   variableExpenses: number;
-  riskTolerance: 'conservative' | 'moderate' | 'aggressive';
-  investmentExperience: 'beginner' | 'intermediate' | 'advanced';
+  riskTolerance: "conservative" | "moderate" | "aggressive";
+  investmentExperience: "beginner" | "intermediate" | "advanced";
   notifications?: boolean;
   newsletter?: boolean;
 }
@@ -93,7 +93,7 @@ export interface AuthResult {
 export interface BrokerConnection {
   brokerId: string;
   connectedAt: string;
-  status: 'connected' | 'disconnected' | 'error';
+  status: "connected" | "disconnected" | "error";
   lastSync: string;
   portfolio?: Portfolio;
 }
@@ -115,7 +115,7 @@ export interface Holding {
   currentValue: number;
   pnl: number;
   pnlPercent: number;
-  type: 'equity' | 'mutual_fund' | 'etf' | 'debt';
+  type: "equity" | "mutual_fund" | "etf" | "debt";
   broker?: string;
 }
 

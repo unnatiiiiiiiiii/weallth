@@ -3,8 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ArrowRight, TrendingUp, Target, CheckCircle, AlertCircle } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  ArrowLeft,
+  ArrowRight,
+  TrendingUp,
+  Target,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
 import { calculateGoalRequirements } from "@/lib/calculations";
@@ -17,14 +30,14 @@ export default function GoalPlanning() {
   const [goalData, setGoalData] = useState({
     targetAmount: 0,
     timeline: 12,
-    currentInvestment: 0
+    currentInvestment: 0,
   });
   const [userData, setUserData] = useState({
     monthlySalary: 0,
     fixedExpenses: 0,
-    variableExpenses: 0
+    variableExpenses: 0,
   });
-  const [selectedGoal, setSelectedGoal] = useState('');
+  const [selectedGoal, setSelectedGoal] = useState("");
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -35,7 +48,7 @@ export default function GoalPlanning() {
     setUser(currentUser);
 
     // Get selected goal from localStorage or URL
-    const goalFromStorage = localStorage.getItem('selectedGoal');
+    const goalFromStorage = localStorage.getItem("selectedGoal");
     const decodedGoal = goalId ? decodeURIComponent(goalId) : goalFromStorage;
     if (decodedGoal) {
       setSelectedGoal(decodedGoal);
@@ -47,22 +60,26 @@ export default function GoalPlanning() {
       setUserData({
         monthlySalary: profile.monthlySalary,
         fixedExpenses: profile.fixedExpenses,
-        variableExpenses: profile.variableExpenses
+        variableExpenses: profile.variableExpenses,
       });
     }
   }, [navigate, goalId]);
 
   const calculations = calculateGoalRequirements(goalData, userData);
-  const availableInvestment = userData.monthlySalary - userData.fixedExpenses - userData.variableExpenses;
+  const availableInvestment =
+    userData.monthlySalary - userData.fixedExpenses - userData.variableExpenses;
 
   const handleSubmit = () => {
     if (goalData.targetAmount > 0) {
       // Store goal data and navigate to investment plan
-      localStorage.setItem('goalData', JSON.stringify({
-        ...goalData,
-        selectedGoal,
-        calculations
-      }));
+      localStorage.setItem(
+        "goalData",
+        JSON.stringify({
+          ...goalData,
+          selectedGoal,
+          calculations,
+        }),
+      );
       navigate(`/investment-plan/${encodeURIComponent(selectedGoal)}`);
     }
   };
@@ -95,25 +112,39 @@ export default function GoalPlanning() {
             </div>
             <div>
               <h1 className="text-xl font-semibold text-gray-900">Weallth</h1>
-              <p className="text-sm text-wealth-gray">by Erfinden Technologies</p>
+              <p className="text-sm text-wealth-gray">
+                by Erfinden Technologies
+              </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate("/dashboard")} className="text-wealth-gray hover:text-gray-900">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/dashboard")}
+              className="text-wealth-gray hover:text-gray-900"
+            >
               Goal Dashboard
             </Button>
-            
+
             {/* Step Progress */}
             <div className="hidden md:flex items-center gap-2">
               {[1, 2, 3, 4].map((step) => (
                 <div key={step} className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    step <= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'
-                  }`}>
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                      step <= 3
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}
+                  >
                     {step}
                   </div>
-                  {step < 4 && <div className={`w-8 h-0.5 ${step < 3 ? 'bg-blue-600' : 'bg-gray-200'}`}></div>}
+                  {step < 4 && (
+                    <div
+                      className={`w-8 h-0.5 ${step < 3 ? "bg-blue-600" : "bg-gray-200"}`}
+                    ></div>
+                  )}
                 </div>
               ))}
             </div>
@@ -125,8 +156,12 @@ export default function GoalPlanning() {
       <main className="p-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Plan Your Goal: {selectedGoal}</h2>
-            <p className="text-gray-600">Let's calculate how much you need to save</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Plan Your Goal: {selectedGoal}
+            </h2>
+            <p className="text-gray-600">
+              Let's calculate how much you need to save
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -137,29 +172,45 @@ export default function GoalPlanning() {
                   <Target className="w-5 h-5 text-blue-600" />
                   Goal Details
                 </h3>
-                
+
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="targetAmount" className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label
+                      htmlFor="targetAmount"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
                       Target Amount (₹)
                     </Label>
                     <Input
                       id="targetAmount"
                       type="number"
-                      value={goalData.targetAmount || ''}
-                      onChange={(e) => setGoalData(prev => ({ ...prev, targetAmount: parseInt(e.target.value) || 0 }))}
+                      value={goalData.targetAmount || ""}
+                      onChange={(e) =>
+                        setGoalData((prev) => ({
+                          ...prev,
+                          targetAmount: parseInt(e.target.value) || 0,
+                        }))
+                      }
                       placeholder="How much do you need?"
                       className="text-lg"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="timeline" className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label
+                      htmlFor="timeline"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
                       Timeline (months)
                     </Label>
-                    <Select 
-                      value={goalData.timeline.toString()} 
-                      onValueChange={(value) => setGoalData(prev => ({ ...prev, timeline: parseInt(value) }))}
+                    <Select
+                      value={goalData.timeline.toString()}
+                      onValueChange={(value) =>
+                        setGoalData((prev) => ({
+                          ...prev,
+                          timeline: parseInt(value),
+                        }))
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -187,14 +238,22 @@ export default function GoalPlanning() {
                   </div>
 
                   <div>
-                    <Label htmlFor="currentInvestment" className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label
+                      htmlFor="currentInvestment"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
                       Current Investment (₹)
                     </Label>
                     <Input
                       id="currentInvestment"
                       type="number"
-                      value={goalData.currentInvestment || ''}
-                      onChange={(e) => setGoalData(prev => ({ ...prev, currentInvestment: parseInt(e.target.value) || 0 }))}
+                      value={goalData.currentInvestment || ""}
+                      onChange={(e) =>
+                        setGoalData((prev) => ({
+                          ...prev,
+                          currentInvestment: parseInt(e.target.value) || 0,
+                        }))
+                      }
                       placeholder="Already invested amount"
                     />
                   </div>
@@ -209,11 +268,13 @@ export default function GoalPlanning() {
                   <TrendingUp className="w-5 h-5 text-green-600" />
                   Calculation Results
                 </h3>
-                
+
                 {goalData.targetAmount > 0 ? (
                   <div className="space-y-4">
                     <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                      <p className="text-sm text-blue-600 mb-1">Monthly Saving Required</p>
+                      <p className="text-sm text-blue-600 mb-1">
+                        Monthly Saving Required
+                      </p>
                       <p className="text-2xl font-bold text-blue-900">
                         ₹{calculations.monthlySaving.toLocaleString()}
                       </p>
@@ -222,45 +283,63 @@ export default function GoalPlanning() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
                         <p className="text-sm text-gray-600">Timeline</p>
-                        <p className="font-semibold text-gray-900">{goalData.timeline} months</p>
+                        <p className="font-semibold text-gray-900">
+                          {goalData.timeline} months
+                        </p>
                       </div>
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
                         <p className="text-sm text-gray-600">Total Goal</p>
-                        <p className="font-semibold text-gray-900">₹{goalData.targetAmount.toLocaleString()}</p>
+                        <p className="font-semibold text-gray-900">
+                          ₹{goalData.targetAmount.toLocaleString()}
+                        </p>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-sm text-gray-600">Already Invested</p>
-                        <p className="font-semibold text-green-600">₹{goalData.currentInvestment.toLocaleString()}</p>
+                        <p className="text-sm text-gray-600">
+                          Already Invested
+                        </p>
+                        <p className="font-semibold text-green-600">
+                          ₹{goalData.currentInvestment.toLocaleString()}
+                        </p>
                       </div>
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
                         <p className="text-sm text-gray-600">Remaining</p>
-                        <p className="font-semibold text-orange-600">₹{calculations.remainingAmount.toLocaleString()}</p>
+                        <p className="font-semibold text-orange-600">
+                          ₹{calculations.remainingAmount.toLocaleString()}
+                        </p>
                       </div>
                     </div>
 
-                    <div className={`rounded-lg p-4 ${
-                      calculations.monthlySaving <= availableInvestment ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
-                    }`}>
+                    <div
+                      className={`rounded-lg p-4 ${
+                        calculations.monthlySaving <= availableInvestment
+                          ? "bg-green-50 border border-green-200"
+                          : "bg-red-50 border border-red-200"
+                      }`}
+                    >
                       <div className="flex items-center gap-2 mb-2">
                         {calculations.monthlySaving <= availableInvestment ? (
                           <CheckCircle className="w-5 h-5 text-green-600" />
                         ) : (
                           <AlertCircle className="w-5 h-5 text-red-600" />
                         )}
-                        <p className={`text-sm font-medium ${
-                          calculations.monthlySaving <= availableInvestment ? 'text-green-700' : 'text-red-700'
-                        }`}>
-                          {calculations.monthlySaving <= availableInvestment 
-                            ? 'This goal is achievable with your current income'
-                            : 'You may need to adjust your goal or timeline'
-                          }
+                        <p
+                          className={`text-sm font-medium ${
+                            calculations.monthlySaving <= availableInvestment
+                              ? "text-green-700"
+                              : "text-red-700"
+                          }`}
+                        >
+                          {calculations.monthlySaving <= availableInvestment
+                            ? "This goal is achievable with your current income"
+                            : "You may need to adjust your goal or timeline"}
                         </p>
                       </div>
                       <p className="text-xs text-gray-600">
-                        Available for investment: ₹{availableInvestment.toLocaleString()}/month
+                        Available for investment: ₹
+                        {availableInvestment.toLocaleString()}/month
                       </p>
                     </div>
 
@@ -269,12 +348,13 @@ export default function GoalPlanning() {
                         <div className="flex items-center gap-2 mb-2">
                           <AlertCircle className="w-5 h-5 text-yellow-600" />
                           <p className="text-sm font-medium text-yellow-700">
-                            Update your profile with income details for better recommendations
+                            Update your profile with income details for better
+                            recommendations
                           </p>
                         </div>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={() => navigate("/dashboard")}
                           className="text-yellow-700 border-yellow-300 hover:bg-yellow-100"
                         >
@@ -286,7 +366,9 @@ export default function GoalPlanning() {
                 ) : (
                   <div className="text-center py-8">
                     <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">Enter your target amount to see calculations</p>
+                    <p className="text-gray-500">
+                      Enter your target amount to see calculations
+                    </p>
                   </div>
                 )}
               </CardContent>
@@ -295,12 +377,16 @@ export default function GoalPlanning() {
 
           {/* Navigation */}
           <div className="flex justify-between mt-8">
-            <Button onClick={handleBack} variant="outline" className="flex items-center gap-2">
+            <Button
+              onClick={handleBack}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
               <ArrowLeft className="w-4 h-4" />
               Back
             </Button>
-            <Button 
-              onClick={handleSubmit} 
+            <Button
+              onClick={handleSubmit}
               disabled={goalData.targetAmount === 0}
               className="bg-wealth-blue hover:bg-wealth-blue/90 text-white flex items-center gap-2"
             >

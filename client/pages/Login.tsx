@@ -11,12 +11,12 @@ import { getUserProfile } from "@/lib/storage";
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    username: '',
-    confirmPassword: ''
+    email: "",
+    password: "",
+    username: "",
+    confirmPassword: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -29,22 +29,22 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       setLoading(false);
       return;
     }
 
-    const result = isLogin 
+    const result = isLogin
       ? loginUser(formData.email, formData.password)
       : registerUser(formData.email, formData.password, formData.username);
 
     setLoading(false);
 
-        if (result.success) {
+    if (result.success) {
       // Check if user has completed onboarding
       const profile = getUserProfile();
       if (profile && profile.monthlySalary > 0) {
@@ -65,21 +65,35 @@ export default function Login() {
             <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
               <TrendingUp className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Weallth</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Weallth
+            </h1>
             <p className="text-gray-600 mt-2">
-              {isLogin ? 'Welcome back to your financial journey!' : 'Start your wealth-building adventure today'}
+              {isLogin
+                ? "Welcome back to your financial journey!"
+                : "Start your wealth-building adventure today"}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="username" className="text-sm font-medium text-gray-700">Full Name</Label>
+                <Label
+                  htmlFor="username"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Full Name
+                </Label>
                 <Input
                   id="username"
                   type="text"
                   value={formData.username}
-                  onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      username: e.target.value,
+                    }))
+                  }
                   placeholder="Enter your full name"
                   className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                   required
@@ -88,12 +102,19 @@ export default function Login() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</Label>
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700"
+              >
+                Email Address
+              </Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, email: e.target.value }))
+                }
                 placeholder="Enter your email"
                 className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                 required
@@ -101,12 +122,19 @@ export default function Login() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-gray-700">Password</Label>
+              <Label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-700"
+              >
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
                 value={formData.password}
-                onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, password: e.target.value }))
+                }
                 placeholder="Enter your password"
                 className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                 required
@@ -115,12 +143,22 @@ export default function Login() {
 
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm Password</Label>
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      confirmPassword: e.target.value,
+                    }))
+                  }
                   placeholder="Confirm your password"
                   className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                   required
@@ -134,27 +172,38 @@ export default function Login() {
               </div>
             )}
 
-            <Button 
+            <Button
               type="submit"
               disabled={loading}
               className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 transform hover:scale-[1.02] transition-all duration-300"
             >
-              {loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}
+              {loading
+                ? "Please wait..."
+                : isLogin
+                  ? "Sign In"
+                  : "Create Account"}
             </Button>
           </form>
 
           <div className="text-center mt-6">
             <p className="text-sm text-gray-600">
-              {isLogin ? "Don't have an account? " : "Already have an account? "}
+              {isLogin
+                ? "Don't have an account? "
+                : "Already have an account? "}
               <button
                 onClick={() => {
                   setIsLogin(!isLogin);
-                  setError('');
-                  setFormData({ email: '', password: '', username: '', confirmPassword: '' });
+                  setError("");
+                  setFormData({
+                    email: "",
+                    password: "",
+                    username: "",
+                    confirmPassword: "",
+                  });
                 }}
                 className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors duration-200"
               >
-                {isLogin ? 'Sign up' : 'Sign in'}
+                {isLogin ? "Sign up" : "Sign in"}
               </button>
             </p>
           </div>

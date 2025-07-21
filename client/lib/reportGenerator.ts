@@ -1,36 +1,46 @@
 export function generateDetailedInvestmentReport(
   selectedGoal: string,
   goalData: any,
-  recommendations: any[]
+  recommendations: any[],
 ) {
   const currentDate = new Date();
-  const maturityDate = new Date(currentDate.getTime() + (goalData.timeline * 30 * 24 * 60 * 60 * 1000));
+  const maturityDate = new Date(
+    currentDate.getTime() + goalData.timeline * 30 * 24 * 60 * 60 * 1000,
+  );
   const projectedMaturityAmount = goalData.calculations.projectedAmount;
-  const totalInvestment = goalData.calculations.monthlySaving * goalData.timeline + goalData.currentInvestment;
+  const totalInvestment =
+    goalData.calculations.monthlySaving * goalData.timeline +
+    goalData.currentInvestment;
   const expectedGains = projectedMaturityAmount - totalInvestment;
-  const annualizedReturn = ((projectedMaturityAmount / totalInvestment) ** (12 / goalData.timeline) - 1) * 100;
-  
+  const annualizedReturn =
+    ((projectedMaturityAmount / totalInvestment) ** (12 / goalData.timeline) -
+      1) *
+    100;
+
   const reportContent = `
 ╔═══════════════════════════════════════════════════���══════════════════════════════════════════════════════════════╗
 ║                                  WEALLTH - INVESTMENT PLAN REPORT                                  ║
 ║                                    by Erfinden Technologies                                        ║
 ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 
-REPORT GENERATED ON: ${currentDate.toLocaleDateString('en-IN', { 
-  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-})}
-TIME: ${currentDate.toLocaleTimeString('en-IN')}
+REPORT GENERATED ON: ${currentDate.toLocaleDateString("en-IN", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })}
+TIME: ${currentDate.toLocaleTimeString("en-IN")}
 
 ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
                                         GOAL SUMMARY
 ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 Goal Name                    : ${selectedGoal}
-Target Amount                : ₹${goalData.targetAmount.toLocaleString('en-IN')}
-Investment Timeline          : ${goalData.timeline} months (${Math.round(goalData.timeline/12 * 10)/10} years)
-Current Investment           : ₹${goalData.currentInvestment.toLocaleString('en-IN')}
-Remaining Amount Needed      : ₹${goalData.calculations.remainingAmount.toLocaleString('en-IN')}
-Monthly SIP Required         : ₹${goalData.calculations.monthlySaving.toLocaleString('en-IN')}
+Target Amount                : ₹${goalData.targetAmount.toLocaleString("en-IN")}
+Investment Timeline          : ${goalData.timeline} months (${Math.round((goalData.timeline / 12) * 10) / 10} years)
+Current Investment           : ₹${goalData.currentInvestment.toLocaleString("en-IN")}
+Remaining Amount Needed      : ₹${goalData.calculations.remainingAmount.toLocaleString("en-IN")}
+Monthly SIP Required         : ₹${goalData.calculations.monthlySaving.toLocaleString("en-IN")}
 Goal Progress                : ${Math.round((goalData.currentInvestment / goalData.targetAmount) * 100)}%
 
 ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════���═
@@ -38,22 +48,22 @@ Goal Progress                : ${Math.round((goalData.currentInvestment / goalDa
 ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 INVESTMENT BREAKDOWN:
-• Current Investment          : ₹${goalData.currentInvestment.toLocaleString('en-IN')}
-• Monthly SIP Amount          : ₹${goalData.calculations.monthlySaving.toLocaleString('en-IN')}
+• Current Investment          : ₹${goalData.currentInvestment.toLocaleString("en-IN")}
+• Monthly SIP Amount          : ₹${goalData.calculations.monthlySaving.toLocaleString("en-IN")}
 • Total SIP Duration          : ${goalData.timeline} months
-• Total SIP Investment        : ₹${(goalData.calculations.monthlySaving * goalData.timeline).toLocaleString('en-IN')}
-• Total Investment            : ₹${totalInvestment.toLocaleString('en-IN')}
+• Total SIP Investment        : ₹${(goalData.calculations.monthlySaving * goalData.timeline).toLocaleString("en-IN")}
+• Total Investment            : ₹${totalInvestment.toLocaleString("en-IN")}
 
 PROJECTED RETURNS (Assuming 12% Annual Return):
-• Expected Maturity Amount    : ₹${projectedMaturityAmount.toLocaleString('en-IN')}
-• Expected Gains              : ₹${expectedGains.toLocaleString('en-IN')}
+• Expected Maturity Amount    : ₹${projectedMaturityAmount.toLocaleString("en-IN")}
+• Expected Gains              : ₹${expectedGains.toLocaleString("en-IN")}
 • Annualized Return           : ${annualizedReturn.toFixed(2)}%
 • Effective Return Multiple   : ${(projectedMaturityAmount / totalInvestment).toFixed(2)}x
-• Goal Achievement Date       : ${maturityDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+• Goal Achievement Date       : ${maturityDate.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
 
 MILESTONE TRACKING:
 • 25% Goal Achievement        : Month ${Math.round(goalData.timeline * 0.25)}
-• 50% Goal Achievement        : Month ${Math.round(goalData.timeline * 0.50)}
+• 50% Goal Achievement        : Month ${Math.round(goalData.timeline * 0.5)}
 • 75% Goal Achievement        : Month ${Math.round(goalData.timeline * 0.75)}
 • 100% Goal Achievement       : Month ${goalData.timeline}
 
@@ -63,37 +73,45 @@ MILESTONE TRACKING:
 
 Based on your ${goalData.timeline}-month investment timeline, we recommend:
 
-${recommendations.map((rec, index) => `
+${recommendations
+  .map(
+    (rec, index) => `
 ${index + 1}. ${rec.name.toUpperCase()}
-   • Monthly Allocation       : ��${rec.amount.toLocaleString('en-IN')}
+   • Monthly Allocation       : ��${rec.amount.toLocaleString("en-IN")}
    • Risk Level              : ${rec.risk}
    • Strategy                : ${rec.description}
-   • Percentage of Total SIP : ${Math.round((rec.amount / goalData.calculations.monthlySaving) * 100)}%`).join('\n')}
+   • Percentage of Total SIP : ${Math.round((rec.amount / goalData.calculations.monthlySaving) * 100)}%`,
+  )
+  .join("\n")}
 
-TOTAL MONTHLY ALLOCATION      : ₹${recommendations.reduce((sum, rec) => sum + rec.amount, 0).toLocaleString('en-IN')}
+TOTAL MONTHLY ALLOCATION      : ₹${recommendations.reduce((sum, rec) => sum + rec.amount, 0).toLocaleString("en-IN")}
 
 ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
                                       RISK ASSESSMENT
 ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-${goalData.timeline <= 18 ? `SHORT-TERM INVESTMENT (≤18 months):
+${
+  goalData.timeline <= 18
+    ? `SHORT-TERM INVESTMENT (≤18 months):
 • Risk Level: MODERATE
 • Recommended Asset Mix: 60% Debt, 40% Equity
 • Volatility: Low to Medium
 • Capital Protection: High Priority
-• Liquidity: High` : 
-goalData.timeline <= 36 ? `MEDIUM-TERM INVESTMENT (18-36 months):
+• Liquidity: High`
+    : goalData.timeline <= 36
+      ? `MEDIUM-TERM INVESTMENT (18-36 months):
 • Risk Level: MODERATE TO HIGH
 • Recommended Asset Mix: 50% Equity, 50% Debt
 • Volatility: Medium
 • Growth Potential: Good
-• Liquidity: Medium` : 
-`LONG-TERM INVESTMENT (>36 months):
+• Liquidity: Medium`
+      : `LONG-TERM INVESTMENT (>36 months):
 • Risk Level: MODERATE TO HIGH
 • Recommended Asset Mix: 70% Equity, 30% Debt
 • Volatility: High (Short-term), Low (Long-term)
 • Growth Potential: Excellent
-• Wealth Creation Focus: Maximum`}
+• Wealth Creation Focus: Maximum`
+}
 
 Key Risk Factors:
 • Market Volatility Risk
@@ -109,7 +127,7 @@ Key Risk Factors:
 PHASE 1 - IMMEDIATE ACTIONS (Month 1):
 ✓ Complete KYC for chosen investment platforms
 ✓ Set up automatic SIP mandates
-✓ Begin monthly investments of ₹${goalData.calculations.monthlySaving.toLocaleString('en-IN')}
+✓ Begin monthly investments of ₹${goalData.calculations.monthlySaving.toLocaleString("en-IN")}
 ✓ Set up goal tracking mechanism
 
 PHASE 2 - MONITORING (Months 1-6):
@@ -217,11 +235,11 @@ Report ID: WLT-${Date.now()}
 Generated: ${currentDate.toISOString()}
   `;
 
-  const blob = new Blob([reportContent], { type: 'text/plain; charset=utf-8' });
+  const blob = new Blob([reportContent], { type: "text/plain; charset=utf-8" });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = url;
-  link.download = `Weallth_Detailed_Investment_Plan_${selectedGoal.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.txt`;
+  link.download = `Weallth_Detailed_Investment_Plan_${selectedGoal.replace(/\s+/g, "_")}_${new Date().toISOString().split("T")[0]}.txt`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

@@ -2,8 +2,28 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ArrowLeft, TrendingUp, Play, Calendar, Download, Target, Zap, CheckCircle, Info, ExternalLink, Check, Minus, X, PieChart } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  ArrowLeft,
+  TrendingUp,
+  Play,
+  Calendar,
+  Download,
+  Target,
+  Zap,
+  CheckCircle,
+  Info,
+  ExternalLink,
+  Check,
+  Minus,
+  X,
+  PieChart,
+} from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
 import { saveGoal, getUserProfile } from "@/lib/storage";
@@ -23,10 +43,12 @@ export default function InvestmentPlan() {
   const navigate = useNavigate();
   const { goalId } = useParams();
   const [user, setUser] = useState<any>(null);
-  const [selectedGoal, setSelectedGoal] = useState('');
+  const [selectedGoal, setSelectedGoal] = useState("");
   const [goalData, setGoalData] = useState<any>(null);
   const [userData, setUserData] = useState<any>(null);
-  const [recommendations, setRecommendations] = useState<InvestmentRecommendation[]>([]);
+  const [recommendations, setRecommendations] = useState<
+    InvestmentRecommendation[]
+  >([]);
   const [showTimelineAdjuster, setShowTimelineAdjuster] = useState(false);
   const [sipStarted, setSipStarted] = useState(false);
   const [adjustedTimeline, setAdjustedTimeline] = useState(12);
@@ -41,90 +63,90 @@ export default function InvestmentPlan() {
     setUser(currentUser);
 
     // Get goal data from localStorage
-    const storedGoalData = localStorage.getItem('goalData');
+    const storedGoalData = localStorage.getItem("goalData");
     if (storedGoalData) {
       const parsed = JSON.parse(storedGoalData);
       setGoalData(parsed);
       setSelectedGoal(parsed.selectedGoal);
       setAdjustedTimeline(parsed.timeline);
       setAdjustedAmount(parsed.targetAmount);
-      
+
       // Generate recommendations based on timeline
       if (parsed.timeline <= 12) {
         // Short term
         setRecommendations([
           {
-            type: 'Fixed',
-            name: 'Liquid Funds',
+            type: "Fixed",
+            name: "Liquid Funds",
             amount: Math.round(parsed.calculations.monthlySaving * 0.4),
-            description: 'High liquidity with stable returns',
-            risk: 'Low',
-            icon: '💧'
+            description: "High liquidity with stable returns",
+            risk: "Low",
+            icon: "💧",
           },
           {
-            type: 'Fixed',
-            name: 'FD/RD',
+            type: "Fixed",
+            name: "FD/RD",
             amount: Math.round(parsed.calculations.monthlySaving * 0.6),
-            description: 'Guaranteed returns with capital protection',
-            risk: 'Low',
-            icon: '🏛️'
-          }
+            description: "Guaranteed returns with capital protection",
+            risk: "Low",
+            icon: "🏛️",
+          },
         ]);
       } else if (parsed.timeline <= 36) {
         // Medium term
         setRecommendations([
           {
-            type: 'Balanced',
-            name: 'Hybrid Funds',
+            type: "Balanced",
+            name: "Hybrid Funds",
             amount: Math.round(parsed.calculations.monthlySaving * 0.5),
-            description: 'Balanced mix of equity and debt',
-            risk: 'Moderate',
-            icon: '⚖️'
+            description: "Balanced mix of equity and debt",
+            risk: "Moderate",
+            icon: "⚖️",
           },
           {
-            type: 'Fixed',
-            name: 'Debt Funds',
+            type: "Fixed",
+            name: "Debt Funds",
             amount: Math.round(parsed.calculations.monthlySaving * 0.3),
-            description: 'Stable returns from bonds',
-            risk: 'Low',
-            icon: '📋'
+            description: "Stable returns from bonds",
+            risk: "Low",
+            icon: "📋",
           },
           {
-            type: 'Equity',
-            name: 'Large Cap Funds',
+            type: "Equity",
+            name: "Large Cap Funds",
             amount: Math.round(parsed.calculations.monthlySaving * 0.2),
-            description: 'Growth potential with stability',
-            risk: 'Moderate',
-            icon: '📊'
-          }
+            description: "Growth potential with stability",
+            risk: "Moderate",
+            icon: "📊",
+          },
         ]);
       } else {
         // Long term
         setRecommendations([
           {
-            type: 'Equity',
-            name: 'Equity SIP',
+            type: "Equity",
+            name: "Equity SIP",
             amount: Math.round(parsed.calculations.monthlySaving * 0.6),
-            description: 'High growth potential for long term',
-            risk: 'High',
-            icon: '🚀'
+            description: "High growth potential for long term",
+            risk: "High",
+            icon: "🚀",
           },
           {
-            type: 'Tax Saving',
-            name: 'ELSS Funds',
+            type: "Tax Saving",
+            name: "ELSS Funds",
             amount: Math.round(parsed.calculations.monthlySaving * 0.3),
-            description: 'Tax benefits with equity exposure',
-            risk: 'High',
-            icon: '💰'
+            description: "Tax benefits with equity exposure",
+            risk: "High",
+            icon: "💰",
           },
           {
-            type: 'Balanced',
-            name: 'Index Funds',
+            type: "Balanced",
+            name: "Index Funds",
             amount: Math.round(parsed.calculations.monthlySaving * 0.1),
-            description: 'Low cost market tracking',
-            risk: 'Moderate',
-            icon: '📈'
-          }
+            description: "Low cost market tracking",
+            risk: "Moderate",
+            icon: "📈",
+          },
         ]);
       }
     }
@@ -143,14 +165,14 @@ export default function InvestmentPlan() {
         targetAmount: goalData.targetAmount,
         timeline: goalData.timeline,
         currentInvestment: goalData.currentInvestment,
-        monthlySaving: goalData.calculations.monthlySaving
+        monthlySaving: goalData.calculations.monthlySaving,
       });
 
       if (result) {
         setSipStarted(true);
-        alert('SIP started successfully! Your goal has been saved.');
+        alert("SIP started successfully! Your goal has been saved.");
       } else {
-        alert('Failed to start SIP. Please try again.');
+        alert("Failed to start SIP. Please try again.");
       }
     }
   };
@@ -164,8 +186,12 @@ export default function InvestmentPlan() {
   };
 
   const handleAdjustTimeline = () => {
-    const newMonthlySaving = Math.round((adjustedAmount - goalData.currentInvestment) / adjustedTimeline);
-    alert(`Goal adjusted! New monthly saving: ₹${newMonthlySaving.toLocaleString()}`);
+    const newMonthlySaving = Math.round(
+      (adjustedAmount - goalData.currentInvestment) / adjustedTimeline,
+    );
+    alert(
+      `Goal adjusted! New monthly saving: ₹${newMonthlySaving.toLocaleString()}`,
+    );
     setShowTimelineAdjuster(false);
   };
 
@@ -182,7 +208,7 @@ export default function InvestmentPlan() {
     );
   }
 
-  const progress = goalData.currentInvestment / goalData.targetAmount * 100;
+  const progress = (goalData.currentInvestment / goalData.targetAmount) * 100;
   const remaining = goalData.targetAmount - goalData.currentInvestment;
 
   return (
@@ -191,8 +217,8 @@ export default function InvestmentPlan() {
       <header className="bg-white border-b border-wealth-gray-light px-6 py-4 shadow-sm">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
-                                    <Button
-              onClick={() => navigate('/goal-planning')}
+            <Button
+              onClick={() => navigate("/goal-planning")}
               variant="ghost"
               size="sm"
               className="flex items-center gap-2 text-wealth-gray hover:text-gray-900"
@@ -200,20 +226,22 @@ export default function InvestmentPlan() {
               <ArrowLeft className="w-4 h-4" />
               Back to Goals
             </Button>
-            
+
             <div className="w-8 h-8 bg-wealth-blue rounded-lg flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">Investment Plan</h1>
+              <h1 className="text-xl font-semibold text-gray-900">
+                Investment Plan
+              </h1>
               <p className="text-sm text-wealth-gray">{selectedGoal}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-3">
-            <Button 
+            <Button
               onClick={handleDownloadReport}
-              variant="outline" 
+              variant="outline"
               size="sm"
               className="flex items-center gap-2"
             >
@@ -246,31 +274,47 @@ export default function InvestmentPlan() {
                       <Target className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-xl font-semibold text-gray-900">{selectedGoal}</h2>
-                      <p className="text-wealth-gray">Your financial goal breakdown</p>
+                      <h2 className="text-xl font-semibold text-gray-900">
+                        {selectedGoal}
+                      </h2>
+                      <p className="text-wealth-gray">
+                        Your financial goal breakdown
+                      </p>
                     </div>
                   </div>
-                  
+
                   {sipStarted && (
                     <div className="flex items-center gap-2 px-3 py-1 bg-green-100 rounded-full">
                       <CheckCircle className="w-4 h-4 text-green-600" />
-                      <span className="text-sm font-medium text-green-800">SIP Active</span>
+                      <span className="text-sm font-medium text-green-800">
+                        SIP Active
+                      </span>
                     </div>
                   )}
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-4 mb-6">
                   <div className="text-center">
-                    <p className="text-wealth-gray text-sm mb-1">Target Amount</p>
-                    <p className="text-2xl font-bold text-wealth-blue">₹{goalData.targetAmount.toLocaleString()}</p>
+                    <p className="text-wealth-gray text-sm mb-1">
+                      Target Amount
+                    </p>
+                    <p className="text-2xl font-bold text-wealth-blue">
+                      ₹{goalData.targetAmount.toLocaleString()}
+                    </p>
                   </div>
                   <div className="text-center">
-                    <p className="text-wealth-gray text-sm mb-1">Current Progress</p>
-                    <p className="text-2xl font-bold text-wealth-green">₹{goalData.currentInvestment.toLocaleString()}</p>
+                    <p className="text-wealth-gray text-sm mb-1">
+                      Current Progress
+                    </p>
+                    <p className="text-2xl font-bold text-wealth-green">
+                      ₹{goalData.currentInvestment.toLocaleString()}
+                    </p>
                   </div>
                   <div className="text-center">
                     <p className="text-wealth-gray text-sm mb-1">Remaining</p>
-                    <p className="text-2xl font-bold text-gray-700">₹{remaining.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-gray-700">
+                      ₹{remaining.toLocaleString()}
+                    </p>
                   </div>
                 </div>
 
@@ -292,28 +336,45 @@ export default function InvestmentPlan() {
                     <PieChart className="w-5 h-5 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Recommended Investment Strategy</h3>
-                    <p className="text-wealth-gray">Tailored for your {goalData.timeline} month timeline</p>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Recommended Investment Strategy
+                    </h3>
+                    <p className="text-wealth-gray">
+                      Tailored for your {goalData.timeline} month timeline
+                    </p>
                   </div>
                 </div>
 
                 <div className="grid gap-4">
                   {recommendations.map((rec, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
                       <div className="flex items-center gap-4">
                         <div className="text-2xl">{rec.icon}</div>
                         <div>
-                          <h4 className="font-medium text-gray-900">{rec.name}</h4>
-                          <p className="text-sm text-wealth-gray">{rec.description}</p>
+                          <h4 className="font-medium text-gray-900">
+                            {rec.name}
+                          </h4>
+                          <p className="text-sm text-wealth-gray">
+                            {rec.description}
+                          </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold text-gray-900">₹{rec.amount.toLocaleString()}/month</p>
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          rec.risk === 'Low' ? 'bg-green-100 text-green-800' :
-                          rec.risk === 'Moderate' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
+                        <p className="font-semibold text-gray-900">
+                          ₹{rec.amount.toLocaleString()}/month
+                        </p>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${
+                            rec.risk === "Low"
+                              ? "bg-green-100 text-green-800"
+                              : rec.risk === "Moderate"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
+                          }`}
+                        >
                           {rec.risk} Risk
                         </span>
                       </div>
@@ -332,9 +393,15 @@ export default function InvestmentPlan() {
                   <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Zap className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Monthly Investment</h3>
-                  <p className="text-3xl font-bold text-wealth-green mb-1">₹{goalData.calculations.monthlySaving.toLocaleString()}</p>
-                  <p className="text-sm text-wealth-gray">for {goalData.timeline} months</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Monthly Investment
+                  </h3>
+                  <p className="text-3xl font-bold text-wealth-green mb-1">
+                    ₹{goalData.calculations.monthlySaving.toLocaleString()}
+                  </p>
+                  <p className="text-sm text-wealth-gray">
+                    for {goalData.timeline} months
+                  </p>
                 </div>
 
                 <div className="space-y-4 mb-6">
@@ -344,16 +411,31 @@ export default function InvestmentPlan() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-wealth-gray">Total Investment</span>
-                    <span className="font-medium">₹{(goalData.calculations.monthlySaving * goalData.timeline + goalData.currentInvestment).toLocaleString()}</span>
+                    <span className="font-medium">
+                      ₹
+                      {(
+                        goalData.calculations.monthlySaving *
+                          goalData.timeline +
+                        goalData.currentInvestment
+                      ).toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-wealth-gray">Wealth Gain</span>
-                    <span className="font-medium text-wealth-green">₹{(goalData.targetAmount - (goalData.calculations.monthlySaving * goalData.timeline + goalData.currentInvestment)).toLocaleString()}</span>
+                    <span className="font-medium text-wealth-green">
+                      ₹
+                      {(
+                        goalData.targetAmount -
+                        (goalData.calculations.monthlySaving *
+                          goalData.timeline +
+                          goalData.currentInvestment)
+                      ).toLocaleString()}
+                    </span>
                   </div>
                 </div>
 
                 {!sipStarted ? (
-                  <Button 
+                  <Button
                     onClick={handleStartSIP}
                     className="w-full bg-wealth-blue hover:bg-wealth-blue/90 text-white py-3 flex items-center justify-center gap-2"
                     size="lg"
@@ -365,10 +447,12 @@ export default function InvestmentPlan() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg border border-green-200">
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="text-green-800 font-medium">SIP Started Successfully!</span>
+                      <span className="text-green-800 font-medium">
+                        SIP Started Successfully!
+                      </span>
                     </div>
                     <Button
-                      onClick={() => navigate('/dashboard')}
+                      onClick={() => navigate("/dashboard")}
                       className="w-full bg-wealth-blue hover:bg-wealth-blue/90 text-white"
                     >
                       Go to Dashboard
@@ -385,25 +469,35 @@ export default function InvestmentPlan() {
                   <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                     <Info className="w-4 h-4 text-blue-600" />
                   </div>
-                  <h3 className="font-semibold text-gray-900">Investment Tips</h3>
+                  <h3 className="font-semibold text-gray-900">
+                    Investment Tips
+                  </h3>
                 </div>
-                
+
                 <div className="space-y-3 text-sm">
                   <div className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">Start early to benefit from compounding</span>
+                    <span className="text-gray-700">
+                      Start early to benefit from compounding
+                    </span>
                   </div>
                   <div className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">Diversify across different asset classes</span>
+                    <span className="text-gray-700">
+                      Diversify across different asset classes
+                    </span>
                   </div>
                   <div className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">Review and rebalance periodically</span>
+                    <span className="text-gray-700">
+                      Review and rebalance periodically
+                    </span>
                   </div>
                   <div className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">Stay invested during market volatility</span>
+                    <span className="text-gray-700">
+                      Stay invested during market volatility
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -413,49 +507,74 @@ export default function InvestmentPlan() {
       </main>
 
       {/* Timeline Adjuster Modal */}
-      <Dialog open={showTimelineAdjuster} onOpenChange={setShowTimelineAdjuster}>
+      <Dialog
+        open={showTimelineAdjuster}
+        onOpenChange={setShowTimelineAdjuster}
+      >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Adjust Goal Timeline</DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Timeline (months)</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Timeline (months)
+              </label>
               <input
                 type="number"
                 min="6"
                 max="360"
                 value={adjustedTimeline}
-                onChange={(e) => setAdjustedTimeline(parseInt(e.target.value) || 12)}
+                onChange={(e) =>
+                  setAdjustedTimeline(parseInt(e.target.value) || 12)
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Target Amount (₹)</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Target Amount (₹)
+              </label>
               <input
                 type="number"
                 min="10000"
                 value={adjustedAmount}
-                onChange={(e) => setAdjustedAmount(parseInt(e.target.value) || 0)}
+                onChange={(e) =>
+                  setAdjustedAmount(parseInt(e.target.value) || 0)
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            
+
             {adjustedTimeline > 0 && adjustedAmount > 0 && (
               <div className="bg-blue-50 rounded-lg p-3">
                 <p className="text-sm text-blue-800">
-                  New monthly saving: <span className="font-semibold">₹{Math.round((adjustedAmount - goalData.currentInvestment) / adjustedTimeline).toLocaleString()}</span>
+                  New monthly saving:{" "}
+                  <span className="font-semibold">
+                    ₹
+                    {Math.round(
+                      (adjustedAmount - goalData.currentInvestment) /
+                        adjustedTimeline,
+                    ).toLocaleString()}
+                  </span>
                 </p>
               </div>
             )}
           </div>
-          
+
           <div className="flex gap-3">
-            <Button variant="outline" className="flex-1" onClick={() => setShowTimelineAdjuster(false)}>
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => setShowTimelineAdjuster(false)}
+            >
               Cancel
             </Button>
-            <Button className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white" onClick={handleAdjustTimeline}>
+            <Button
+              className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+              onClick={handleAdjustTimeline}
+            >
               Update Goal
             </Button>
           </div>

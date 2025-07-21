@@ -1,4 +1,4 @@
-import { getCurrentUser } from './auth';
+import { getCurrentUser } from "./auth";
 
 interface GoalSaveData {
   name: string;
@@ -22,22 +22,27 @@ export function saveGoal(goal: GoalSaveData): SavedGoal | false {
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) return false;
-    
-    const goals = JSON.parse(localStorage.getItem(`weallth_goals_${currentUser.id}`) || '[]');
+
+    const goals = JSON.parse(
+      localStorage.getItem(`weallth_goals_${currentUser.id}`) || "[]",
+    );
     const newGoal: SavedGoal = {
       ...goal,
       id: Date.now().toString(),
       userId: currentUser.id,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      status: 'active'
+      status: "active",
     };
-    
+
     goals.push(newGoal);
-    localStorage.setItem(`weallth_goals_${currentUser.id}`, JSON.stringify(goals));
+    localStorage.setItem(
+      `weallth_goals_${currentUser.id}`,
+      JSON.stringify(goals),
+    );
     return newGoal;
   } catch (error) {
-    console.error('Error saving goal:', error);
+    console.error("Error saving goal:", error);
     return false;
   }
 }
@@ -46,34 +51,42 @@ export function getGoals(): SavedGoal[] {
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) return [];
-    
-    return JSON.parse(localStorage.getItem(`weallth_goals_${currentUser.id}`) || '[]');
+
+    return JSON.parse(
+      localStorage.getItem(`weallth_goals_${currentUser.id}`) || "[]",
+    );
   } catch (error) {
-    console.error('Error getting goals:', error);
+    console.error("Error getting goals:", error);
     return [];
   }
 }
 
-export function updateGoal(goalId: string, updates: Partial<GoalSaveData>): SavedGoal | false {
+export function updateGoal(
+  goalId: string,
+  updates: Partial<GoalSaveData>,
+): SavedGoal | false {
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) return false;
-    
+
     const goals = getGoals();
-    const goalIndex = goals.findIndex(g => g.id === goalId);
-    
+    const goalIndex = goals.findIndex((g) => g.id === goalId);
+
     if (goalIndex === -1) return false;
-    
+
     goals[goalIndex] = {
       ...goals[goalIndex],
       ...updates,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
-    localStorage.setItem(`weallth_goals_${currentUser.id}`, JSON.stringify(goals));
+
+    localStorage.setItem(
+      `weallth_goals_${currentUser.id}`,
+      JSON.stringify(goals),
+    );
     return goals[goalIndex];
   } catch (error) {
-    console.error('Error updating goal:', error);
+    console.error("Error updating goal:", error);
     return false;
   }
 }
@@ -82,14 +95,17 @@ export function deleteGoal(goalId: string): boolean {
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) return false;
-    
+
     const goals = getGoals();
-    const filteredGoals = goals.filter(g => g.id !== goalId);
-    
-    localStorage.setItem(`weallth_goals_${currentUser.id}`, JSON.stringify(filteredGoals));
+    const filteredGoals = goals.filter((g) => g.id !== goalId);
+
+    localStorage.setItem(
+      `weallth_goals_${currentUser.id}`,
+      JSON.stringify(filteredGoals),
+    );
     return true;
   } catch (error) {
-    console.error('Error deleting goal:', error);
+    console.error("Error deleting goal:", error);
     return false;
   }
 }
@@ -103,21 +119,23 @@ interface FeedbackData {
 export function saveFeedback(feedback: FeedbackData) {
   try {
     const currentUser = getCurrentUser();
-    const feedbacks = JSON.parse(localStorage.getItem('weallth_feedback') || '[]');
-    
+    const feedbacks = JSON.parse(
+      localStorage.getItem("weallth_feedback") || "[]",
+    );
+
     const newFeedback = {
       id: Date.now().toString(),
-      userId: currentUser?.id || 'anonymous',
-      username: currentUser?.username || 'Anonymous',
+      userId: currentUser?.id || "anonymous",
+      username: currentUser?.username || "Anonymous",
       ...feedback,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    
+
     feedbacks.push(newFeedback);
-    localStorage.setItem('weallth_feedback', JSON.stringify(feedbacks));
+    localStorage.setItem("weallth_feedback", JSON.stringify(feedbacks));
     return newFeedback;
   } catch (error) {
-    console.error('Error saving feedback:', error);
+    console.error("Error saving feedback:", error);
     return false;
   }
 }
@@ -129,8 +147,8 @@ interface UserProfile {
   monthlySalary: number;
   fixedExpenses: number;
   variableExpenses: number;
-  riskTolerance: 'conservative' | 'moderate' | 'aggressive';
-  investmentExperience: 'beginner' | 'intermediate' | 'advanced';
+  riskTolerance: "conservative" | "moderate" | "aggressive";
+  investmentExperience: "beginner" | "intermediate" | "advanced";
   notifications?: boolean;
   newsletter?: boolean;
 }
@@ -139,10 +157,12 @@ export function getUserProfile(): UserProfile | null {
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) return null;
-    
-    return JSON.parse(localStorage.getItem(`weallth_profile_${currentUser.id}`) || 'null');
+
+    return JSON.parse(
+      localStorage.getItem(`weallth_profile_${currentUser.id}`) || "null",
+    );
   } catch (error) {
-    console.error('Error getting user profile:', error);
+    console.error("Error getting user profile:", error);
     return null;
   }
 }
@@ -151,11 +171,14 @@ export function saveUserProfile(profileData: UserProfile): boolean {
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) return false;
-    
-    localStorage.setItem(`weallth_profile_${currentUser.id}`, JSON.stringify(profileData));
+
+    localStorage.setItem(
+      `weallth_profile_${currentUser.id}`,
+      JSON.stringify(profileData),
+    );
     return true;
-    } catch (error) {
-    console.error('Error saving user profile:', error);
+  } catch (error) {
+    console.error("Error saving user profile:", error);
     return false;
   }
 }
@@ -165,31 +188,38 @@ interface InvestmentData {
   strategyId: string;
   strategyName: string;
   amount: number;
-  investmentType: 'personal' | 'professional';
-  status: 'active' | 'paused' | 'completed';
+  investmentType: "personal" | "professional";
+  status: "active" | "paused" | "completed";
   startDate: string;
   userId: string;
   goalId?: string;
 }
 
-export function saveInvestment(investment: Omit<InvestmentData, 'id' | 'userId' | 'startDate'>): InvestmentData | false {
+export function saveInvestment(
+  investment: Omit<InvestmentData, "id" | "userId" | "startDate">,
+): InvestmentData | false {
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) return false;
 
-    const investments = JSON.parse(localStorage.getItem(`weallth_investments_${currentUser.id}`) || '[]');
+    const investments = JSON.parse(
+      localStorage.getItem(`weallth_investments_${currentUser.id}`) || "[]",
+    );
     const newInvestment: InvestmentData = {
       ...investment,
       id: Date.now().toString(),
       userId: currentUser.id,
-      startDate: new Date().toISOString()
+      startDate: new Date().toISOString(),
     };
 
     investments.push(newInvestment);
-    localStorage.setItem(`weallth_investments_${currentUser.id}`, JSON.stringify(investments));
+    localStorage.setItem(
+      `weallth_investments_${currentUser.id}`,
+      JSON.stringify(investments),
+    );
     return newInvestment;
   } catch (error) {
-    console.error('Error saving investment:', error);
+    console.error("Error saving investment:", error);
     return false;
   }
 }
@@ -199,9 +229,11 @@ export function getInvestments(): InvestmentData[] {
     const currentUser = getCurrentUser();
     if (!currentUser) return [];
 
-    return JSON.parse(localStorage.getItem(`weallth_investments_${currentUser.id}`) || '[]');
+    return JSON.parse(
+      localStorage.getItem(`weallth_investments_${currentUser.id}`) || "[]",
+    );
   } catch (error) {
-    console.error('Error getting investments:', error);
+    console.error("Error getting investments:", error);
     return [];
   }
 }

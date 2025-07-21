@@ -3,23 +3,37 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, ArrowLeft, TrendingUp, User, DollarSign, Target, CheckCircle } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowLeft,
+  TrendingUp,
+  User,
+  DollarSign,
+  Target,
+  CheckCircle,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
 import { saveUserProfile, getUserProfile } from "@/lib/storage";
 
 interface OnboardingData {
-  userType: 'personal' | 'professional';
+  userType: "personal" | "professional";
   fullName: string;
   age: number;
   occupation: string;
   monthlySalary: number;
   fixedExpenses: number;
   variableExpenses: number;
-  riskTolerance: 'conservative' | 'moderate' | 'aggressive';
-  investmentExperience: 'beginner' | 'intermediate' | 'advanced';
+  riskTolerance: "conservative" | "moderate" | "aggressive";
+  investmentExperience: "beginner" | "intermediate" | "advanced";
   primaryGoals: string[];
 }
 
@@ -27,20 +41,20 @@ export default function Onboarding() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [user, setUser] = useState<any>(null);
-    const [data, setData] = useState<OnboardingData>({
-    userType: 'personal',
-    fullName: '',
+  const [data, setData] = useState<OnboardingData>({
+    userType: "personal",
+    fullName: "",
     age: 25,
-    occupation: '',
+    occupation: "",
     monthlySalary: 0,
     fixedExpenses: 0,
     variableExpenses: 0,
-    riskTolerance: 'moderate',
-    investmentExperience: 'beginner',
-    primaryGoals: []
+    riskTolerance: "moderate",
+    investmentExperience: "beginner",
+    primaryGoals: [],
   });
 
-    const totalSteps = 5;
+  const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
 
   useEffect(() => {
@@ -50,7 +64,7 @@ export default function Onboarding() {
       return;
     }
     setUser(currentUser);
-    setData(prev => ({ ...prev, fullName: currentUser.username }));
+    setData((prev) => ({ ...prev, fullName: currentUser.username }));
 
     // Check if user has already completed onboarding
     const existingProfile = getUserProfile();
@@ -61,7 +75,7 @@ export default function Onboarding() {
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     } else {
       handleComplete();
     }
@@ -69,16 +83,16 @@ export default function Onboarding() {
 
   const handleBack = () => {
     if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep((prev) => prev - 1);
     }
   };
 
-    const handleComplete = () => {
+  const handleComplete = () => {
     const profileData = {
       userType: data.userType,
       fullName: data.fullName,
       email: user.email,
-      phoneNumber: '',
+      phoneNumber: "",
       monthlySalary: data.monthlySalary,
       fixedExpenses: data.fixedExpenses,
       variableExpenses: data.variableExpenses,
@@ -88,7 +102,7 @@ export default function Onboarding() {
       newsletter: false,
       age: data.age,
       occupation: data.occupation,
-      primaryGoals: data.primaryGoals
+      primaryGoals: data.primaryGoals,
     };
 
     const success = saveUserProfile(profileData);
@@ -97,7 +111,7 @@ export default function Onboarding() {
     }
   };
 
-    const canProceed = () => {
+  const canProceed = () => {
     switch (currentStep) {
       case 1:
         return data.userType !== undefined;
@@ -114,28 +128,42 @@ export default function Onboarding() {
     }
   };
 
-  const availableForInvestment = data.monthlySalary - data.fixedExpenses - data.variableExpenses;
+  const availableForInvestment =
+    data.monthlySalary - data.fixedExpenses - data.variableExpenses;
 
   const toggleGoal = (goal: string) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
       primaryGoals: prev.primaryGoals.includes(goal)
-        ? prev.primaryGoals.filter(g => g !== goal)
-        : [...prev.primaryGoals, goal]
+        ? prev.primaryGoals.filter((g) => g !== goal)
+        : [...prev.primaryGoals, goal],
     }));
   };
 
-    const personalGoals = [
-    'Buy a Car', 'Buy a House', 'Go on Vacation', 'Emergency Fund',
-    'Wedding Planning', 'Child Education', 'Retirement', 'Healthcare'
+  const personalGoals = [
+    "Buy a Car",
+    "Buy a House",
+    "Go on Vacation",
+    "Emergency Fund",
+    "Wedding Planning",
+    "Child Education",
+    "Retirement",
+    "Healthcare",
   ];
 
   const professionalGoals = [
-    'Business Expansion', 'Office Setup', 'Equipment Purchase', 'Staff Training',
-    'Marketing Investment', 'Technology Upgrade', 'Working Capital', 'Professional Development'
+    "Business Expansion",
+    "Office Setup",
+    "Equipment Purchase",
+    "Staff Training",
+    "Marketing Investment",
+    "Technology Upgrade",
+    "Working Capital",
+    "Professional Development",
   ];
 
-  const currentGoals = data.userType === 'personal' ? personalGoals : professionalGoals;
+  const currentGoals =
+    data.userType === "personal" ? personalGoals : professionalGoals;
 
   if (!user) {
     return (
@@ -164,7 +192,7 @@ export default function Onboarding() {
               <p className="text-sm text-gray-600">Complete your profile</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-600">
               Step {currentStep} of {totalSteps}
@@ -180,12 +208,16 @@ export default function Onboarding() {
       <main className="p-6">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               {currentStep === 1 && <Target className="w-8 h-8 text-white" />}
               {currentStep === 2 && <User className="w-8 h-8 text-white" />}
-              {currentStep === 3 && <DollarSign className="w-8 h-8 text-white" />}
+              {currentStep === 3 && (
+                <DollarSign className="w-8 h-8 text-white" />
+              )}
               {currentStep === 4 && <Target className="w-8 h-8 text-white" />}
-              {currentStep === 5 && <CheckCircle className="w-8 h-8 text-white" />}
+              {currentStep === 5 && (
+                <CheckCircle className="w-8 h-8 text-white" />
+              )}
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               {currentStep === 1 && "Choose your investment type"}
@@ -195,15 +227,17 @@ export default function Onboarding() {
               {currentStep === 5 && "Your primary goals"}
             </h2>
             <p className="text-gray-600">
-              {currentStep === 1 && "Are you investing for personal or professional purposes?"}
+              {currentStep === 1 &&
+                "Are you investing for personal or professional purposes?"}
               {currentStep === 2 && "Let's start with some basic information"}
-              {currentStep === 3 && "Help us understand your financial situation"}
+              {currentStep === 3 &&
+                "Help us understand your financial situation"}
               {currentStep === 4 && "What's your investment style?"}
               {currentStep === 5 && "What are you planning to achieve?"}
             </p>
           </div>
 
-                    <Card className="shadow-xl border-0">
+          <Card className="shadow-xl border-0">
             <CardContent className="p-8">
               {/* Step 1: User Type Selection */}
               {currentStep === 1 && (
@@ -214,53 +248,64 @@ export default function Onboarding() {
                     </Label>
                     <div className="grid grid-cols-2 gap-4">
                       <div
-                        onClick={() => setData(prev => ({ ...prev, userType: 'personal' }))}
+                        onClick={() =>
+                          setData((prev) => ({ ...prev, userType: "personal" }))
+                        }
                         className={`p-6 border rounded-lg cursor-pointer transition-all ${
-                          data.userType === 'personal'
-                            ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
-                            : 'border-gray-200 hover:border-gray-300'
+                          data.userType === "personal"
+                            ? "border-blue-500 bg-blue-50 ring-2 ring-blue-200"
+                            : "border-gray-200 hover:border-gray-300"
                         }`}
                       >
                         <div className="text-center">
                           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <User className="w-8 h-8 text-blue-600" />
                           </div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">Personal</h3>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                            Personal
+                          </h3>
                           <p className="text-sm text-gray-600">
-                            Investment for personal financial goals like house, car, vacation, retirement, etc.
+                            Investment for personal financial goals like house,
+                            car, vacation, retirement, etc.
                           </p>
                           <div className="mt-4 text-sm text-blue-600 font-medium">
                             ✓ Personal goals tracking
                             <br />
                             ✓ Individual tax benefits
-                            <br />
-                            ✓ Flexible investment options
+                            <br />✓ Flexible investment options
                           </div>
                         </div>
                       </div>
 
                       <div
-                        onClick={() => setData(prev => ({ ...prev, userType: 'professional' }))}
+                        onClick={() =>
+                          setData((prev) => ({
+                            ...prev,
+                            userType: "professional",
+                          }))
+                        }
                         className={`p-6 border rounded-lg cursor-pointer transition-all ${
-                          data.userType === 'professional'
-                            ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
-                            : 'border-gray-200 hover:border-gray-300'
+                          data.userType === "professional"
+                            ? "border-blue-500 bg-blue-50 ring-2 ring-blue-200"
+                            : "border-gray-200 hover:border-gray-300"
                         }`}
                       >
                         <div className="text-center">
                           <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <TrendingUp className="w-8 h-8 text-purple-600" />
                           </div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">Professional</h3>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                            Professional
+                          </h3>
                           <p className="text-sm text-gray-600">
-                            Investment for business growth, professional development, and advanced strategies.
+                            Investment for business growth, professional
+                            development, and advanced strategies.
                           </p>
                           <div className="mt-4 text-sm text-purple-600 font-medium">
                             ✓ Business-focused strategies
                             <br />
                             ✓ Advanced investment options
-                            <br />
-                            ✓ Professional advisory
+                            <br />✓ Professional advisory
                           </div>
                         </div>
                       </div>
@@ -273,13 +318,21 @@ export default function Onboarding() {
               {currentStep === 2 && (
                 <div className="space-y-6">
                   <div>
-                    <Label htmlFor="fullName" className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label
+                      htmlFor="fullName"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
                       Full Name
                     </Label>
                     <Input
                       id="fullName"
                       value={data.fullName}
-                      onChange={(e) => setData(prev => ({ ...prev, fullName: e.target.value }))}
+                      onChange={(e) =>
+                        setData((prev) => ({
+                          ...prev,
+                          fullName: e.target.value,
+                        }))
+                      }
                       placeholder="Enter your full name"
                       className="text-lg"
                     />
@@ -287,26 +340,42 @@ export default function Onboarding() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="age" className="text-sm font-medium text-gray-700 mb-2 block">
+                      <Label
+                        htmlFor="age"
+                        className="text-sm font-medium text-gray-700 mb-2 block"
+                      >
                         Age
                       </Label>
                       <Input
                         id="age"
                         type="number"
                         value={data.age}
-                        onChange={(e) => setData(prev => ({ ...prev, age: parseInt(e.target.value) || 25 }))}
+                        onChange={(e) =>
+                          setData((prev) => ({
+                            ...prev,
+                            age: parseInt(e.target.value) || 25,
+                          }))
+                        }
                         min="18"
                         max="100"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="occupation" className="text-sm font-medium text-gray-700 mb-2 block">
+                      <Label
+                        htmlFor="occupation"
+                        className="text-sm font-medium text-gray-700 mb-2 block"
+                      >
                         Occupation
                       </Label>
                       <Input
                         id="occupation"
                         value={data.occupation}
-                        onChange={(e) => setData(prev => ({ ...prev, occupation: e.target.value }))}
+                        onChange={(e) =>
+                          setData((prev) => ({
+                            ...prev,
+                            occupation: e.target.value,
+                          }))
+                        }
                         placeholder="Your profession"
                       />
                     </div>
@@ -314,18 +383,26 @@ export default function Onboarding() {
                 </div>
               )}
 
-                            {/* Step 3: Financial Information */}
+              {/* Step 3: Financial Information */}
               {currentStep === 3 && (
                 <div className="space-y-6">
                   <div>
-                    <Label htmlFor="monthlySalary" className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label
+                      htmlFor="monthlySalary"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
                       Monthly Salary (��)
                     </Label>
                     <Input
                       id="monthlySalary"
                       type="number"
-                      value={data.monthlySalary || ''}
-                      onChange={(e) => setData(prev => ({ ...prev, monthlySalary: parseInt(e.target.value) || 0 }))}
+                      value={data.monthlySalary || ""}
+                      onChange={(e) =>
+                        setData((prev) => ({
+                          ...prev,
+                          monthlySalary: parseInt(e.target.value) || 0,
+                        }))
+                      }
                       placeholder="Your monthly income"
                       className="text-lg"
                     />
@@ -333,39 +410,63 @@ export default function Onboarding() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="fixedExpenses" className="text-sm font-medium text-gray-700 mb-2 block">
+                      <Label
+                        htmlFor="fixedExpenses"
+                        className="text-sm font-medium text-gray-700 mb-2 block"
+                      >
                         Fixed Monthly Expenses (₹)
                       </Label>
                       <Input
                         id="fixedExpenses"
                         type="number"
-                        value={data.fixedExpenses || ''}
-                        onChange={(e) => setData(prev => ({ ...prev, fixedExpenses: parseInt(e.target.value) || 0 }))}
+                        value={data.fixedExpenses || ""}
+                        onChange={(e) =>
+                          setData((prev) => ({
+                            ...prev,
+                            fixedExpenses: parseInt(e.target.value) || 0,
+                          }))
+                        }
                         placeholder="Rent, EMIs, etc."
                       />
-                      <p className="text-xs text-gray-500 mt-1">Rent, loan EMIs, insurance premiums</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Rent, loan EMIs, insurance premiums
+                      </p>
                     </div>
                     <div>
-                      <Label htmlFor="variableExpenses" className="text-sm font-medium text-gray-700 mb-2 block">
+                      <Label
+                        htmlFor="variableExpenses"
+                        className="text-sm font-medium text-gray-700 mb-2 block"
+                      >
                         Variable Monthly Expenses (₹)
                       </Label>
                       <Input
                         id="variableExpenses"
                         type="number"
-                        value={data.variableExpenses || ''}
-                        onChange={(e) => setData(prev => ({ ...prev, variableExpenses: parseInt(e.target.value) || 0 }))}
+                        value={data.variableExpenses || ""}
+                        onChange={(e) =>
+                          setData((prev) => ({
+                            ...prev,
+                            variableExpenses: parseInt(e.target.value) || 0,
+                          }))
+                        }
                         placeholder="Food, entertainment, etc."
                       />
-                      <p className="text-xs text-gray-500 mt-1">Food, shopping, entertainment</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Food, shopping, entertainment
+                      </p>
                     </div>
                   </div>
 
                   {data.monthlySalary > 0 && (
                     <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                      <h4 className="font-medium text-blue-900 mb-2">Your Financial Summary</h4>
+                      <h4 className="font-medium text-blue-900 mb-2">
+                        Your Financial Summary
+                      </h4>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <p className="text-blue-600">Available for Investment</p>
+                          <p className="text-blue-600">
+                            Available for Investment
+                          </p>
                           <p className="font-semibold text-blue-900 text-lg">
                             ₹{availableForInvestment.toLocaleString()}
                           </p>
@@ -373,13 +474,18 @@ export default function Onboarding() {
                         <div>
                           <p className="text-blue-600">Savings Rate</p>
                           <p className="font-semibold text-blue-900 text-lg">
-                            {Math.round((availableForInvestment / data.monthlySalary) * 100)}%
+                            {Math.round(
+                              (availableForInvestment / data.monthlySalary) *
+                                100,
+                            )}
+                            %
                           </p>
                         </div>
                       </div>
                       {availableForInvestment < 0 && (
                         <p className="text-red-600 text-sm mt-2">
-                          ⚠️ Your expenses exceed your income. Consider reviewing your budget.
+                          ⚠️ Your expenses exceed your income. Consider
+                          reviewing your budget.
                         </p>
                       )}
                     </div>
@@ -387,7 +493,7 @@ export default function Onboarding() {
                 </div>
               )}
 
-                            {/* Step 4: Investment Preferences */}
+              {/* Step 4: Investment Preferences */}
               {currentStep === 4 && (
                 <div className="space-y-6">
                   <div>
@@ -395,21 +501,33 @@ export default function Onboarding() {
                       Risk Tolerance
                     </Label>
                     <div className="grid grid-cols-3 gap-3">
-                      {(['conservative', 'moderate', 'aggressive'] as const).map((risk) => (
+                      {(
+                        ["conservative", "moderate", "aggressive"] as const
+                      ).map((risk) => (
                         <div
                           key={risk}
-                          onClick={() => setData(prev => ({ ...prev, riskTolerance: risk }))}
+                          onClick={() =>
+                            setData((prev) => ({
+                              ...prev,
+                              riskTolerance: risk,
+                            }))
+                          }
                           className={`p-4 border rounded-lg cursor-pointer transition-all ${
                             data.riskTolerance === risk
-                              ? 'border-blue-500 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? "border-blue-500 bg-blue-50"
+                              : "border-gray-200 hover:border-gray-300"
                           }`}
                         >
-                          <h4 className="font-medium text-gray-900 capitalize">{risk}</h4>
+                          <h4 className="font-medium text-gray-900 capitalize">
+                            {risk}
+                          </h4>
                           <p className="text-xs text-gray-600 mt-1">
-                            {risk === 'conservative' && 'Prefer stable, low-risk investments'}
-                            {risk === 'moderate' && 'Balanced approach with moderate risk'}
-                            {risk === 'aggressive' && 'High risk for high returns'}
+                            {risk === "conservative" &&
+                              "Prefer stable, low-risk investments"}
+                            {risk === "moderate" &&
+                              "Balanced approach with moderate risk"}
+                            {risk === "aggressive" &&
+                              "High risk for high returns"}
                           </p>
                         </div>
                       ))}
@@ -417,48 +535,64 @@ export default function Onboarding() {
                   </div>
 
                   <div>
-                    <Label htmlFor="experience" className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label
+                      htmlFor="experience"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
                       Investment Experience
                     </Label>
-                    <Select 
-                      value={data.investmentExperience} 
-                      onValueChange={(value: 'beginner' | 'intermediate' | 'advanced') => 
-                        setData(prev => ({ ...prev, investmentExperience: value }))
+                    <Select
+                      value={data.investmentExperience}
+                      onValueChange={(
+                        value: "beginner" | "intermediate" | "advanced",
+                      ) =>
+                        setData((prev) => ({
+                          ...prev,
+                          investmentExperience: value,
+                        }))
                       }
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="beginner">Beginner - New to investing</SelectItem>
-                        <SelectItem value="intermediate">Intermediate - Some experience</SelectItem>
-                        <SelectItem value="advanced">Advanced - Experienced investor</SelectItem>
+                        <SelectItem value="beginner">
+                          Beginner - New to investing
+                        </SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate - Some experience
+                        </SelectItem>
+                        <SelectItem value="advanced">
+                          Advanced - Experienced investor
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
               )}
 
-                            {/* Step 5: Primary Goals */}
+              {/* Step 5: Primary Goals */}
               {currentStep === 5 && (
                 <div className="space-y-6">
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 block">
                       Select your primary financial goals (choose multiple)
                     </Label>
-                                        <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3">
                       {currentGoals.map((goal) => (
                         <div
                           key={goal}
                           onClick={() => toggleGoal(goal)}
                           className={`p-3 border rounded-lg cursor-pointer transition-all ${
                             data.primaryGoals.includes(goal)
-                              ? 'border-blue-500 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? "border-blue-500 bg-blue-50"
+                              : "border-gray-200 hover:border-gray-300"
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-900">{goal}</span>
+                            <span className="text-sm font-medium text-gray-900">
+                              {goal}
+                            </span>
                             {data.primaryGoals.includes(goal) && (
                               <CheckCircle className="w-4 h-4 text-blue-600" />
                             )}
@@ -472,21 +606,21 @@ export default function Onboarding() {
 
               {/* Navigation */}
               <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-                <Button 
-                  onClick={handleBack} 
-                  variant="outline" 
+                <Button
+                  onClick={handleBack}
+                  variant="outline"
                   disabled={currentStep === 1}
                   className="flex items-center gap-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back
                 </Button>
-                <Button 
+                <Button
                   onClick={handleNext}
                   disabled={!canProceed()}
                   className="bg-wealth-blue hover:bg-wealth-blue/90 text-white flex items-center gap-2"
                 >
-                  {currentStep === totalSteps ? 'Complete Setup' : 'Continue'}
+                  {currentStep === totalSteps ? "Complete Setup" : "Continue"}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>

@@ -2,25 +2,63 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { 
-  TrendingUp, Target, DollarSign, User, Settings, MessageSquare, LogOut, 
-  Plus, MoreVertical, X, Edit3, PieChart, BookOpen, Lightbulb, Calculator,
-  ChevronRight, ExternalLink
+import {
+  TrendingUp,
+  Target,
+  DollarSign,
+  User,
+  Settings,
+  MessageSquare,
+  LogOut,
+  Plus,
+  MoreVertical,
+  X,
+  Edit3,
+  PieChart,
+  BookOpen,
+  Lightbulb,
+  Calculator,
+  ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser, logoutUser } from "@/lib/auth";
-import { getGoals, updateGoal, deleteGoal, saveFeedback, getUserProfile, saveUserProfile, saveInvestment, getInvestments } from "@/lib/storage";
-import { getInvestmentStrategies, type InvestmentStrategy } from "@/lib/investmentStrategies";
+import {
+  getGoals,
+  updateGoal,
+  deleteGoal,
+  saveFeedback,
+  getUserProfile,
+  saveUserProfile,
+  saveInvestment,
+  getInvestments,
+} from "@/lib/storage";
+import {
+  getInvestmentStrategies,
+  type InvestmentStrategy,
+} from "@/lib/investmentStrategies";
 import { getRiskLevelColor } from "@/lib/utils";
 import InvestmentStrategyModal from "@/components/InvestmentStrategyModal";
-import InvestmentFormModal, { type InvestmentFormData } from "@/components/InvestmentFormModal";
+import InvestmentFormModal, {
+  type InvestmentFormData,
+} from "@/components/InvestmentFormModal";
 
 interface Goal {
   id: string;
@@ -40,11 +78,12 @@ export default function Dashboard() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
-    const [selectedStrategy, setSelectedStrategy] = useState<InvestmentStrategy | null>(null);
+  const [selectedStrategy, setSelectedStrategy] =
+    useState<InvestmentStrategy | null>(null);
   const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
-      const [isInvestmentFormOpen, setIsInvestmentFormOpen] = useState(false);
+  const [isInvestmentFormOpen, setIsInvestmentFormOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
-      const [isPortfolioTrackerOpen, setIsPortfolioTrackerOpen] = useState(false);
+  const [isPortfolioTrackerOpen, setIsPortfolioTrackerOpen] = useState(false);
   const [isSmartSuggestionsOpen, setIsSmartSuggestionsOpen] = useState(false);
   const [investments, setInvestments] = useState<any[]>([]);
   const [userProfile, setUserProfile] = useState({
@@ -52,17 +91,17 @@ export default function Dashboard() {
     email: "",
     monthlySalary: 0,
     fixedExpenses: 0,
-    variableExpenses: 0
+    variableExpenses: 0,
   });
   const [feedbackData, setFeedbackData] = useState({
-    type: 'feedback',
-    subject: '',
-    message: ''
+    type: "feedback",
+    subject: "",
+    message: "",
   });
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
-  const personalStrategies = getInvestmentStrategies('personal');
-  const professionalStrategies = getInvestmentStrategies('professional');
+  const personalStrategies = getInvestmentStrategies("personal");
+  const professionalStrategies = getInvestmentStrategies("professional");
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -71,15 +110,15 @@ export default function Dashboard() {
       return;
     }
     setUser(currentUser);
-    
-        // Load user goals
+
+    // Load user goals
     const userGoals = getGoals();
     setGoals(userGoals);
 
     // Load user investments
     const userInvestments = getInvestments();
     setInvestments(userInvestments);
-    
+
     // Load user profile
     const profile = getUserProfile();
     if (profile) {
@@ -88,13 +127,13 @@ export default function Dashboard() {
         email: profile.email || currentUser.email,
         monthlySalary: profile.monthlySalary || 0,
         fixedExpenses: profile.fixedExpenses || 0,
-        variableExpenses: profile.variableExpenses || 0
+        variableExpenses: profile.variableExpenses || 0,
       });
     } else {
-      setUserProfile(prev => ({
+      setUserProfile((prev) => ({
         ...prev,
         fullName: currentUser.username,
-        email: currentUser.email || ""
+        email: currentUser.email || "",
       }));
     }
   }, [navigate]);
@@ -103,16 +142,16 @@ export default function Dashboard() {
     const profileData = {
       fullName: userProfile.fullName,
       email: userProfile.email,
-      phoneNumber: '',
+      phoneNumber: "",
       monthlySalary: userProfile.monthlySalary,
       fixedExpenses: userProfile.fixedExpenses,
       variableExpenses: userProfile.variableExpenses,
-      riskTolerance: 'moderate' as const,
-      investmentExperience: 'beginner' as const,
+      riskTolerance: "moderate" as const,
+      investmentExperience: "beginner" as const,
       notifications: true,
-      newsletter: false
+      newsletter: false,
     };
-    
+
     const success = saveUserProfile(profileData);
     if (success) {
       setIsProfileOpen(false);
@@ -127,7 +166,7 @@ export default function Dashboard() {
       setTimeout(() => {
         setIsFeedbackOpen(false);
         setFeedbackSubmitted(false);
-        setFeedbackData({ type: 'feedback', subject: '', message: '' });
+        setFeedbackData({ type: "feedback", subject: "", message: "" });
       }, 2000);
     }
   };
@@ -140,17 +179,19 @@ export default function Dashboard() {
     if (editingGoal) {
       const success = updateGoal(editingGoal.id, editingGoal);
       if (success) {
-        setGoals(prev => prev.map(goal => goal.id === editingGoal.id ? editingGoal : goal));
+        setGoals((prev) =>
+          prev.map((goal) => (goal.id === editingGoal.id ? editingGoal : goal)),
+        );
         setEditingGoal(null);
       }
     }
   };
 
   const handleDeleteGoal = (goalId: string) => {
-    if (confirm('Are you sure you want to delete this goal?')) {
+    if (confirm("Are you sure you want to delete this goal?")) {
       const success = deleteGoal(goalId);
       if (success) {
-        setGoals(prev => prev.filter(goal => goal.id !== goalId));
+        setGoals((prev) => prev.filter((goal) => goal.id !== goalId));
       }
     }
   };
@@ -160,26 +201,26 @@ export default function Dashboard() {
     navigate("/login");
   };
 
-    const handleStrategyClick = (strategy: InvestmentStrategy) => {
+  const handleStrategyClick = (strategy: InvestmentStrategy) => {
     setSelectedStrategy(strategy);
     setIsStrategyModalOpen(true);
   };
 
-    const handleInvestClick = (strategy: InvestmentStrategy) => {
-    console.log('Investment clicked for strategy:', strategy.name);
+  const handleInvestClick = (strategy: InvestmentStrategy) => {
+    console.log("Investment clicked for strategy:", strategy.name);
     setSelectedStrategy(strategy);
     setIsStrategyModalOpen(false);
     setIsInvestmentFormOpen(true);
   };
 
-    const handleInvestmentConfirm = (investmentData: InvestmentFormData) => {
+  const handleInvestmentConfirm = (investmentData: InvestmentFormData) => {
     const result = saveInvestment({
       strategyId: investmentData.strategyId,
       strategyName: investmentData.strategyName,
       amount: investmentData.amount,
       investmentType: investmentData.investmentType,
-      status: 'active',
-      goalId: investmentData.goalId
+      status: "active",
+      goalId: investmentData.goalId,
     });
 
     if (result) {
@@ -187,21 +228,30 @@ export default function Dashboard() {
       const updatedInvestments = getInvestments();
       setInvestments(updatedInvestments);
 
-      alert(`Successfully started investment in ${investmentData.strategyName} with ₹${investmentData.amount.toLocaleString()}! You can track it in your portfolio.`);
+      alert(
+        `Successfully started investment in ${investmentData.strategyName} with ₹${investmentData.amount.toLocaleString()}! You can track it in your portfolio.`,
+      );
       setIsInvestmentFormOpen(false);
       setSelectedStrategy(null);
 
       // Optionally switch to overview tab to show updated stats
       setActiveTab("overview");
     } else {
-      alert('Failed to start investment. Please try again.');
+      alert("Failed to start investment. Please try again.");
     }
   };
 
-  const totalInvested = goals.reduce((sum, goal) => sum + goal.currentInvestment, 0);
+  const totalInvested = goals.reduce(
+    (sum, goal) => sum + goal.currentInvestment,
+    0,
+  );
   const totalTarget = goals.reduce((sum, goal) => sum + goal.targetAmount, 0);
-  const overallProgress = totalTarget > 0 ? (totalInvested / totalTarget) * 100 : 0;
-  const availableForInvestment = userProfile.monthlySalary - userProfile.fixedExpenses - userProfile.variableExpenses;
+  const overallProgress =
+    totalTarget > 0 ? (totalInvested / totalTarget) * 100 : 0;
+  const availableForInvestment =
+    userProfile.monthlySalary -
+    userProfile.fixedExpenses -
+    userProfile.variableExpenses;
 
   if (!user) {
     return (
@@ -227,19 +277,21 @@ export default function Dashboard() {
             </div>
             <div>
               <h1 className="text-xl font-semibold text-gray-900">Weallth</h1>
-              <p className="text-sm text-wealth-gray">by Erfinden Technologies</p>
+              <p className="text-sm text-wealth-gray">
+                by Erfinden Technologies
+              </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
-                                    <Button
+            <Button
               variant="ghost"
               className="text-wealth-gray hover:text-gray-900"
               onClick={() => setActiveTab("goals")}
             >
               Goal Dashboard
             </Button>
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center gap-2 cursor-pointer">
@@ -248,7 +300,9 @@ export default function Dashboard() {
                       {userProfile.fullName.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-gray-900 font-medium">{userProfile.fullName}</span>
+                  <span className="text-gray-900 font-medium">
+                    {userProfile.fullName}
+                  </span>
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
@@ -260,7 +314,10 @@ export default function Dashboard() {
                   <MessageSquare className="w-4 h-4 mr-2" />
                   Send Feedback
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
+                <DropdownMenuItem
+                  className="text-red-600"
+                  onClick={handleLogout}
+                >
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
                 </DropdownMenuItem>
@@ -272,12 +329,20 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="p-6">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="goals">My Goals</TabsTrigger>
-            <TabsTrigger value="personal-strategies">Personal Strategies</TabsTrigger>
-            <TabsTrigger value="professional-strategies">Professional Strategies</TabsTrigger>
+            <TabsTrigger value="personal-strategies">
+              Personal Strategies
+            </TabsTrigger>
+            <TabsTrigger value="professional-strategies">
+              Professional Strategies
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -294,10 +359,12 @@ export default function Dashboard() {
                     <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                       Welcome back, {userProfile.fullName}! <span>🎯</span>
                     </h2>
-                    <p className="text-wealth-gray">Track your financial goals and build your wealth journey</p>
+                    <p className="text-wealth-gray">
+                      Track your financial goals and build your wealth journey
+                    </p>
                   </div>
                 </div>
-                
+
                 <Button
                   onClick={() => navigate("/goal-selection")}
                   className="bg-wealth-blue hover:bg-wealth-blue/90 text-white transform hover:scale-105 transition-all duration-300"
@@ -315,8 +382,12 @@ export default function Dashboard() {
                   <div className="w-12 h-12 bg-wealth-blue rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                     <Target className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-wealth-gray font-medium mb-2">Active Goals</h3>
-                  <p className="text-3xl font-bold text-wealth-blue">{goals.length}</p>
+                  <h3 className="text-wealth-gray font-medium mb-2">
+                    Active Goals
+                  </h3>
+                  <p className="text-3xl font-bold text-wealth-blue">
+                    {goals.length}
+                  </p>
                 </CardContent>
               </Card>
 
@@ -325,8 +396,12 @@ export default function Dashboard() {
                   <div className="w-12 h-12 bg-wealth-green rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-wealth-gray font-medium mb-2">Total Invested</h3>
-                  <p className="text-3xl font-bold text-wealth-green">₹{totalInvested.toLocaleString()}</p>
+                  <h3 className="text-wealth-gray font-medium mb-2">
+                    Total Invested
+                  </h3>
+                  <p className="text-3xl font-bold text-wealth-green">
+                    ₹{totalInvested.toLocaleString()}
+                  </p>
                 </CardContent>
               </Card>
 
@@ -335,8 +410,12 @@ export default function Dashboard() {
                   <div className="w-12 h-12 bg-wealth-purple rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                     <DollarSign className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-wealth-gray font-medium mb-2">Overall Progress</h3>
-                  <p className="text-3xl font-bold text-wealth-purple">{Math.round(overallProgress)}%</p>
+                  <h3 className="text-wealth-gray font-medium mb-2">
+                    Overall Progress
+                  </h3>
+                  <p className="text-3xl font-bold text-wealth-purple">
+                    {Math.round(overallProgress)}%
+                  </p>
                 </CardContent>
               </Card>
 
@@ -345,49 +424,74 @@ export default function Dashboard() {
                   <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                     <Calculator className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-wealth-gray font-medium mb-2">Available Monthly</h3>
-                  <p className="text-3xl font-bold text-orange-600">₹{availableForInvestment.toLocaleString()}</p>
+                  <h3 className="text-wealth-gray font-medium mb-2">
+                    Available Monthly
+                  </h3>
+                  <p className="text-3xl font-bold text-orange-600">
+                    ₹{availableForInvestment.toLocaleString()}
+                  </p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Quick Actions */}
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate("/goal-selection")}>
+              <Card
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigate("/goal-selection")}
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                       <Target className="w-5 h-5 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900">Set New Goal</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Set New Goal
+                    </h3>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">Plan your next financial milestone</p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Plan your next financial milestone
+                  </p>
                   <ChevronRight className="w-4 h-4 text-blue-600" />
                 </CardContent>
               </Card>
 
-                            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setIsPortfolioTrackerOpen(true)}>
+              <Card
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => setIsPortfolioTrackerOpen(true)}
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                       <PieChart className="w-5 h-5 text-green-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900">Portfolio Tracker</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Portfolio Tracker
+                    </h3>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">Connect your investment accounts</p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Connect your investment accounts
+                  </p>
                   <ChevronRight className="w-4 h-4 text-green-600" />
                 </CardContent>
               </Card>
 
-                                                        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setIsSmartSuggestionsOpen(true)}>
+              <Card
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => setIsSmartSuggestionsOpen(true)}
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                       <Lightbulb className="w-5 h-5 text-purple-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900">Smart Suggestions</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Smart Suggestions
+                    </h3>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">Get personalized investment advice</p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Get personalized investment advice
+                  </p>
                   <ChevronRight className="w-4 h-4 text-purple-600" />
                 </CardContent>
               </Card>
@@ -397,11 +501,13 @@ export default function Dashboard() {
             {goals.length > 0 && (
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Recent Goals</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Recent Goals
+                  </h3>
                   <Button
                     variant="ghost"
                     size="sm"
-                                        onClick={() => setActiveTab("goals")}
+                    onClick={() => setActiveTab("goals")}
                     className="text-blue-600 hover:text-blue-700"
                   >
                     View All
@@ -410,12 +516,18 @@ export default function Dashboard() {
 
                 <div className="grid gap-4">
                   {goals.slice(0, 3).map((goal) => {
-                    const progress = (goal.currentInvestment / goal.targetAmount) * 100;
+                    const progress =
+                      (goal.currentInvestment / goal.targetAmount) * 100;
                     return (
-                      <Card key={goal.id} className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
+                      <Card
+                        key={goal.id}
+                        className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow"
+                      >
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-medium text-gray-900">{goal.name}</h4>
+                            <h4 className="font-medium text-gray-900">
+                              {goal.name}
+                            </h4>
                             <Badge className="bg-blue-100 text-blue-800 text-xs">
                               {goal.timeline} months
                             </Badge>
@@ -424,11 +536,15 @@ export default function Dashboard() {
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-600">Progress</span>
-                              <span className="font-medium">{Math.round(progress)}%</span>
+                              <span className="font-medium">
+                                {Math.round(progress)}%
+                              </span>
                             </div>
                             <Progress value={progress} className="h-2" />
                             <div className="flex justify-between text-sm text-gray-600">
-                              <span>₹{goal.currentInvestment.toLocaleString()}</span>
+                              <span>
+                                ₹{goal.currentInvestment.toLocaleString()}
+                              </span>
                               <span>₹{goal.targetAmount.toLocaleString()}</span>
                             </div>
                           </div>
@@ -443,8 +559,13 @@ export default function Dashboard() {
 
           <TabsContent value="goals" className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">My Financial Goals</h2>
-              <Button onClick={() => navigate("/goal-selection")} className="bg-wealth-blue hover:bg-wealth-blue/90 text-white">
+              <h2 className="text-2xl font-bold text-gray-900">
+                My Financial Goals
+              </h2>
+              <Button
+                onClick={() => navigate("/goal-selection")}
+                className="bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Goal
               </Button>
@@ -455,35 +576,54 @@ export default function Dashboard() {
                 <Card className="bg-white border-0 shadow-sm">
                   <CardContent className="p-12 text-center">
                     <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No goals set yet</h3>
-                    <p className="text-gray-600 mb-4">Start by adding your first financial goal</p>
-                    <Button onClick={() => navigate("/goal-selection")} className="bg-wealth-blue hover:bg-wealth-blue/90 text-white">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      No goals set yet
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      Start by adding your first financial goal
+                    </p>
+                    <Button
+                      onClick={() => navigate("/goal-selection")}
+                      className="bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+                    >
                       Add Your First Goal
                     </Button>
                   </CardContent>
                 </Card>
               ) : (
                 goals.map((goal) => {
-                  const progress = (goal.currentInvestment / goal.targetAmount) * 100;
+                  const progress =
+                    (goal.currentInvestment / goal.targetAmount) * 100;
                   const remaining = goal.targetAmount - goal.currentInvestment;
-                  
+
                   return (
-                    <Card key={goal.id} className="bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300">
+                    <Card
+                      key={goal.id}
+                      className="bg-white border-0 shadow-sm hover:shadow-lg transition-all duration-300"
+                    >
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-gray-900">{goal.name}</h3>
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {goal.name}
+                          </h3>
                           <div className="flex items-center gap-2">
                             <Badge className="bg-wealth-blue-light text-wealth-blue">
                               {goal.timeline} months
                             </Badge>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 w-8 p-0"
+                                >
                                   <MoreVertical className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => handleEditGoal(goal)}>
+                                <DropdownMenuItem
+                                  onClick={() => handleEditGoal(goal)}
+                                >
                                   <Edit3 className="w-4 h-4 mr-2" />
                                   Edit Goal
                                 </DropdownMenuItem>
@@ -497,27 +637,41 @@ export default function Dashboard() {
                             </DropdownMenu>
                           </div>
                         </div>
-                        
+
                         <div className="space-y-3">
                           <div className="flex justify-between text-sm">
                             <span className="text-wealth-gray">Progress</span>
-                            <span className="text-gray-900 font-medium">{Math.round(progress)}%</span>
+                            <span className="text-gray-900 font-medium">
+                              {Math.round(progress)}%
+                            </span>
                           </div>
-                          
+
                           <Progress value={progress} className="h-3" />
-                          
+
                           <div className="grid grid-cols-3 gap-4 pt-2">
                             <div>
-                              <p className="text-xs text-wealth-gray">Invested</p>
-                              <p className="text-sm font-semibold text-wealth-green">₹{goal.currentInvestment.toLocaleString()}</p>
+                              <p className="text-xs text-wealth-gray">
+                                Invested
+                              </p>
+                              <p className="text-sm font-semibold text-wealth-green">
+                                ₹{goal.currentInvestment.toLocaleString()}
+                              </p>
                             </div>
                             <div>
-                              <p className="text-xs text-wealth-gray">Remaining</p>
-                              <p className="text-sm font-semibold text-gray-900">₹{remaining.toLocaleString()}</p>
+                              <p className="text-xs text-wealth-gray">
+                                Remaining
+                              </p>
+                              <p className="text-sm font-semibold text-gray-900">
+                                ₹{remaining.toLocaleString()}
+                              </p>
                             </div>
                             <div>
-                              <p className="text-xs text-wealth-gray">Monthly SIP</p>
-                              <p className="text-sm font-semibold text-wealth-blue">₹{goal.monthlySaving.toLocaleString()}</p>
+                              <p className="text-xs text-wealth-gray">
+                                Monthly SIP
+                              </p>
+                              <p className="text-sm font-semibold text-wealth-blue">
+                                ₹{goal.monthlySaving.toLocaleString()}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -531,13 +685,17 @@ export default function Dashboard() {
 
           <TabsContent value="personal-strategies" className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Investment Strategies</h2>
-              <p className="text-gray-600 mb-6">Explore investment options for your personal financial goals</p>
-              
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Personal Investment Strategies
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Explore investment options for your personal financial goals
+              </p>
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {personalStrategies.map((strategy) => (
-                  <Card 
-                    key={strategy.id} 
+                  <Card
+                    key={strategy.id}
                     className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-white"
                     onClick={() => handleStrategyClick(strategy)}
                   >
@@ -548,8 +706,12 @@ export default function Dashboard() {
                             {strategy.name}
                           </CardTitle>
                           <div className="flex items-center gap-2 mb-2">
-                            <Badge variant="outline" className="text-xs">{strategy.category}</Badge>
-                            <Badge className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}>
+                            <Badge variant="outline" className="text-xs">
+                              {strategy.category}
+                            </Badge>
+                            <Badge
+                              className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
+                            >
                               {strategy.riskLevel}
                             </Badge>
                           </div>
@@ -564,11 +726,15 @@ export default function Dashboard() {
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <span className="text-gray-500">Min Investment:</span>
-                          <span className="font-medium ml-1">₹{strategy.minInvestment.toLocaleString()}</span>
+                          <span className="font-medium ml-1">
+                            ₹{strategy.minInvestment.toLocaleString()}
+                          </span>
                         </div>
                         <div>
                           <span className="text-gray-500">Returns:</span>
-                          <span className="font-medium text-green-600 ml-1">{strategy.expectedReturn}</span>
+                          <span className="font-medium text-green-600 ml-1">
+                            {strategy.expectedReturn}
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -580,13 +746,17 @@ export default function Dashboard() {
 
           <TabsContent value="professional-strategies" className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Professional Investment Strategies</h2>
-              <p className="text-gray-600 mb-6">Advanced investment options for business and professional growth</p>
-              
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Professional Investment Strategies
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Advanced investment options for business and professional growth
+              </p>
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {professionalStrategies.map((strategy) => (
-                  <Card 
-                    key={strategy.id} 
+                  <Card
+                    key={strategy.id}
                     className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-white"
                     onClick={() => handleStrategyClick(strategy)}
                   >
@@ -597,8 +767,12 @@ export default function Dashboard() {
                             {strategy.name}
                           </CardTitle>
                           <div className="flex items-center gap-2 mb-2">
-                            <Badge variant="outline" className="text-xs">{strategy.category}</Badge>
-                            <Badge className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}>
+                            <Badge variant="outline" className="text-xs">
+                              {strategy.category}
+                            </Badge>
+                            <Badge
+                              className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
+                            >
                               {strategy.riskLevel}
                             </Badge>
                           </div>
@@ -613,11 +787,15 @@ export default function Dashboard() {
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <span className="text-gray-500">Min Investment:</span>
-                          <span className="font-medium ml-1">₹{strategy.minInvestment.toLocaleString()}</span>
+                          <span className="font-medium ml-1">
+                            ₹{strategy.minInvestment.toLocaleString()}
+                          </span>
                         </div>
                         <div>
                           <span className="text-gray-500">Returns:</span>
-                          <span className="font-medium text-green-600 ml-1">{strategy.expectedReturn}</span>
+                          <span className="font-medium text-green-600 ml-1">
+                            {strategy.expectedReturn}
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -629,7 +807,7 @@ export default function Dashboard() {
         </Tabs>
       </main>
 
-            {/* Investment Strategy Modal */}
+      {/* Investment Strategy Modal */}
       <InvestmentStrategyModal
         strategy={selectedStrategy}
         isOpen={isStrategyModalOpen}
@@ -640,7 +818,7 @@ export default function Dashboard() {
         onInvest={handleInvestClick}
       />
 
-            {/* Investment Form Modal */}
+      {/* Investment Form Modal */}
       {selectedStrategy && (
         <InvestmentFormModal
           strategy={selectedStrategy}
@@ -654,57 +832,106 @@ export default function Dashboard() {
       )}
 
       {/* Edit Goal Modal */}
-      <Dialog open={!!editingGoal} onOpenChange={(open) => !open && setEditingGoal(null)}>
+      <Dialog
+        open={!!editingGoal}
+        onOpenChange={(open) => !open && setEditingGoal(null)}
+      >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Edit Goal</DialogTitle>
           </DialogHeader>
-          
+
           {editingGoal && (
             <div className="space-y-4 py-4">
               <div>
-                <Label htmlFor="goalName" className="text-sm font-medium">Goal Name</Label>
+                <Label htmlFor="goalName" className="text-sm font-medium">
+                  Goal Name
+                </Label>
                 <Input
                   id="goalName"
                   value={editingGoal.name}
-                  onChange={(e) => setEditingGoal(prev => prev ? { ...prev, name: e.target.value } : null)}
+                  onChange={(e) =>
+                    setEditingGoal((prev) =>
+                      prev ? { ...prev, name: e.target.value } : null,
+                    )
+                  }
                 />
               </div>
               <div>
-                <Label htmlFor="targetAmount" className="text-sm font-medium">Target Amount (₹)</Label>
+                <Label htmlFor="targetAmount" className="text-sm font-medium">
+                  Target Amount (₹)
+                </Label>
                 <Input
                   id="targetAmount"
                   type="number"
                   value={editingGoal.targetAmount}
-                  onChange={(e) => setEditingGoal(prev => prev ? { ...prev, targetAmount: parseInt(e.target.value) || 0 } : null)}
+                  onChange={(e) =>
+                    setEditingGoal((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            targetAmount: parseInt(e.target.value) || 0,
+                          }
+                        : null,
+                    )
+                  }
                 />
               </div>
               <div>
-                <Label htmlFor="currentInvestment" className="text-sm font-medium">Current Investment (₹)</Label>
+                <Label
+                  htmlFor="currentInvestment"
+                  className="text-sm font-medium"
+                >
+                  Current Investment (₹)
+                </Label>
                 <Input
                   id="currentInvestment"
                   type="number"
                   value={editingGoal.currentInvestment}
-                  onChange={(e) => setEditingGoal(prev => prev ? { ...prev, currentInvestment: parseInt(e.target.value) || 0 } : null)}
+                  onChange={(e) =>
+                    setEditingGoal((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            currentInvestment: parseInt(e.target.value) || 0,
+                          }
+                        : null,
+                    )
+                  }
                 />
               </div>
               <div>
-                <Label htmlFor="timeline" className="text-sm font-medium">Timeline (months)</Label>
+                <Label htmlFor="timeline" className="text-sm font-medium">
+                  Timeline (months)
+                </Label>
                 <Input
                   id="timeline"
                   type="number"
                   value={editingGoal.timeline}
-                  onChange={(e) => setEditingGoal(prev => prev ? { ...prev, timeline: parseInt(e.target.value) || 12 } : null)}
+                  onChange={(e) =>
+                    setEditingGoal((prev) =>
+                      prev
+                        ? { ...prev, timeline: parseInt(e.target.value) || 12 }
+                        : null,
+                    )
+                  }
                 />
               </div>
             </div>
           )}
-          
+
           <div className="flex gap-3">
-            <Button variant="outline" className="flex-1" onClick={() => setEditingGoal(null)}>
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => setEditingGoal(null)}
+            >
               Cancel
             </Button>
-            <Button className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white" onClick={handleSaveGoal}>
+            <Button
+              className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+              onClick={handleSaveGoal}
+            >
               Save Changes
             </Button>
           </div>
@@ -723,37 +950,52 @@ export default function Dashboard() {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <DialogTitle className="text-lg font-semibold">Profile Settings</DialogTitle>
-                  <p className="text-sm text-wealth-gray">Manage your account and preferences</p>
+                  <DialogTitle className="text-lg font-semibold">
+                    Profile Settings
+                  </DialogTitle>
+                  <p className="text-sm text-wealth-gray">
+                    Manage your account and preferences
+                  </p>
                 </div>
               </div>
             </div>
           </DialogHeader>
-          
+
           <div className="space-y-6 py-4">
             <div className="space-y-4">
               <h3 className="font-medium text-gray-900 flex items-center gap-2">
                 <User className="w-4 h-4 text-blue-600" />
                 Account Information
               </h3>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="text-sm font-medium">Full Name</Label>
+                  <Label htmlFor="fullName" className="text-sm font-medium">
+                    Full Name
+                  </Label>
                   <Input
                     id="fullName"
                     value={userProfile.fullName}
-                    onChange={(e) => setUserProfile({...userProfile, fullName: e.target.value})}
+                    onChange={(e) =>
+                      setUserProfile({
+                        ...userProfile,
+                        fullName: e.target.value,
+                      })
+                    }
                     className="border-wealth-gray-light"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">
+                    Email Address
+                  </Label>
                   <Input
                     id="email"
                     type="email"
                     value={userProfile.email}
-                    onChange={(e) => setUserProfile({...userProfile, email: e.target.value})}
+                    onChange={(e) =>
+                      setUserProfile({ ...userProfile, email: e.target.value })
+                    }
                     className="border-wealth-gray-light"
                   />
                 </div>
@@ -765,35 +1007,65 @@ export default function Dashboard() {
                 <DollarSign className="w-4 h-4 text-green-600" />
                 Financial Information
               </h3>
-              
+
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="monthlySalary" className="text-xs text-wealth-gray">Monthly Salary (₹)</Label>
+                  <Label
+                    htmlFor="monthlySalary"
+                    className="text-xs text-wealth-gray"
+                  >
+                    Monthly Salary (₹)
+                  </Label>
                   <Input
                     id="monthlySalary"
                     type="number"
                     value={userProfile.monthlySalary}
-                    onChange={(e) => setUserProfile({...userProfile, monthlySalary: parseInt(e.target.value) || 0})}
+                    onChange={(e) =>
+                      setUserProfile({
+                        ...userProfile,
+                        monthlySalary: parseInt(e.target.value) || 0,
+                      })
+                    }
                     className="border-wealth-gray-light"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="fixedExpenses" className="text-xs text-wealth-gray">Fixed Expenses (₹)</Label>
+                  <Label
+                    htmlFor="fixedExpenses"
+                    className="text-xs text-wealth-gray"
+                  >
+                    Fixed Expenses (₹)
+                  </Label>
                   <Input
                     id="fixedExpenses"
                     type="number"
                     value={userProfile.fixedExpenses}
-                    onChange={(e) => setUserProfile({...userProfile, fixedExpenses: parseInt(e.target.value) || 0})}
+                    onChange={(e) =>
+                      setUserProfile({
+                        ...userProfile,
+                        fixedExpenses: parseInt(e.target.value) || 0,
+                      })
+                    }
                     className="border-wealth-gray-light"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="variableExpenses" className="text-xs text-wealth-gray">Variable Expenses (₹)</Label>
+                  <Label
+                    htmlFor="variableExpenses"
+                    className="text-xs text-wealth-gray"
+                  >
+                    Variable Expenses (₹)
+                  </Label>
                   <Input
                     id="variableExpenses"
                     type="number"
                     value={userProfile.variableExpenses}
-                    onChange={(e) => setUserProfile({...userProfile, variableExpenses: parseInt(e.target.value) || 0})}
+                    onChange={(e) =>
+                      setUserProfile({
+                        ...userProfile,
+                        variableExpenses: parseInt(e.target.value) || 0,
+                      })
+                    }
                     className="border-wealth-gray-light"
                   />
                 </div>
@@ -802,14 +1074,14 @@ export default function Dashboard() {
           </div>
 
           <div className="flex gap-3 pt-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="flex-1"
               onClick={() => setIsProfileOpen(false)}
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
               onClick={handleSaveProfile}
             >
@@ -825,8 +1097,8 @@ export default function Dashboard() {
           <DialogHeader>
             <div className="flex justify-between items-center">
               <DialogTitle>Send Feedback</DialogTitle>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="icon"
                 onClick={() => setIsFeedbackOpen(false)}
                 className="h-8 w-8"
@@ -835,23 +1107,34 @@ export default function Dashboard() {
               </Button>
             </div>
           </DialogHeader>
-          
+
           {feedbackSubmitted ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <div className="w-8 h-8 text-green-600">✓</div>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Thank You!</h3>
-              <p className="text-gray-600">Your feedback has been submitted successfully.</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Thank You!
+              </h3>
+              <p className="text-gray-600">
+                Your feedback has been submitted successfully.
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmitFeedback} className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="type" className="text-sm font-medium">Type</Label>
+                <Label htmlFor="type" className="text-sm font-medium">
+                  Type
+                </Label>
                 <select
                   id="type"
                   value={feedbackData.type}
-                  onChange={(e) => setFeedbackData(prev => ({ ...prev, type: e.target.value }))}
+                  onChange={(e) =>
+                    setFeedbackData((prev) => ({
+                      ...prev,
+                      type: e.target.value,
+                    }))
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="feedback">General Feedback</option>
@@ -862,44 +1145,69 @@ export default function Dashboard() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
+                <Label htmlFor="subject" className="text-sm font-medium">
+                  Subject
+                </Label>
                 <Input
                   id="subject"
                   value={feedbackData.subject}
-                  onChange={(e) => setFeedbackData(prev => ({ ...prev, subject: e.target.value }))}
+                  onChange={(e) =>
+                    setFeedbackData((prev) => ({
+                      ...prev,
+                      subject: e.target.value,
+                    }))
+                  }
                   placeholder="Brief description"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="message" className="text-sm font-medium">Message</Label>
+                <Label htmlFor="message" className="text-sm font-medium">
+                  Message
+                </Label>
                 <textarea
                   id="message"
                   value={feedbackData.message}
-                  onChange={(e) => setFeedbackData(prev => ({ ...prev, message: e.target.value }))}
+                  onChange={(e) =>
+                    setFeedbackData((prev) => ({
+                      ...prev,
+                      message: e.target.value,
+                    }))
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   rows={4}
                   placeholder="Detailed feedback or question"
                   required
                 />
               </div>
-              
+
               <div className="flex gap-3 mt-6">
-                <Button type="button" variant="outline" className="flex-1" onClick={() => setIsFeedbackOpen(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setIsFeedbackOpen(false)}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white">
+                <Button
+                  type="submit"
+                  className="flex-1 bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+                >
                   Send Feedback
                 </Button>
               </div>
             </form>
           )}
-                </DialogContent>
+        </DialogContent>
       </Dialog>
 
       {/* Portfolio Tracker Modal */}
-      <Dialog open={isPortfolioTrackerOpen} onOpenChange={setIsPortfolioTrackerOpen}>
+      <Dialog
+        open={isPortfolioTrackerOpen}
+        onOpenChange={setIsPortfolioTrackerOpen}
+      >
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center justify-between">
@@ -908,11 +1216,19 @@ export default function Dashboard() {
                   <PieChart className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <DialogTitle className="text-xl font-bold">Portfolio Tracker</DialogTitle>
-                  <p className="text-sm text-gray-600">Track all your investments in one place</p>
+                  <DialogTitle className="text-xl font-bold">
+                    Portfolio Tracker
+                  </DialogTitle>
+                  <p className="text-sm text-gray-600">
+                    Track all your investments in one place
+                  </p>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" onClick={() => setIsPortfolioTrackerOpen(false)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsPortfolioTrackerOpen(false)}
+              >
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -923,27 +1239,43 @@ export default function Dashboard() {
             <div className="grid md:grid-cols-3 gap-4">
               <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
                 <CardContent className="p-4 text-center">
-                  <h3 className="text-sm font-medium text-blue-600 mb-2">Total Invested</h3>
+                  <h3 className="text-sm font-medium text-blue-600 mb-2">
+                    Total Invested
+                  </h3>
                   <p className="text-2xl font-bold text-blue-800">
-                    ₹{investments.reduce((sum, inv) => sum + inv.amount, 0).toLocaleString()}
+                    ₹
+                    {investments
+                      .reduce((sum, inv) => sum + inv.amount, 0)
+                      .toLocaleString()}
                   </p>
                 </CardContent>
               </Card>
 
               <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
                 <CardContent className="p-4 text-center">
-                  <h3 className="text-sm font-medium text-green-600 mb-2">Active Investments</h3>
+                  <h3 className="text-sm font-medium text-green-600 mb-2">
+                    Active Investments
+                  </h3>
                   <p className="text-2xl font-bold text-green-800">
-                    {investments.filter(inv => inv.status === 'active').length}
+                    {
+                      investments.filter((inv) => inv.status === "active")
+                        .length
+                    }
                   </p>
                 </CardContent>
               </Card>
 
               <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
                 <CardContent className="p-4 text-center">
-                  <h3 className="text-sm font-medium text-purple-600 mb-2">Expected Returns</h3>
+                  <h3 className="text-sm font-medium text-purple-600 mb-2">
+                    Expected Returns
+                  </h3>
                   <p className="text-2xl font-bold text-purple-800">
-                    ₹{Math.round(investments.reduce((sum, inv) => sum + inv.amount, 0) * 0.12).toLocaleString()}
+                    ₹
+                    {Math.round(
+                      investments.reduce((sum, inv) => sum + inv.amount, 0) *
+                        0.12,
+                    ).toLocaleString()}
                   </p>
                 </CardContent>
               </Card>
@@ -951,13 +1283,19 @@ export default function Dashboard() {
 
             {/* Investments List */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Investments</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Your Investments
+              </h3>
 
               {investments.length === 0 ? (
                 <div className="text-center py-12">
                   <PieChart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No Investments Yet</h3>
-                  <p className="text-gray-600 mb-4">Start investing to track your portfolio here</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    No Investments Yet
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Start investing to track your portfolio here
+                  </p>
                   <Button
                     onClick={() => {
                       setIsPortfolioTrackerOpen(false);
@@ -971,17 +1309,26 @@ export default function Dashboard() {
               ) : (
                 <div className="space-y-4">
                   {investments.map((investment) => (
-                    <Card key={investment.id} className="hover:shadow-md transition-shadow">
+                    <Card
+                      key={investment.id}
+                      className="hover:shadow-md transition-shadow"
+                    >
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
-                              <h4 className="font-medium text-gray-900">{investment.strategyName}</h4>
-                              <Badge className={`text-xs ${
-                                investment.status === 'active' ? 'bg-green-100 text-green-800' :
-                                investment.status === 'paused' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-gray-100 text-gray-800'
-                              }`}>
+                              <h4 className="font-medium text-gray-900">
+                                {investment.strategyName}
+                              </h4>
+                              <Badge
+                                className={`text-xs ${
+                                  investment.status === "active"
+                                    ? "bg-green-100 text-green-800"
+                                    : investment.status === "paused"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : "bg-gray-100 text-gray-800"
+                                }`}
+                              >
                                 {investment.status}
                               </Badge>
                               <Badge variant="outline" className="text-xs">
@@ -989,7 +1336,10 @@ export default function Dashboard() {
                               </Badge>
                             </div>
                             <p className="text-sm text-gray-600">
-                              Started: {new Date(investment.startDate).toLocaleDateString()}
+                              Started:{" "}
+                              {new Date(
+                                investment.startDate,
+                              ).toLocaleDateString()}
                             </p>
                           </div>
 
@@ -998,7 +1348,11 @@ export default function Dashboard() {
                               ₹{investment.amount.toLocaleString()}
                             </p>
                             <p className="text-sm text-green-600">
-                              +₹{Math.round(investment.amount * 0.12).toLocaleString()} (12% p.a.)
+                              +₹
+                              {Math.round(
+                                investment.amount * 0.12,
+                              ).toLocaleString()}{" "}
+                              (12% p.a.)
                             </p>
                           </div>
                         </div>
@@ -1012,15 +1366,33 @@ export default function Dashboard() {
             {/* Portfolio Insights */}
             {investments.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Portfolio Insights</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Portfolio Insights
+                </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <Card className="bg-blue-50 border-blue-200">
                     <CardContent className="p-4">
-                      <h4 className="font-medium text-blue-900 mb-2">Investment Distribution</h4>
+                      <h4 className="font-medium text-blue-900 mb-2">
+                        Investment Distribution
+                      </h4>
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span>Personal: {investments.filter(inv => inv.investmentType === 'personal').length}</span>
-                          <span>Professional: {investments.filter(inv => inv.investmentType === 'professional').length}</span>
+                          <span>
+                            Personal:{" "}
+                            {
+                              investments.filter(
+                                (inv) => inv.investmentType === "personal",
+                              ).length
+                            }
+                          </span>
+                          <span>
+                            Professional:{" "}
+                            {
+                              investments.filter(
+                                (inv) => inv.investmentType === "professional",
+                              ).length
+                            }
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -1028,9 +1400,12 @@ export default function Dashboard() {
 
                   <Card className="bg-green-50 border-green-200">
                     <CardContent className="p-4">
-                      <h4 className="font-medium text-green-900 mb-2">Growth Potential</h4>
+                      <h4 className="font-medium text-green-900 mb-2">
+                        Growth Potential
+                      </h4>
                       <p className="text-sm text-green-700">
-                        Your portfolio is positioned for long-term wealth creation with diversified investments.
+                        Your portfolio is positioned for long-term wealth
+                        creation with diversified investments.
                       </p>
                     </CardContent>
                   </Card>
@@ -1038,11 +1413,14 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-                </DialogContent>
+        </DialogContent>
       </Dialog>
 
       {/* Smart Suggestions Modal */}
-      <Dialog open={isSmartSuggestionsOpen} onOpenChange={setIsSmartSuggestionsOpen}>
+      <Dialog
+        open={isSmartSuggestionsOpen}
+        onOpenChange={setIsSmartSuggestionsOpen}
+      >
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center justify-between">
@@ -1051,11 +1429,19 @@ export default function Dashboard() {
                   <Lightbulb className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <DialogTitle className="text-xl font-bold">Smart Investment Suggestions</DialogTitle>
-                  <p className="text-sm text-gray-600">Get personalized advice based on your profile</p>
+                  <DialogTitle className="text-xl font-bold">
+                    Smart Investment Suggestions
+                  </DialogTitle>
+                  <p className="text-sm text-gray-600">
+                    Get personalized advice based on your profile
+                  </p>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" onClick={() => setIsSmartSuggestionsOpen(false)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsSmartSuggestionsOpen(false)}
+              >
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -1065,18 +1451,28 @@ export default function Dashboard() {
             {/* Current Profile Analysis */}
             <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-purple-900 mb-4">Your Investment Profile</h3>
+                <h3 className="text-lg font-semibold text-purple-900 mb-4">
+                  Your Investment Profile
+                </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-medium text-purple-800 mb-2">Financial Status</h4>
+                    <h4 className="font-medium text-purple-800 mb-2">
+                      Financial Status
+                    </h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-purple-600">Monthly Salary:</span>
-                        <span className="font-medium">₹{userProfile.monthlySalary.toLocaleString()}</span>
+                        <span className="font-medium">
+                          ₹{userProfile.monthlySalary.toLocaleString()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-purple-600">Available for Investment:</span>
-                        <span className="font-medium">₹{availableForInvestment.toLocaleString()}</span>
+                        <span className="text-purple-600">
+                          Available for Investment:
+                        </span>
+                        <span className="font-medium">
+                          ₹{availableForInvestment.toLocaleString()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-purple-600">Current Goals:</span>
@@ -1085,19 +1481,39 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-medium text-purple-800 mb-2">Investment Activity</h4>
+                    <h4 className="font-medium text-purple-800 mb-2">
+                      Investment Activity
+                    </h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-purple-600">Active Investments:</span>
-                        <span className="font-medium">{investments.length}</span>
+                        <span className="text-purple-600">
+                          Active Investments:
+                        </span>
+                        <span className="font-medium">
+                          {investments.length}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-purple-600">Total Invested:</span>
-                        <span className="font-medium">₹{investments.reduce((sum, inv) => sum + inv.amount, 0).toLocaleString()}</span>
+                        <span className="font-medium">
+                          ₹
+                          {investments
+                            .reduce((sum, inv) => sum + inv.amount, 0)
+                            .toLocaleString()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-purple-600">Savings Rate:</span>
-                        <span className="font-medium">{userProfile.monthlySalary > 0 ? Math.round((availableForInvestment / userProfile.monthlySalary) * 100) : 0}%</span>
+                        <span className="font-medium">
+                          {userProfile.monthlySalary > 0
+                            ? Math.round(
+                                (availableForInvestment /
+                                  userProfile.monthlySalary) *
+                                  100,
+                              )
+                            : 0}
+                          %
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1107,7 +1523,9 @@ export default function Dashboard() {
 
             {/* Personalized Suggestions */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Personalized Suggestions</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Personalized Suggestions
+              </h3>
               <div className="space-y-4">
                 {/* Suggestion 1: Based on Savings Rate */}
                 <Card className="border-l-4 border-l-blue-500">
@@ -1118,20 +1536,28 @@ export default function Dashboard() {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-900 mb-2">
-                          {availableForInvestment > 20000 ? "Excellent Savings Potential!" :
-                           availableForInvestment > 10000 ? "Good Savings Capacity" :
-                           "Focus on Building Emergency Fund"}
+                          {availableForInvestment > 20000
+                            ? "Excellent Savings Potential!"
+                            : availableForInvestment > 10000
+                              ? "Good Savings Capacity"
+                              : "Focus on Building Emergency Fund"}
                         </h4>
                         <p className="text-sm text-gray-600 mb-3">
-                          {availableForInvestment > 20000 ?
-                            "With ₹" + availableForInvestment.toLocaleString() + " available monthly, consider diversifying across equity SIPs, debt funds, and tax-saving investments." :
-                           availableForInvestment > 10000 ?
-                            "You can start with SIP investments of ₹5,000-10,000 in equity mutual funds for long-term wealth creation." :
-                            "Build an emergency fund of 6 months expenses first, then start with small SIPs of ₹1,000-2,000."}
+                          {availableForInvestment > 20000
+                            ? "With ₹" +
+                              availableForInvestment.toLocaleString() +
+                              " available monthly, consider diversifying across equity SIPs, debt funds, and tax-saving investments."
+                            : availableForInvestment > 10000
+                              ? "You can start with SIP investments of ₹5,000-10,000 in equity mutual funds for long-term wealth creation."
+                              : "Build an emergency fund of 6 months expenses first, then start with small SIPs of ₹1,000-2,000."}
                         </p>
                         <div className="flex gap-2">
                           <Badge className="bg-blue-100 text-blue-800 text-xs">
-                            {availableForInvestment > 20000 ? "High Priority" : availableForInvestment > 10000 ? "Medium Priority" : "Foundation"}
+                            {availableForInvestment > 20000
+                              ? "High Priority"
+                              : availableForInvestment > 10000
+                                ? "Medium Priority"
+                                : "Foundation"}
                           </Badge>
                         </div>
                       </div>
@@ -1148,19 +1574,23 @@ export default function Dashboard() {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-900 mb-2">
-                          {goals.length === 0 ? "Start Goal-Based Planning" :
-                           goals.length <= 2 ? "Add More Specific Goals" :
-                           "Review Goal Priorities"}
+                          {goals.length === 0
+                            ? "Start Goal-Based Planning"
+                            : goals.length <= 2
+                              ? "Add More Specific Goals"
+                              : "Review Goal Priorities"}
                         </h4>
                         <p className="text-sm text-gray-600 mb-3">
-                          {goals.length === 0 ?
-                            "Set specific financial goals like buying a house, car, or retirement planning to create targeted investment strategies." :
-                           goals.length <= 2 ?
-                            "Consider adding goals for emergency fund, vacation, or professional development to diversify your planning." :
-                            "You have multiple goals. Prioritize them based on timeline and importance to optimize your investments."}
+                          {goals.length === 0
+                            ? "Set specific financial goals like buying a house, car, or retirement planning to create targeted investment strategies."
+                            : goals.length <= 2
+                              ? "Consider adding goals for emergency fund, vacation, or professional development to diversify your planning."
+                              : "You have multiple goals. Prioritize them based on timeline and importance to optimize your investments."}
                         </p>
                         <div className="flex gap-2">
-                          <Badge className="bg-green-100 text-green-800 text-xs">Goal Planning</Badge>
+                          <Badge className="bg-green-100 text-green-800 text-xs">
+                            Goal Planning
+                          </Badge>
                         </div>
                       </div>
                     </div>
@@ -1176,19 +1606,23 @@ export default function Dashboard() {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-900 mb-2">
-                          {investments.length === 0 ? "Start Your Investment Journey" :
-                           investments.length <= 2 ? "Diversify Your Portfolio" :
-                           "Optimize Your Investments"}
+                          {investments.length === 0
+                            ? "Start Your Investment Journey"
+                            : investments.length <= 2
+                              ? "Diversify Your Portfolio"
+                              : "Optimize Your Investments"}
                         </h4>
                         <p className="text-sm text-gray-600 mb-3">
-                          {investments.length === 0 ?
-                            "Begin with SIP in large-cap equity funds for stability and growth. Consider ELSS for tax benefits." :
-                           investments.length <= 2 ?
-                            "Add mid-cap funds for higher growth potential and debt funds for stability to balance your portfolio." :
-                            "Review your investment performance and rebalance based on changing goals and market conditions."}
+                          {investments.length === 0
+                            ? "Begin with SIP in large-cap equity funds for stability and growth. Consider ELSS for tax benefits."
+                            : investments.length <= 2
+                              ? "Add mid-cap funds for higher growth potential and debt funds for stability to balance your portfolio."
+                              : "Review your investment performance and rebalance based on changing goals and market conditions."}
                         </p>
                         <div className="flex gap-2">
-                          <Badge className="bg-purple-100 text-purple-800 text-xs">Strategy</Badge>
+                          <Badge className="bg-purple-100 text-purple-800 text-xs">
+                            Strategy
+                          </Badge>
                         </div>
                       </div>
                     </div>
@@ -1203,13 +1637,19 @@ export default function Dashboard() {
                         <DollarSign className="w-4 h-4 text-orange-600" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-900 mb-2">Tax-Efficient Planning</h4>
+                        <h4 className="font-medium text-gray-900 mb-2">
+                          Tax-Efficient Planning
+                        </h4>
                         <p className="text-sm text-gray-600 mb-3">
-                          Maximize your tax savings with ELSS investments (₹1.5L limit under 80C), PPF for long-term wealth,
-                          and consider NPS for additional ₹50K deduction under 80CCD(1B).
+                          Maximize your tax savings with ELSS investments (₹1.5L
+                          limit under 80C), PPF for long-term wealth, and
+                          consider NPS for additional ₹50K deduction under
+                          80CCD(1B).
                         </p>
                         <div className="flex gap-2">
-                          <Badge className="bg-orange-100 text-orange-800 text-xs">Tax Saving</Badge>
+                          <Badge className="bg-orange-100 text-orange-800 text-xs">
+                            Tax Saving
+                          </Badge>
                         </div>
                       </div>
                     </div>
