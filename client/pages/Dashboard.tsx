@@ -71,9 +71,13 @@ export default function Dashboard() {
     }
     setUser(currentUser);
     
-    // Load user goals
+        // Load user goals
     const userGoals = getGoals();
     setGoals(userGoals);
+
+    // Load user investments
+    const userInvestments = getInvestments();
+    setInvestments(userInvestments);
     
     // Load user profile
     const profile = getUserProfile();
