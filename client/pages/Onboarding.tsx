@@ -379,8 +379,8 @@ export default function Onboarding() {
                             data.age > 0 && (data.age < 18 || data.age > 100)
                               ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                               : data.age >= 18 && data.age <= 100
-                              ? "border-green-500 focus:border-green-500 focus:ring-green-500"
-                              : ""
+                                ? "border-green-500 focus:border-green-500 focus:ring-green-500"
+                                : ""
                           }`}
                           autoComplete="off"
                         />
