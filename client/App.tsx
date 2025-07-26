@@ -18,6 +18,7 @@ import ContactUs from "./pages/ContactUs";
 import Disclaimer from "./pages/Disclaimer";
 import FAQ from "./pages/FAQ";
 import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
