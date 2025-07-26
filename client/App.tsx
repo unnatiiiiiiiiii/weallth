@@ -17,6 +17,7 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Disclaimer from "./pages/Disclaimer";
 import FAQ from "./pages/FAQ";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
