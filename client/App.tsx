@@ -13,6 +13,10 @@ import GoalSelection from "./pages/GoalSelection";
 import GoalPlanning from "./pages/GoalPlanning";
 import InvestmentPlan from "./pages/InvestmentPlan";
 import Onboarding from "./pages/Onboarding";
+import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
+import Disclaimer from "./pages/Disclaimer";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
