@@ -38,8 +38,9 @@ import {
   ChevronRight,
   ExternalLink,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getCurrentUser, logoutUser } from "@/lib/auth";
+import Footer from "@/components/Footer";
 import {
   getGoals,
   updateGoal,
@@ -286,13 +287,32 @@ export default function Dashboard() {
           </div>
 
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              className="text-wealth-gray hover:text-gray-900"
-              onClick={() => setActiveTab("goals")}
-            >
-              Goal Dashboard
-            </Button>
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                to="/about-us"
+                className="text-wealth-gray hover:text-gray-900 transition-colors"
+              >
+                About
+              </Link>
+              <Link
+                to="/contact-us"
+                className="text-wealth-gray hover:text-gray-900 transition-colors"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/faq"
+                className="text-wealth-gray hover:text-gray-900 transition-colors"
+              >
+                FAQ
+              </Link>
+              <Link
+                to="/disclaimer"
+                className="text-wealth-gray hover:text-gray-900 transition-colors text-sm"
+              >
+                Disclaimer
+              </Link>
+            </nav>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -316,6 +336,28 @@ export default function Dashboard() {
                   <MessageSquare className="w-4 h-4 mr-2" />
                   Send Feedback
                 </DropdownMenuItem>
+                <div className="md:hidden">
+                  <DropdownMenuItem asChild>
+                    <Link to="/about-us" className="flex items-center">
+                      About Us
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/contact-us" className="flex items-center">
+                      Contact Us
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/faq" className="flex items-center">
+                      FAQ
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/disclaimer" className="flex items-center">
+                      Disclaimer
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
                 <DropdownMenuItem
                   className="text-red-600"
                   onClick={handleLogout}
@@ -1837,6 +1879,9 @@ export default function Dashboard() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
