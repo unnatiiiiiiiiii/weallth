@@ -219,6 +219,109 @@ export default function Dashboard() {
     setIsInvestmentFormOpen(true);
   };
 
+  const generatePersonalizedResponse = (query: string, profile: any, goals: Goal[], investments: any[], availableAmount: number) => {
+    const lowerQuery = query.toLowerCase();
+
+    // Analyze user's current situation
+    const hasEmergencyFund = availableAmount > profile.monthlySalary * 6;
+    const isHighEarner = profile.monthlySalary > 100000;
+    const isYoungInvestor = true; // Could be based on age from profile
+    const hasActiveGoals = goals.length > 0;
+    const hasInvestments = investments.length > 0;
+
+    let response = "";
+
+    if (lowerQuery.includes("best investment") || lowerQuery.includes("investment option")) {
+      response = `Based on your profile:\n\n`;
+      response += `Monthly Salary: ₹${profile.monthlySalary.toLocaleString()}\n`;
+      response += `Available for Investment: ₹${availableAmount.toLocaleString()}\n\n`;
+
+      if (availableAmount > 20000) {
+        response += `🎯 RECOMMENDED STRATEGY:\n`;
+        response += `• 60% Equity Mutual Fund SIPs (₹${Math.round(availableAmount * 0.6).toLocaleString()}/month)\n`;
+        response += `• 20% Debt Funds (₹${Math.round(availableAmount * 0.2).toLocaleString()}/month)\n`;
+        response += `• 20% Tax-saving ELSS (₹${Math.round(availableAmount * 0.2).toLocaleString()}/month)\n\n`;
+        response += `This balanced approach gives you growth potential with risk management.`;
+      } else if (availableAmount > 10000) {
+        response += `💡 MODERATE APPROACH:\n`;
+        response += `• Start with Large-cap Equity SIP: ₹5,000/month\n`;
+        response += `• ELSS for tax saving: ₹3,000/month\n`;
+        response += `• Liquid fund for emergency: ₹${(availableAmount - 8000).toLocaleString()}/month\n\n`;
+        response += `Focus on building a diversified portfolio gradually.`;
+      } else {
+        response += `🚀 BEGINNER STRATEGY:\n`;
+        response += `• Emergency Fund: Build 6 months expenses first\n`;
+        response += `• Start SIP: ₹2,000/month in index funds\n`;
+        response += `• Increase gradually as income grows\n\n`;
+        response += `Take time to learn before investing larger amounts.`;
+      }
+    } else if (lowerQuery.includes("monthly") && (lowerQuery.includes("invest") || lowerQuery.includes("amount"))) {
+      const suggestedAmount = Math.min(availableAmount * 0.8, 50000);
+      response = `💰 MONTHLY INVESTMENT RECOMMENDATION:\n\n`;
+      response += `Based on your available amount of ₹${availableAmount.toLocaleString()}, I suggest:\n\n`;
+      response += `• Target Investment: ₹${suggestedAmount.toLocaleString()}/month (${Math.round((suggestedAmount/profile.monthlySalary)*100)}% of salary)\n`;
+      response += `• Keep ₹${(availableAmount - suggestedAmount).toLocaleString()} for unexpected expenses\n\n`;
+      response += `ALLOCATION BREAKDOWN:\n`;
+      response += `• Equity SIPs: 70% (₹${Math.round(suggestedAmount * 0.7).toLocaleString()})\n`;
+      response += `• Debt/Gold: 20% (₹${Math.round(suggestedAmount * 0.2).toLocaleString()})\n`;
+      response += `• Tax-saving: 10% (₹${Math.round(suggestedAmount * 0.1).toLocaleString()})\n\n`;
+      response += `Start small and increase by 10-15% annually with salary hikes.`;
+    } else if (lowerQuery.includes("emergency fund") || lowerQuery.includes("emergency")) {
+      const emergencyAmount = profile.monthlySalary * 6;
+      response = `🚨 EMERGENCY FUND STRATEGY:\n\n`;
+      response += `Target Emergency Fund: ₹${emergencyAmount.toLocaleString()} (6 months expenses)\n\n`;
+
+      if (hasEmergencyFund) {
+        response += `✅ Great! You seem to have good financial cushion.\n`;
+        response += `• Maintain emergency fund in liquid funds\n`;
+        response += `• Focus remaining amount on growth investments\n`;
+        response += `• Consider equity SIPs for wealth creation`;
+      } else {
+        response += `⚡ PRIORITY: Build emergency fund first!\n\n`;
+        response += `STRATEGY:\n`;
+        response += `• Emergency Fund: ₹${Math.min(availableAmount * 0.6, emergencyAmount).toLocaleString()}/month\n`;
+        response += `• Start small SIP: ₹${Math.max(availableAmount * 0.4, 1000).toLocaleString()}/month\n\n`;
+        response += `Build emergency fund in 6-12 months, then increase investments.`;
+      }
+    } else if (lowerQuery.includes("tax") || lowerQuery.includes("80c")) {
+      response = `📊 TAX OPTIMIZATION STRATEGY:\n\n`;
+      response += `Based on your ₹${profile.monthlySalary.toLocaleString()} monthly salary:\n\n`;
+      response += `80C INVESTMENTS (Up to ₹1.5L annually):\n`;
+      response += `• ELSS Mutual Funds: ₹8,000/month (₹96k/year)\n`;
+      response += `• PPF: ₹4,500/month (₹54k/year)\n\n`;
+      response += `ADDITIONAL TAX BENEFITS:\n`;
+      response += `• NPS: ₹4,000/month (₹50k under 80CCD1B)\n`;
+      response += `• Health Insurance: Claim existing premiums\n\n`;
+      response += `This can save you ₹46,800-78,000 in taxes annually depending on your bracket!`;
+    } else if (lowerQuery.includes("mutual fund") || lowerQuery.includes("sip")) {
+      response = `📈 MUTUAL FUND STRATEGY:\n\n`;
+      response += `For your investment capacity of ₹${availableAmount.toLocaleString()}/month:\n\n`;
+      response += `RECOMMENDED SIPs:\n`;
+      response += `• Large Cap Fund: ₹${Math.round(availableAmount * 0.4).toLocaleString()}/month (40%)\n`;
+      response += `• Mid Cap Fund: ₹${Math.round(availableAmount * 0.3).toLocaleString()}/month (30%)\n`;
+      response += `• Index Fund: ₹${Math.round(availableAmount * 0.2).toLocaleString()}/month (20%)\n`;
+      response += `• Debt Fund: ₹${Math.round(availableAmount * 0.1).toLocaleString()}/month (10%)\n\n`;
+      response += `Start with 1-2 funds, add gradually. Review annually and rebalance.`;
+    } else {
+      // Generic response
+      response = `💡 PERSONALIZED FINANCIAL ADVICE:\n\n`;
+      response += `Based on your query and current profile:\n\n`;
+      response += `YOUR SITUATION:\n`;
+      response += `• Monthly Capacity: ₹${availableAmount.toLocaleString()}\n`;
+      response += `• Current Goals: ${goals.length}\n`;
+      response += `• Active Investments: ${investments.length}\n\n`;
+      response += `GENERAL RECOMMENDATIONS:\n`;
+      response += `• Build emergency fund (6 months expenses)\n`;
+      response += `• Start SIP in diversified equity funds\n`;
+      response += `• Use ELSS for tax savings\n`;
+      response += `• Review and rebalance quarterly\n\n`;
+      response += `For specific advice on "${query}", consider booking a consultation with our financial advisors.`;
+    }
+
+    response += `\n\n⚠️ This is educational information. Consult a certified financial planner for personalized advice.`;
+    return response;
+  };
+
   const handleInvestmentConfirm = (investmentData: InvestmentFormData) => {
     const result = saveInvestment({
       strategyId: investmentData.strategyId,
