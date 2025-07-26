@@ -116,7 +116,7 @@ export default function Onboarding() {
       case 1:
         return data.userType !== undefined;
       case 2:
-        return data.fullName.trim() && data.age >= 18 && data.occupation.trim();
+        return data.fullName.trim() && data.age >= 18 && data.age <= 100 && data.occupation.trim();
       case 3:
         return data.monthlySalary > 0;
       case 4:
