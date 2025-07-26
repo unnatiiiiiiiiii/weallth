@@ -102,6 +102,8 @@ export default function Dashboard() {
 
   const personalStrategies = getInvestmentStrategies("personal");
   const professionalStrategies = getInvestmentStrategies("professional");
+  const growWealthStrategies = getInvestmentStrategies("grow-wealth");
+  const fdOptionsStrategies = getInvestmentStrategies("fd-options");
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -756,239 +758,55 @@ export default function Dashboard() {
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Gold Investment */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-yellow-50 to-yellow-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Gold Investment
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Precious Metals
-                          </Badge>
-                          <Badge className="text-xs bg-yellow-200 text-yellow-800">
-                            Low Risk
-                          </Badge>
+                {growWealthStrategies.map((strategy) => (
+                  <Card
+                    key={strategy.id}
+                    className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-white"
+                    onClick={() => handleStrategyClick(strategy)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
+                            {strategy.name}
+                          </CardTitle>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="outline" className="text-xs">
+                              {strategy.category}
+                            </Badge>
+                            <Badge
+                              className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
+                            >
+                              {strategy.riskLevel}
+                            </Badge>
+                          </div>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                        {strategy.description}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-500">Min Investment:</span>
+                          <span className="font-medium ml-1">
+                            ₹{strategy.minInvestment.toLocaleString()}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Returns:</span>
+                          <span className="font-medium text-green-600 ml-1">
+                            {strategy.expectedReturn}
+                          </span>
                         </div>
                       </div>
-                      <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm">Au</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Hedge against inflation with digital gold investments. Safe haven asset for portfolio diversification.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹1,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">8-12%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                ))}
 
-                {/* Energy Sector */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-green-50 to-green-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Energy Sector ETFs
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Renewable Energy
-                          </Badge>
-                          <Badge className="text-xs bg-green-200 text-green-800">
-                            Medium Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-white" />
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Invest in the future of energy with clean energy and renewable sector focused funds.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹5,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">12-18%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
 
-                {/* Technology Stocks */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-blue-50 to-blue-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Technology Stocks
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Technology
-                          </Badge>
-                          <Badge className="text-xs bg-red-200 text-red-800">
-                            High Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs">💻</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Invest in leading technology companies and emerging tech trends for high growth potential.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹10,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">15-25%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Banking Sector */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-purple-50 to-purple-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Banking Sector
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Financial Services
-                          </Badge>
-                          <Badge className="text-xs bg-purple-200 text-purple-800">
-                            Medium Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                        <DollarSign className="w-4 h-4 text-white" />
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Stable returns from established banking and financial services companies.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹5,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">10-15%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Healthcare Sector */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-pink-50 to-pink-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Healthcare & Pharma
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Healthcare
-                          </Badge>
-                          <Badge className="text-xs bg-pink-200 text-pink-800">
-                            Low-Medium Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs">⚕️</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Defensive sector with consistent demand and growth in healthcare services.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹5,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">12-16%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Infrastructure */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-orange-50 to-orange-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Infrastructure
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Infrastructure
-                          </Badge>
-                          <Badge className="text-xs bg-orange-200 text-orange-800">
-                            Medium Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs">🏗️</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Benefit from India's infrastructure development and smart city initiatives.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹5,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">11-17%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             </div>
           </TabsContent>
@@ -1003,285 +821,56 @@ export default function Dashboard() {
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Bank FD */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-blue-50 to-blue-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Bank Fixed Deposits
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Traditional Banking
-                          </Badge>
-                          <Badge className="text-xs bg-green-200 text-green-800">
-                            Zero Risk
-                          </Badge>
+                {fdOptionsStrategies.map((strategy) => (
+                  <Card
+                    key={strategy.id}
+                    className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-white"
+                    onClick={() => handleStrategyClick(strategy)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
+                            {strategy.name}
+                          </CardTitle>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="outline" className="text-xs">
+                              {strategy.category}
+                            </Badge>
+                            <Badge
+                              className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
+                            >
+                              {strategy.riskLevel === "Low" ? "Zero Risk" : strategy.riskLevel}
+                            </Badge>
+                          </div>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                        {strategy.description}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-500">Min Investment:</span>
+                          <span className="font-medium ml-1">
+                            ₹{strategy.minInvestment.toLocaleString()}
+                            {strategy.id === "recurring_deposit" ? "/month" : ""}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Returns:</span>
+                          <span className="font-medium text-green-600 ml-1">
+                            {strategy.expectedReturn}
+                          </span>
                         </div>
                       </div>
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                        <DollarSign className="w-4 h-4 text-white" />
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Guaranteed returns with principal protection. FDIC insured up to ₹5 lakhs per bank.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹1,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">6.5-7.5%</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex justify-between">
-                        <span>1 Year:</span>
-                        <span className="font-medium">6.8%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>3 Years:</span>
-                        <span className="font-medium">7.2%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>5 Years:</span>
-                        <span className="font-medium">7.5%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                ))}
 
-                {/* Corporate FD */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-purple-50 to-purple-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Corporate Fixed Deposits
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Corporate
-                          </Badge>
-                          <Badge className="text-xs bg-yellow-200 text-yellow-800">
-                            Low Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-white" />
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Higher returns than bank FDs from AAA-rated companies. Credit risk involved.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹10,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">8.0-9.5%</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex justify-between">
-                        <span>Bajaj Finance:</span>
-                        <span className="font-medium">8.85%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Mahindra Finance:</span>
-                        <span className="font-medium">8.70%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Shriram Finance:</span>
-                        <span className="font-medium">9.20%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
 
-                {/* Tax Saver FD */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-green-50 to-green-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Tax Saver FDs
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Tax Saving
-                          </Badge>
-                          <Badge className="text-xs bg-green-200 text-green-800">
-                            Zero Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs">📋</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      5-year lock-in with tax benefits under Section 80C. Lower returns but safe.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹100</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">6.0-6.5%</span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-green-700 bg-green-100 p-2 rounded">
-                      Tax deduction up to ₹1.5L under Section 80C
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Senior Citizen FD */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-orange-50 to-orange-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Senior Citizen FDs
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Senior Citizens
-                          </Badge>
-                          <Badge className="text-xs bg-green-200 text-green-800">
-                            Zero Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs">👴</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Extra 0.5% interest rate for senior citizens (60+ years). Safe and guaranteed returns.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹1,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">7.0-8.0%</span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-orange-700 bg-orange-100 p-2 rounded">
-                      Additional 0.5% for senior citizens
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Flexi FD */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-cyan-50 to-cyan-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Flexi Fixed Deposits
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Flexible
-                          </Badge>
-                          <Badge className="text-xs bg-green-200 text-green-800">
-                            Zero Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs">🔄</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Partial withdrawal facility with FD rates. Best of both savings and FD.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹25,000</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">6.5-7.25%</span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-cyan-700 bg-cyan-100 p-2 rounded">
-                      Partial withdrawal allowed
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Recurring Deposit */}
-                <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-pink-50 to-pink-100">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
-                          Recurring Deposits
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
-                            Monthly SIP
-                          </Badge>
-                          <Badge className="text-xs bg-green-200 text-green-800">
-                            Zero Risk
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs">📅</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Monthly investment with FD-like returns. Perfect for building discipline.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-500">Min Investment:</span>
-                        <span className="font-medium ml-1">₹500/month</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Returns:</span>
-                        <span className="font-medium text-green-600 ml-1">6.5-7.25%</span>
-                      </div>
-                    </div>
-                    <div className="space-y-1 text-xs">
-                      <div className="flex justify-between">
-                        <span>₹5,000/month for 5 years:</span>
-                      </div>
-                      <div className="flex justify-between text-green-600">
-                        <span>Maturity Amount:</span>
-                        <span className="font-medium">₹3.5L</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-8">
