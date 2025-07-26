@@ -14,8 +14,45 @@ export default function ContactUs() {
     phone: "",
     subject: "",
     message: "",
+    category: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const supportCategories = [
+    {
+      id: "investment",
+      title: "Investment Support",
+      description: "Questions about investment strategies, portfolio management, or platform features.",
+      color: "green",
+      defaultSubject: "Investment Support - ",
+      defaultMessage: "I need help with:\n\n[Please describe your investment-related question]\n\nCurrent portfolio value: ₹\nInvestment experience: [Beginner/Intermediate/Advanced]\nSpecific concern: "
+    },
+    {
+      id: "technical",
+      title: "Technical Issues",
+      description: "App bugs, login problems, or other technical difficulties.",
+      color: "purple",
+      defaultSubject: "Technical Issue - ",
+      defaultMessage: "I'm experiencing a technical issue:\n\nProblem description:\nDevice/Browser: \nSteps to reproduce:\n1. \n2. \n3. \n\nError message (if any): "
+    },
+    {
+      id: "account",
+      title: "Account Help",
+      description: "Account setup, profile management, or security concerns.",
+      color: "orange",
+      defaultSubject: "Account Support - ",
+      defaultMessage: "I need help with my account:\n\nIssue type: [Account setup/Profile update/Security concern]\nAccount email: \nSpecific request: "
+    },
+    {
+      id: "general",
+      title: "General Inquiries",
+      description: "Business partnerships, media inquiries, or other questions.",
+      color: "blue",
+      defaultSubject: "General Inquiry - ",
+      defaultMessage: "General inquiry:\n\nInquiry type: [Partnership/Media/Other]\nOrganization (if applicable): \nMessage: "
+    }
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +61,8 @@ export default function ContactUs() {
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "", category: "" });
+      setSelectedCategory("");
     }, 3000);
   };
 
@@ -97,6 +135,48 @@ export default function ContactUs() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Category Selection */}
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">How can we help you? *</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {supportCategories.map((category) => (
+                        <button
+                          key={category.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCategory(category.id);
+                            setFormData({
+                              ...formData,
+                              category: category.id,
+                              subject: category.defaultSubject,
+                              message: category.defaultMessage
+                            });
+                          }}
+                          className={`p-3 text-left rounded-lg border-2 transition-all duration-200 ${
+                            selectedCategory === category.id
+                              ? `border-${category.color}-500 bg-${category.color}-50`
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <h4 className={`font-medium text-sm ${
+                            selectedCategory === category.id
+                              ? `text-${category.color}-900`
+                              : 'text-gray-900'
+                          }`}>
+                            {category.title}
+                          </h4>
+                          <p className={`text-xs mt-1 ${
+                            selectedCategory === category.id
+                              ? `text-${category.color}-700`
+                              : 'text-gray-600'
+                          }`}>
+                            {category.description}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Full Name *</Label>
@@ -161,9 +241,22 @@ export default function ContactUs() {
                     />
                   </div>
 
+                  {selectedCategory && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-medium text-blue-900 mb-2">
+                        Selected: {supportCategories.find(c => c.id === selectedCategory)?.title}
+                      </h4>
+                      <p className="text-sm text-blue-700">
+                        We've pre-filled the form with a template to help you provide the right information.
+                        Please edit the subject and message as needed.
+                      </p>
+                    </div>
+                  )}
+
                   <Button
                     type="submit"
-                    className="w-full bg-wealth-blue hover:bg-wealth-blue/90 text-white"
+                    disabled={!selectedCategory}
+                    className="w-full bg-wealth-blue hover:bg-wealth-blue/90 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Send className="w-4 h-4 mr-2" />
                     Send Message
@@ -228,37 +321,39 @@ export default function ContactUs() {
               </CardContent>
             </Card>
 
-            {/* Support Categories */}
+            {/* Support Categories Guide */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-gray-900">How Can We Help?</CardTitle>
+                <CardTitle className="text-gray-900">Support Categories</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="p-4 bg-green-50 rounded-lg">
-                    <h4 className="font-medium text-green-900 mb-2">Investment Support</h4>
-                    <p className="text-sm text-green-700">
-                      Questions about investment strategies, portfolio management, or platform features.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-purple-50 rounded-lg">
-                    <h4 className="font-medium text-purple-900 mb-2">Technical Issues</h4>
-                    <p className="text-sm text-purple-700">
-                      App bugs, login problems, or other technical difficulties.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-orange-50 rounded-lg">
-                    <h4 className="font-medium text-orange-900 mb-2">Account Help</h4>
-                    <p className="text-sm text-orange-700">
-                      Account setup, profile management, or security concerns.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-blue-50 rounded-lg">
-                    <h4 className="font-medium text-blue-900 mb-2">General Inquiries</h4>
-                    <p className="text-sm text-blue-700">
-                      Business partnerships, media inquiries, or other questions.
-                    </p>
-                  </div>
+                  {supportCategories.map((category) => (
+                    <div key={category.id} className={`p-4 bg-${category.color}-50 rounded-lg border ${
+                      selectedCategory === category.id ? `border-${category.color}-300` : 'border-transparent'
+                    }`}>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className={`font-medium text-${category.color}-900 mb-2`}>
+                            {category.title}
+                          </h4>
+                          <p className={`text-sm text-${category.color}-700`}>
+                            {category.description}
+                          </p>
+                        </div>
+                        {selectedCategory === category.id && (
+                          <div className={`w-6 h-6 bg-${category.color}-500 rounded-full flex items-center justify-center`}>
+                            <span className="text-white text-xs">✓</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-600">
+                    <strong>Tip:</strong> Select a category above to get a pre-filled template that helps you provide the right information for faster support.
+                  </p>
                 </div>
               </CardContent>
             </Card>
