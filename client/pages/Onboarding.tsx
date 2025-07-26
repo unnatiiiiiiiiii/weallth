@@ -351,32 +351,77 @@ export default function Onboarding() {
                       >
                         Age
                       </Label>
-                      <Input
-                        id="age"
-                        type="number"
-                        value={data.age}
-                        onChange={(e) => {
-                          const age = parseInt(e.target.value) || 18;
-                          const validAge = Math.min(Math.max(age, 18), 100);
-                          setData((prev) => ({
-                            ...prev,
-                            age: validAge,
-                          }));
-                        }}
-                        min="18"
-                        max="100"
-                        placeholder="Enter your age (18-100)"
-                        className={
-                          data.age < 18 || data.age > 100
-                            ? "border-red-500"
-                            : ""
-                        }
-                      />
-                      {(data.age < 18 || data.age > 100) && (
-                        <p className="text-xs text-red-500 mt-1">
+                      <div className="relative">
+                        <Input
+                          id="age"
+                          type="number"
+                          value={data.age || ""}
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            if (inputValue === "") {
+                              setData((prev) => ({ ...prev, age: 0 }));
+                              return;
+                            }
+                            const age = parseInt(inputValue);
+                            if (!isNaN(age)) {
+                              setData((prev) => ({ ...prev, age }));
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const age = parseInt(e.target.value) || 18;
+                            const validAge = Math.min(Math.max(age, 18), 100);
+                            setData((prev) => ({ ...prev, age: validAge }));
+                          }}
+                          min="18"
+                          max="100"
+                          placeholder="Enter your age"
+                          className={`text-lg ${
+                            data.age > 0 && (data.age < 18 || data.age > 100)
+                              ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                              : data.age >= 18 && data.age <= 100
+                              ? "border-green-500 focus:border-green-500 focus:ring-green-500"
+                              : ""
+                          }`}
+                          autoComplete="off"
+                        />
+                        {data.age >= 18 && data.age <= 100 && (
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <CheckCircle className="w-5 h-5 text-green-500" />
+                          </div>
+                        )}
+                      </div>
+                      {data.age > 0 && (data.age < 18 || data.age > 100) && (
+                        <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                          <span className="text-red-500">⚠️</span>
                           Age must be between 18 and 100 years
                         </p>
                       )}
+                      {data.age >= 18 && data.age <= 100 && (
+                        <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                          <CheckCircle className="w-3 h-3" />
+                          Perfect! You're eligible to start investing
+                        </p>
+                      )}
+                      <div className="mt-2">
+                        <div className="flex justify-between text-xs text-gray-500 mb-1">
+                          <span>18</span>
+                          <span>100</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-1">
+                          <div
+                            className={`h-1 rounded-full transition-all duration-300 ${
+                              data.age >= 18 && data.age <= 100
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            }`}
+                            style={{
+                              width: data.age
+                                ? `${Math.min(Math.max(((data.age - 18) / (100 - 18)) * 100, 0), 100)}%`
+                                : "0%",
+                            }}
+                          ></div>
+                        </div>
+                      </div>
                     </div>
                     <div>
                       <Label
