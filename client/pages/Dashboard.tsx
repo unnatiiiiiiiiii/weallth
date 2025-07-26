@@ -86,6 +86,9 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isPortfolioTrackerOpen, setIsPortfolioTrackerOpen] = useState(false);
   const [isSmartSuggestionsOpen, setIsSmartSuggestionsOpen] = useState(false);
+  const [userQuery, setUserQuery] = useState("");
+  const [queryResponse, setQueryResponse] = useState("");
+  const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
   const [investments, setInvestments] = useState<any[]>([]);
   const [userProfile, setUserProfile] = useState({
     fullName: "",
@@ -1647,6 +1650,103 @@ export default function Dashboard() {
           </DialogHeader>
 
           <div className="mt-6 space-y-6">
+            {/* Ask Personal Question */}
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-blue-900 mb-4">
+                  Ask Your Personal Finance Question
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="userQuery" className="text-sm font-medium text-blue-800">
+                      What would you like to know about investments or financial planning?
+                    </Label>
+                    <textarea
+                      id="userQuery"
+                      value={userQuery}
+                      onChange={(e) => setUserQuery(e.target.value)}
+                      className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      rows={3}
+                      placeholder="Example: Should I invest in mutual funds or fixed deposits for my 5-year goal? What's the best investment strategy for a 25-year-old beginner?"
+                    />
+                  </div>
+                  <Button
+                    onClick={() => {
+                      if (userQuery.trim()) {
+                        setIsGeneratingResponse(true);
+                        // Simulate AI response generation
+                        setTimeout(() => {
+                          setQueryResponse(generatePersonalizedResponse(userQuery, userProfile, goals, investments, availableForInvestment));
+                          setIsGeneratingResponse(false);
+                        }, 2000);
+                      }
+                    }}
+                    disabled={!userQuery.trim() || isGeneratingResponse}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    {isGeneratingResponse ? (
+                      <>
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                        Generating Response...
+                      </>
+                    ) : (
+                      <>
+                        <Lightbulb className="w-4 h-4 mr-2" />
+                        Get Personalized Advice
+                      </>
+                    )}
+                  </Button>
+
+                  {queryResponse && (
+                    <div className="mt-4 p-4 bg-white border border-blue-200 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                          <Lightbulb className="w-4 h-4 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-blue-900 mb-2">Personalized Suggestion</h4>
+                          <div className="text-sm text-gray-700 whitespace-pre-line">
+                            {queryResponse}
+                          </div>
+                          <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
+                            💡 This advice is based on your current profile. Consider consulting a financial advisor for detailed planning.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Quick Question Templates */}
+                  <div className="grid md:grid-cols-2 gap-2">
+                    <button
+                      onClick={() => setUserQuery("What investment options are best for my current financial situation?")}
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      💼 Best investments for my situation?
+                    </button>
+                    <button
+                      onClick={() => setUserQuery("How much should I invest monthly to achieve my financial goals?")}
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      💰 Monthly investment amount?
+                    </button>
+                    <button
+                      onClick={() => setUserQuery("Should I prioritize emergency fund or start investing immediately?")}
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      🚨 Emergency fund vs investing?
+                    </button>
+                    <button
+                      onClick={() => setUserQuery("What are the tax implications of my current investment strategy?")}
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      📊 Tax implications?
+                    </button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Current Profile Analysis */}
             <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
               <CardContent className="p-6">
@@ -1862,7 +1962,11 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 className="flex-1"
-                onClick={() => setIsSmartSuggestionsOpen(false)}
+                onClick={() => {
+                  setIsSmartSuggestionsOpen(false);
+                  setUserQuery("");
+                  setQueryResponse("");
+                }}
               >
                 Close
               </Button>
