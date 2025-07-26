@@ -4,9 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TrendingUp } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser, registerUser, getCurrentUser } from "@/lib/auth";
 import { getUserProfile } from "@/lib/storage";
+import Footer from "@/components/Footer";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -58,7 +59,43 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      {/* Navigation */}
+      <nav className="p-6">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-white" />
+            </div>
+            <h1 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Weallth
+            </h1>
+          </div>
+          <div className="flex items-center gap-6">
+            <Link
+              to="/about-us"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              to="/contact-us"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Contact
+            </Link>
+            <Link
+              to="/disclaimer"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Disclaimer
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="flex items-center justify-center p-6 min-h-[calc(100vh-200px)]">
       <Card className="w-full max-w-md bg-white border-0 shadow-xl animate-in fade-in-0 zoom-in-95 duration-500">
         <CardContent className="p-8">
           <div className="text-center mb-8">
@@ -207,8 +244,23 @@ export default function Login() {
               </button>
             </p>
           </div>
+
+          {/* Disclaimer Note */}
+          <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-xs text-yellow-800 text-center">
+              ⚠️ All investments are subject to market risks. Please read our{" "}
+              <Link to="/disclaimer" className="underline hover:text-yellow-900">
+                disclaimer
+              </Link>{" "}
+              before proceeding.
+            </p>
+          </div>
         </CardContent>
       </Card>
+      </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
