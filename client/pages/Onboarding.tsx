@@ -116,7 +116,12 @@ export default function Onboarding() {
       case 1:
         return data.userType !== undefined;
       case 2:
-        return data.fullName.trim() && data.age >= 18 && data.occupation.trim();
+        return (
+          data.fullName.trim() &&
+          data.age >= 18 &&
+          data.age <= 100 &&
+          data.occupation.trim()
+        );
       case 3:
         return data.monthlySalary > 0;
       case 4:
@@ -350,15 +355,28 @@ export default function Onboarding() {
                         id="age"
                         type="number"
                         value={data.age}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          const age = parseInt(e.target.value) || 18;
+                          const validAge = Math.min(Math.max(age, 18), 100);
                           setData((prev) => ({
                             ...prev,
-                            age: parseInt(e.target.value) || 25,
-                          }))
-                        }
+                            age: validAge,
+                          }));
+                        }}
                         min="18"
                         max="100"
+                        placeholder="Enter your age (18-100)"
+                        className={
+                          data.age < 18 || data.age > 100
+                            ? "border-red-500"
+                            : ""
+                        }
                       />
+                      {(data.age < 18 || data.age > 100) && (
+                        <p className="text-xs text-red-500 mt-1">
+                          Age must be between 18 and 100 years
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label

@@ -38,8 +38,9 @@ import {
   ChevronRight,
   ExternalLink,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getCurrentUser, logoutUser } from "@/lib/auth";
+import Footer from "@/components/Footer";
 import {
   getGoals,
   updateGoal,
@@ -85,6 +86,9 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isPortfolioTrackerOpen, setIsPortfolioTrackerOpen] = useState(false);
   const [isSmartSuggestionsOpen, setIsSmartSuggestionsOpen] = useState(false);
+  const [userQuery, setUserQuery] = useState("");
+  const [queryResponse, setQueryResponse] = useState("");
+  const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
   const [investments, setInvestments] = useState<any[]>([]);
   const [userProfile, setUserProfile] = useState({
     fullName: "",
@@ -102,6 +106,8 @@ export default function Dashboard() {
 
   const personalStrategies = getInvestmentStrategies("personal");
   const professionalStrategies = getInvestmentStrategies("professional");
+  const growWealthStrategies = getInvestmentStrategies("grow-wealth");
+  const fdOptionsStrategies = getInvestmentStrategies("fd-options");
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -213,6 +219,127 @@ export default function Dashboard() {
     setIsInvestmentFormOpen(true);
   };
 
+  const generatePersonalizedResponse = (
+    query: string,
+    profile: any,
+    goals: Goal[],
+    investments: any[],
+    availableAmount: number,
+  ) => {
+    const lowerQuery = query.toLowerCase();
+
+    // Analyze user's current situation
+    const hasEmergencyFund = availableAmount > profile.monthlySalary * 6;
+    const isHighEarner = profile.monthlySalary > 100000;
+    const isYoungInvestor = true; // Could be based on age from profile
+    const hasActiveGoals = goals.length > 0;
+    const hasInvestments = investments.length > 0;
+
+    let response = "";
+
+    if (
+      lowerQuery.includes("best investment") ||
+      lowerQuery.includes("investment option")
+    ) {
+      response = `Based on your profile:\n\n`;
+      response += `Monthly Salary: ₹${profile.monthlySalary.toLocaleString()}\n`;
+      response += `Available for Investment: ₹${availableAmount.toLocaleString()}\n\n`;
+
+      if (availableAmount > 20000) {
+        response += `🎯 RECOMMENDED STRATEGY:\n`;
+        response += `• 60% Equity Mutual Fund SIPs (₹${Math.round(availableAmount * 0.6).toLocaleString()}/month)\n`;
+        response += `• 20% Debt Funds (₹${Math.round(availableAmount * 0.2).toLocaleString()}/month)\n`;
+        response += `• 20% Tax-saving ELSS (₹${Math.round(availableAmount * 0.2).toLocaleString()}/month)\n\n`;
+        response += `This balanced approach gives you growth potential with risk management.`;
+      } else if (availableAmount > 10000) {
+        response += `💡 MODERATE APPROACH:\n`;
+        response += `• Start with Large-cap Equity SIP: ₹5,000/month\n`;
+        response += `• ELSS for tax saving: ₹3,000/month\n`;
+        response += `• Liquid fund for emergency: ₹${(availableAmount - 8000).toLocaleString()}/month\n\n`;
+        response += `Focus on building a diversified portfolio gradually.`;
+      } else {
+        response += `🚀 BEGINNER STRATEGY:\n`;
+        response += `• Emergency Fund: Build 6 months expenses first\n`;
+        response += `• Start SIP: ₹2,000/month in index funds\n`;
+        response += `• Increase gradually as income grows\n\n`;
+        response += `Take time to learn before investing larger amounts.`;
+      }
+    } else if (
+      lowerQuery.includes("monthly") &&
+      (lowerQuery.includes("invest") || lowerQuery.includes("amount"))
+    ) {
+      const suggestedAmount = Math.min(availableAmount * 0.8, 50000);
+      response = `💰 MONTHLY INVESTMENT RECOMMENDATION:\n\n`;
+      response += `Based on your available amount of ₹${availableAmount.toLocaleString()}, I suggest:\n\n`;
+      response += `• Target Investment: ₹${suggestedAmount.toLocaleString()}/month (${Math.round((suggestedAmount / profile.monthlySalary) * 100)}% of salary)\n`;
+      response += `• Keep ₹${(availableAmount - suggestedAmount).toLocaleString()} for unexpected expenses\n\n`;
+      response += `ALLOCATION BREAKDOWN:\n`;
+      response += `• Equity SIPs: 70% (₹${Math.round(suggestedAmount * 0.7).toLocaleString()})\n`;
+      response += `• Debt/Gold: 20% (₹${Math.round(suggestedAmount * 0.2).toLocaleString()})\n`;
+      response += `• Tax-saving: 10% (₹${Math.round(suggestedAmount * 0.1).toLocaleString()})\n\n`;
+      response += `Start small and increase by 10-15% annually with salary hikes.`;
+    } else if (
+      lowerQuery.includes("emergency fund") ||
+      lowerQuery.includes("emergency")
+    ) {
+      const emergencyAmount = profile.monthlySalary * 6;
+      response = `🚨 EMERGENCY FUND STRATEGY:\n\n`;
+      response += `Target Emergency Fund: ₹${emergencyAmount.toLocaleString()} (6 months expenses)\n\n`;
+
+      if (hasEmergencyFund) {
+        response += `✅ Great! You seem to have good financial cushion.\n`;
+        response += `• Maintain emergency fund in liquid funds\n`;
+        response += `• Focus remaining amount on growth investments\n`;
+        response += `• Consider equity SIPs for wealth creation`;
+      } else {
+        response += `⚡ PRIORITY: Build emergency fund first!\n\n`;
+        response += `STRATEGY:\n`;
+        response += `• Emergency Fund: ₹${Math.min(availableAmount * 0.6, emergencyAmount).toLocaleString()}/month\n`;
+        response += `• Start small SIP: ₹${Math.max(availableAmount * 0.4, 1000).toLocaleString()}/month\n\n`;
+        response += `Build emergency fund in 6-12 months, then increase investments.`;
+      }
+    } else if (lowerQuery.includes("tax") || lowerQuery.includes("80c")) {
+      response = `📊 TAX OPTIMIZATION STRATEGY:\n\n`;
+      response += `Based on your ₹${profile.monthlySalary.toLocaleString()} monthly salary:\n\n`;
+      response += `80C INVESTMENTS (Up to ₹1.5L annually):\n`;
+      response += `• ELSS Mutual Funds: ₹8,000/month (₹96k/year)\n`;
+      response += `• PPF: ₹4,500/month (₹54k/year)\n\n`;
+      response += `ADDITIONAL TAX BENEFITS:\n`;
+      response += `• NPS: ₹4,000/month (₹50k under 80CCD1B)\n`;
+      response += `• Health Insurance: Claim existing premiums\n\n`;
+      response += `This can save you ₹46,800-78,000 in taxes annually depending on your bracket!`;
+    } else if (
+      lowerQuery.includes("mutual fund") ||
+      lowerQuery.includes("sip")
+    ) {
+      response = `📈 MUTUAL FUND STRATEGY:\n\n`;
+      response += `For your investment capacity of ₹${availableAmount.toLocaleString()}/month:\n\n`;
+      response += `RECOMMENDED SIPs:\n`;
+      response += `• Large Cap Fund: ₹${Math.round(availableAmount * 0.4).toLocaleString()}/month (40%)\n`;
+      response += `• Mid Cap Fund: ₹${Math.round(availableAmount * 0.3).toLocaleString()}/month (30%)\n`;
+      response += `• Index Fund: ₹${Math.round(availableAmount * 0.2).toLocaleString()}/month (20%)\n`;
+      response += `• Debt Fund: ₹${Math.round(availableAmount * 0.1).toLocaleString()}/month (10%)\n\n`;
+      response += `Start with 1-2 funds, add gradually. Review annually and rebalance.`;
+    } else {
+      // Generic response
+      response = `💡 PERSONALIZED FINANCIAL ADVICE:\n\n`;
+      response += `Based on your query and current profile:\n\n`;
+      response += `YOUR SITUATION:\n`;
+      response += `• Monthly Capacity: ₹${availableAmount.toLocaleString()}\n`;
+      response += `• Current Goals: ${goals.length}\n`;
+      response += `• Active Investments: ${investments.length}\n\n`;
+      response += `GENERAL RECOMMENDATIONS:\n`;
+      response += `• Build emergency fund (6 months expenses)\n`;
+      response += `• Start SIP in diversified equity funds\n`;
+      response += `• Use ELSS for tax savings\n`;
+      response += `• Review and rebalance quarterly\n\n`;
+      response += `For specific advice on "${query}", consider booking a consultation with our financial advisors.`;
+    }
+
+    response += `\n\n⚠️ This is educational information. Consult a certified financial planner for personalized advice.`;
+    return response;
+  };
+
   const handleInvestmentConfirm = (investmentData: InvestmentFormData) => {
     const result = saveInvestment({
       strategyId: investmentData.strategyId,
@@ -284,13 +411,32 @@ export default function Dashboard() {
           </div>
 
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              className="text-wealth-gray hover:text-gray-900"
-              onClick={() => setActiveTab("goals")}
-            >
-              Goal Dashboard
-            </Button>
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                to="/about-us"
+                className="text-wealth-gray hover:text-gray-900 transition-colors"
+              >
+                About
+              </Link>
+              <Link
+                to="/contact-us"
+                className="text-wealth-gray hover:text-gray-900 transition-colors"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/faq"
+                className="text-wealth-gray hover:text-gray-900 transition-colors"
+              >
+                FAQ
+              </Link>
+              <Link
+                to="/disclaimer"
+                className="text-wealth-gray hover:text-gray-900 transition-colors text-sm"
+              >
+                Disclaimer
+              </Link>
+            </nav>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -314,6 +460,28 @@ export default function Dashboard() {
                   <MessageSquare className="w-4 h-4 mr-2" />
                   Send Feedback
                 </DropdownMenuItem>
+                <div className="md:hidden">
+                  <DropdownMenuItem asChild>
+                    <Link to="/about-us" className="flex items-center">
+                      About Us
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/contact-us" className="flex items-center">
+                      Contact Us
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/faq" className="flex items-center">
+                      FAQ
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/disclaimer" className="flex items-center">
+                      Disclaimer
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
                 <DropdownMenuItem
                   className="text-red-600"
                   onClick={handleLogout}
@@ -334,9 +502,11 @@ export default function Dashboard() {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="goals">My Goals</TabsTrigger>
+            <TabsTrigger value="grow-wealth">Grow Wealth</TabsTrigger>
+            <TabsTrigger value="fd-options">FD Options</TabsTrigger>
             <TabsTrigger value="personal-strategies">
               Personal Strategies
             </TabsTrigger>
@@ -740,6 +910,168 @@ export default function Dashboard() {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="grow-wealth" className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Grow Your Wealth
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Investment suggestions in different sectors for people without
+                specific goals
+              </p>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {growWealthStrategies.map((strategy) => (
+                  <Card
+                    key={strategy.id}
+                    className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-white"
+                    onClick={() => handleStrategyClick(strategy)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
+                            {strategy.name}
+                          </CardTitle>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="outline" className="text-xs">
+                              {strategy.category}
+                            </Badge>
+                            <Badge
+                              className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
+                            >
+                              {strategy.riskLevel}
+                            </Badge>
+                          </div>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                        {strategy.description}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-500">Min Investment:</span>
+                          <span className="font-medium ml-1">
+                            ₹{strategy.minInvestment.toLocaleString()}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Returns:</span>
+                          <span className="font-medium text-green-600 ml-1">
+                            {strategy.expectedReturn}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="fd-options" className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Fixed Deposit Options
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Safe investment options for people less familiar with stocks -
+                comparing plans and suggesting best options
+              </p>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {fdOptionsStrategies.map((strategy) => (
+                  <Card
+                    key={strategy.id}
+                    className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-white"
+                    onClick={() => handleStrategyClick(strategy)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
+                            {strategy.name}
+                          </CardTitle>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="outline" className="text-xs">
+                              {strategy.category}
+                            </Badge>
+                            <Badge
+                              className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
+                            >
+                              {strategy.riskLevel === "Low"
+                                ? "Zero Risk"
+                                : strategy.riskLevel}
+                            </Badge>
+                          </div>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                        {strategy.description}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-500">Min Investment:</span>
+                          <span className="font-medium ml-1">
+                            ₹{strategy.minInvestment.toLocaleString()}
+                            {strategy.id === "recurring_deposit"
+                              ? "/month"
+                              : ""}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Returns:</span>
+                          <span className="font-medium text-green-600 ml-1">
+                            {strategy.expectedReturn}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-8">
+                <h3 className="text-lg font-semibold text-blue-900 mb-3">
+                  💡 FD Investment Tips
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <h4 className="font-medium text-blue-800 mb-2">
+                      For Beginners:
+                    </h4>
+                    <ul className="list-disc list-inside space-y-1 text-blue-700">
+                      <li>Start with bank FDs for complete safety</li>
+                      <li>
+                        Consider laddering (multiple FDs with different
+                        maturity)
+                      </li>
+                      <li>Keep some funds in liquid for emergencies</li>
+                      <li>Don't invest all money in one FD</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-blue-800 mb-2">
+                      Best Practices:
+                    </h4>
+                    <ul className="list-disc list-inside space-y-1 text-blue-700">
+                      <li>Compare rates across banks before investing</li>
+                      <li>Consider tax implications on FD interest</li>
+                      <li>Use tax-saver FDs for Section 80C benefits</li>
+                      <li>Senior citizens get 0.5% extra interest</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </TabsContent>
@@ -1448,6 +1780,135 @@ export default function Dashboard() {
           </DialogHeader>
 
           <div className="mt-6 space-y-6">
+            {/* Ask Personal Question */}
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-blue-900 mb-4">
+                  Ask Your Personal Finance Question
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label
+                      htmlFor="userQuery"
+                      className="text-sm font-medium text-blue-800"
+                    >
+                      What would you like to know about investments or financial
+                      planning?
+                    </Label>
+                    <textarea
+                      id="userQuery"
+                      value={userQuery}
+                      onChange={(e) => setUserQuery(e.target.value)}
+                      className="w-full mt-2 px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      rows={3}
+                      placeholder="Example: Should I invest in mutual funds or fixed deposits for my 5-year goal? What's the best investment strategy for a 25-year-old beginner?"
+                    />
+                  </div>
+                  <Button
+                    onClick={() => {
+                      if (userQuery.trim()) {
+                        setIsGeneratingResponse(true);
+                        // Simulate AI response generation
+                        setTimeout(() => {
+                          setQueryResponse(
+                            generatePersonalizedResponse(
+                              userQuery,
+                              userProfile,
+                              goals,
+                              investments,
+                              availableForInvestment,
+                            ),
+                          );
+                          setIsGeneratingResponse(false);
+                        }, 2000);
+                      }
+                    }}
+                    disabled={!userQuery.trim() || isGeneratingResponse}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    {isGeneratingResponse ? (
+                      <>
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                        Generating Response...
+                      </>
+                    ) : (
+                      <>
+                        <Lightbulb className="w-4 h-4 mr-2" />
+                        Get Personalized Advice
+                      </>
+                    )}
+                  </Button>
+
+                  {queryResponse && (
+                    <div className="mt-4 p-4 bg-white border border-blue-200 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                          <Lightbulb className="w-4 h-4 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-blue-900 mb-2">
+                            Personalized Suggestion
+                          </h4>
+                          <div className="text-sm text-gray-700 whitespace-pre-line">
+                            {queryResponse}
+                          </div>
+                          <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
+                            💡 This advice is based on your current profile.
+                            Consider consulting a financial advisor for detailed
+                            planning.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Quick Question Templates */}
+                  <div className="grid md:grid-cols-2 gap-2">
+                    <button
+                      onClick={() =>
+                        setUserQuery(
+                          "What investment options are best for my current financial situation?",
+                        )
+                      }
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      💼 Best investments for my situation?
+                    </button>
+                    <button
+                      onClick={() =>
+                        setUserQuery(
+                          "How much should I invest monthly to achieve my financial goals?",
+                        )
+                      }
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      💰 Monthly investment amount?
+                    </button>
+                    <button
+                      onClick={() =>
+                        setUserQuery(
+                          "Should I prioritize emergency fund or start investing immediately?",
+                        )
+                      }
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      🚨 Emergency fund vs investing?
+                    </button>
+                    <button
+                      onClick={() =>
+                        setUserQuery(
+                          "What are the tax implications of my current investment strategy?",
+                        )
+                      }
+                      className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                    >
+                      📊 Tax implications?
+                    </button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Current Profile Analysis */}
             <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
               <CardContent className="p-6">
@@ -1663,7 +2124,11 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 className="flex-1"
-                onClick={() => setIsSmartSuggestionsOpen(false)}
+                onClick={() => {
+                  setIsSmartSuggestionsOpen(false);
+                  setUserQuery("");
+                  setQueryResponse("");
+                }}
               >
                 Close
               </Button>
@@ -1680,6 +2145,9 @@ export default function Dashboard() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
