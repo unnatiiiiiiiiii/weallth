@@ -96,167 +96,173 @@ export default function Login() {
 
       {/* Main Content */}
       <div className="flex items-center justify-center p-6 min-h-[calc(100vh-200px)]">
-      <Card className="w-full max-w-md bg-white border-0 shadow-xl animate-in fade-in-0 zoom-in-95 duration-500">
-        <CardContent className="p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-              <TrendingUp className="w-8 h-8 text-white" />
+        <Card className="w-full max-w-md bg-white border-0 shadow-xl animate-in fade-in-0 zoom-in-95 duration-500">
+          <CardContent className="p-8">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Weallth
+              </h1>
+              <p className="text-gray-600 mt-2">
+                {isLogin
+                  ? "Welcome back to your financial journey!"
+                  : "Start your wealth-building adventure today"}
+              </p>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Weallth
-            </h1>
-            <p className="text-gray-600 mt-2">
-              {isLogin
-                ? "Welcome back to your financial journey!"
-                : "Start your wealth-building adventure today"}
-            </p>
-          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="username"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Full Name
+                  </Label>
+                  <Input
+                    id="username"
+                    type="text"
+                    value={formData.username}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
+                    }
+                    placeholder="Enter your full name"
+                    className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                    required
+                  />
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label
-                  htmlFor="username"
+                  htmlFor="email"
                   className="text-sm font-medium text-gray-700"
                 >
-                  Full Name
+                  Email Address
                 </Label>
                 <Input
-                  id="username"
-                  type="text"
-                  value={formData.username}
+                  id="email"
+                  type="email"
+                  value={formData.email}
                   onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      username: e.target.value,
-                    }))
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
                   }
-                  placeholder="Enter your full name"
+                  placeholder="Enter your email"
                   className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                   required
                 />
               </div>
-            )}
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="email"
-                className="text-sm font-medium text-gray-700"
-              >
-                Email Address
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, email: e.target.value }))
-                }
-                placeholder="Enter your email"
-                className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className="text-sm font-medium text-gray-700"
-              >
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, password: e.target.value }))
-                }
-                placeholder="Enter your password"
-                className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
-                required
-              />
-            </div>
-
-            {!isLogin && (
               <div className="space-y-2">
                 <Label
-                  htmlFor="confirmPassword"
+                  htmlFor="password"
                   className="text-sm font-medium text-gray-700"
                 >
-                  Confirm Password
+                  Password
                 </Label>
                 <Input
-                  id="confirmPassword"
+                  id="password"
                   type="password"
-                  value={formData.confirmPassword}
+                  value={formData.password}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
-                      confirmPassword: e.target.value,
+                      password: e.target.value,
                     }))
                   }
-                  placeholder="Confirm your password"
+                  placeholder="Enter your password"
                   className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
                   required
                 />
               </div>
-            )}
 
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg animate-in slide-in-from-top duration-300">
-                {error}
-              </div>
-            )}
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="confirmPassword"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Confirm Password
+                  </Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        confirmPassword: e.target.value,
+                      }))
+                    }
+                    placeholder="Confirm your password"
+                    className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300"
+                    required
+                  />
+                </div>
+              )}
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 transform hover:scale-[1.02] transition-all duration-300"
-            >
-              {loading
-                ? "Please wait..."
-                : isLogin
-                  ? "Sign In"
-                  : "Create Account"}
-            </Button>
-          </form>
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg animate-in slide-in-from-top duration-300">
+                  {error}
+                </div>
+              )}
 
-          <div className="text-center mt-6">
-            <p className="text-sm text-gray-600">
-              {isLogin
-                ? "Don't have an account? "
-                : "Already have an account? "}
-              <button
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setError("");
-                  setFormData({
-                    email: "",
-                    password: "",
-                    username: "",
-                    confirmPassword: "",
-                  });
-                }}
-                className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors duration-200"
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 transform hover:scale-[1.02] transition-all duration-300"
               >
-                {isLogin ? "Sign up" : "Sign in"}
-              </button>
-            </p>
-          </div>
+                {loading
+                  ? "Please wait..."
+                  : isLogin
+                    ? "Sign In"
+                    : "Create Account"}
+              </Button>
+            </form>
 
-          {/* Disclaimer Note */}
-          <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-xs text-yellow-800 text-center">
-              ⚠️ All investments are subject to market risks. Please read our{" "}
-              <Link to="/disclaimer" className="underline hover:text-yellow-900">
-                disclaimer
-              </Link>{" "}
-              before proceeding.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="text-center mt-6">
+              <p className="text-sm text-gray-600">
+                {isLogin
+                  ? "Don't have an account? "
+                  : "Already have an account? "}
+                <button
+                  onClick={() => {
+                    setIsLogin(!isLogin);
+                    setError("");
+                    setFormData({
+                      email: "",
+                      password: "",
+                      username: "",
+                      confirmPassword: "",
+                    });
+                  }}
+                  className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors duration-200"
+                >
+                  {isLogin ? "Sign up" : "Sign in"}
+                </button>
+              </p>
+            </div>
+
+            {/* Disclaimer Note */}
+            <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="text-xs text-yellow-800 text-center">
+                ⚠️ All investments are subject to market risks. Please read our{" "}
+                <Link
+                  to="/disclaimer"
+                  className="underline hover:text-yellow-900"
+                >
+                  disclaimer
+                </Link>{" "}
+                before proceeding.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Footer */}

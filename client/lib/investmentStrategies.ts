@@ -1169,17 +1169,47 @@ export const growWealthStrategies: InvestmentStrategy[] = [
     minInvestment: 1000,
     expectedReturn: "8-12%",
     timeline: "3+ years",
-    description: "Hedge against inflation with digital gold investments. Safe haven asset for portfolio diversification.",
-    detailedDescription: "Gold has been a store of value for centuries. Digital gold allows you to invest in gold without physical storage concerns while providing protection against inflation and currency devaluation.",
-    howItWorks: "Invest in digital gold through apps or gold ETFs. Your investment tracks real gold prices and can be converted to physical gold or sold for cash anytime.",
-    examples: ["Digital Gold (Google Pay, Paytm)", "Gold ETFs", "Gold Mutual Funds", "Sovereign Gold Bonds"],
+    description:
+      "Hedge against inflation with digital gold investments. Safe haven asset for portfolio diversification.",
+    detailedDescription:
+      "Gold has been a store of value for centuries. Digital gold allows you to invest in gold without physical storage concerns while providing protection against inflation and currency devaluation.",
+    howItWorks:
+      "Invest in digital gold through apps or gold ETFs. Your investment tracks real gold prices and can be converted to physical gold or sold for cash anytime.",
+    examples: [
+      "Digital Gold (Google Pay, Paytm)",
+      "Gold ETFs",
+      "Gold Mutual Funds",
+      "Sovereign Gold Bonds",
+    ],
     platforms: ["Google Pay", "Paytm", "Groww", "Zerodha", "Banks"],
-    pros: ["Inflation hedge", "High liquidity", "No storage hassle", "Global store of value", "Portfolio diversification"],
-    cons: ["No regular income", "Price volatility", "No productive asset", "Import duty impact"],
-    whoShouldInvest: ["Conservative investors", "Inflation hedge seekers", "Portfolio diversifiers", "Traditional investors"],
-    taxImplications: "LTCG of 20% with indexation after 3 years for physical gold and gold funds. Digital gold taxed as per slab.",
-    exitStrategy: "High liquidity - can sell anytime during market hours through apps or exchanges.",
-    marketRisks: ["Gold price volatility", "Currency fluctuation", "Global economic factors"],
+    pros: [
+      "Inflation hedge",
+      "High liquidity",
+      "No storage hassle",
+      "Global store of value",
+      "Portfolio diversification",
+    ],
+    cons: [
+      "No regular income",
+      "Price volatility",
+      "No productive asset",
+      "Import duty impact",
+    ],
+    whoShouldInvest: [
+      "Conservative investors",
+      "Inflation hedge seekers",
+      "Portfolio diversifiers",
+      "Traditional investors",
+    ],
+    taxImplications:
+      "LTCG of 20% with indexation after 3 years for physical gold and gold funds. Digital gold taxed as per slab.",
+    exitStrategy:
+      "High liquidity - can sell anytime during market hours through apps or exchanges.",
+    marketRisks: [
+      "Gold price volatility",
+      "Currency fluctuation",
+      "Global economic factors",
+    ],
     allocation: { conservative: 15, moderate: 10, aggressive: 5 },
   },
   {
@@ -1190,17 +1220,46 @@ export const growWealthStrategies: InvestmentStrategy[] = [
     minInvestment: 5000,
     expectedReturn: "12-18%",
     timeline: "5+ years",
-    description: "Invest in the future of energy with clean energy and renewable sector focused funds.",
-    detailedDescription: "Energy sector investments focus on traditional and renewable energy companies. With global shift towards clean energy, this sector offers growth potential.",
-    howItWorks: "ETFs and mutual funds invest in energy companies including solar, wind, oil, gas, and clean energy technology companies.",
-    examples: ["Nippon India ETF Nifty Energy", "SBI ETF Energy", "Energy Mutual Funds"],
+    description:
+      "Invest in the future of energy with clean energy and renewable sector focused funds.",
+    detailedDescription:
+      "Energy sector investments focus on traditional and renewable energy companies. With global shift towards clean energy, this sector offers growth potential.",
+    howItWorks:
+      "ETFs and mutual funds invest in energy companies including solar, wind, oil, gas, and clean energy technology companies.",
+    examples: [
+      "Nippon India ETF Nifty Energy",
+      "SBI ETF Energy",
+      "Energy Mutual Funds",
+    ],
     platforms: ["Zerodha", "Groww", "Mutual fund platforms", "Stock exchanges"],
-    pros: ["Future growth sector", "Government policy support", "Global energy transition", "Dividend potential"],
-    cons: ["Sector concentration risk", "Policy dependency", "Commodity price sensitivity", "Environmental regulations"],
-    whoShouldInvest: ["Growth investors", "Thematic investors", "Long-term investors", "ESG conscious investors"],
-    taxImplications: "Equity taxation - LTCG of 10% above ₹1 lakh after 1 year, STCG of 15%.",
-    exitStrategy: "Can sell during market hours. Consider energy market cycles and policy changes.",
-    marketRisks: ["Oil price volatility", "Policy changes", "Technology disruption", "Global economic factors"],
+    pros: [
+      "Future growth sector",
+      "Government policy support",
+      "Global energy transition",
+      "Dividend potential",
+    ],
+    cons: [
+      "Sector concentration risk",
+      "Policy dependency",
+      "Commodity price sensitivity",
+      "Environmental regulations",
+    ],
+    whoShouldInvest: [
+      "Growth investors",
+      "Thematic investors",
+      "Long-term investors",
+      "ESG conscious investors",
+    ],
+    taxImplications:
+      "Equity taxation - LTCG of 10% above ₹1 lakh after 1 year, STCG of 15%.",
+    exitStrategy:
+      "Can sell during market hours. Consider energy market cycles and policy changes.",
+    marketRisks: [
+      "Oil price volatility",
+      "Policy changes",
+      "Technology disruption",
+      "Global economic factors",
+    ],
     allocation: { conservative: 5, moderate: 10, aggressive: 15 },
   },
   {
@@ -1211,17 +1270,42 @@ export const growWealthStrategies: InvestmentStrategy[] = [
     minInvestment: 10000,
     expectedReturn: "15-25%",
     timeline: "5+ years",
-    description: "Invest in leading technology companies and emerging tech trends for high growth potential.",
-    detailedDescription: "Technology sector offers exposure to innovation leaders in software, hardware, AI, cloud computing, and digital transformation.",
-    howItWorks: "Invest in technology-focused mutual funds, ETFs, or individual tech stocks through stock markets.",
+    description:
+      "Invest in leading technology companies and emerging tech trends for high growth potential.",
+    detailedDescription:
+      "Technology sector offers exposure to innovation leaders in software, hardware, AI, cloud computing, and digital transformation.",
+    howItWorks:
+      "Invest in technology-focused mutual funds, ETFs, or individual tech stocks through stock markets.",
     examples: ["TCS", "Infosys", "Wipro", "Tech Mahindra", "Technology ETFs"],
     platforms: ["Zerodha", "Groww", "Angel One", "All brokers"],
-    pros: ["High growth potential", "Innovation leader", "Digital transformation", "Export earnings"],
-    cons: ["High volatility", "Valuation concerns", "Competition risk", "Technology disruption"],
-    whoShouldInvest: ["Growth investors", "High risk appetite", "Tech-savvy investors", "Long-term investors"],
-    taxImplications: "Equity taxation - LTCG of 10% above ₹1 lakh after 1 year, STCG of 15%.",
-    exitStrategy: "High liquidity during market hours. Monitor tech cycles and valuations.",
-    marketRisks: ["Market volatility", "Technology disruption", "Valuation risk", "Competition"],
+    pros: [
+      "High growth potential",
+      "Innovation leader",
+      "Digital transformation",
+      "Export earnings",
+    ],
+    cons: [
+      "High volatility",
+      "Valuation concerns",
+      "Competition risk",
+      "Technology disruption",
+    ],
+    whoShouldInvest: [
+      "Growth investors",
+      "High risk appetite",
+      "Tech-savvy investors",
+      "Long-term investors",
+    ],
+    taxImplications:
+      "Equity taxation - LTCG of 10% above ₹1 lakh after 1 year, STCG of 15%.",
+    exitStrategy:
+      "High liquidity during market hours. Monitor tech cycles and valuations.",
+    marketRisks: [
+      "Market volatility",
+      "Technology disruption",
+      "Valuation risk",
+      "Competition",
+    ],
     allocation: { conservative: 5, moderate: 15, aggressive: 25 },
   },
   {
@@ -1232,17 +1316,42 @@ export const growWealthStrategies: InvestmentStrategy[] = [
     minInvestment: 5000,
     expectedReturn: "10-15%",
     timeline: "3+ years",
-    description: "Stable returns from established banking and financial services companies.",
-    detailedDescription: "Banking sector forms the backbone of the economy. Invest in established banks and financial institutions for steady growth and dividends.",
-    howItWorks: "Invest through banking ETFs, mutual funds, or individual bank stocks. Benefits from economic growth and credit expansion.",
+    description:
+      "Stable returns from established banking and financial services companies.",
+    detailedDescription:
+      "Banking sector forms the backbone of the economy. Invest in established banks and financial institutions for steady growth and dividends.",
+    howItWorks:
+      "Invest through banking ETFs, mutual funds, or individual bank stocks. Benefits from economic growth and credit expansion.",
     examples: ["HDFC Bank", "ICICI Bank", "SBI", "Axis Bank", "Banking ETFs"],
     platforms: ["All stock brokers", "Mutual fund platforms", "Banking apps"],
-    pros: ["Economic growth play", "Dividend income", "Established business", "Regulatory protection"],
-    cons: ["Interest rate sensitivity", "Credit risk", "Regulatory changes", "Economic cycle dependency"],
-    whoShouldInvest: ["Income investors", "Value investors", "Economic growth believers", "Dividend seekers"],
-    taxImplications: "Equity taxation rules apply. Dividends taxed as per income slab.",
-    exitStrategy: "Good liquidity. Consider interest rate cycles and economic conditions.",
-    marketRisks: ["Interest rate risk", "Credit cycle", "Regulatory changes", "Economic downturns"],
+    pros: [
+      "Economic growth play",
+      "Dividend income",
+      "Established business",
+      "Regulatory protection",
+    ],
+    cons: [
+      "Interest rate sensitivity",
+      "Credit risk",
+      "Regulatory changes",
+      "Economic cycle dependency",
+    ],
+    whoShouldInvest: [
+      "Income investors",
+      "Value investors",
+      "Economic growth believers",
+      "Dividend seekers",
+    ],
+    taxImplications:
+      "Equity taxation rules apply. Dividends taxed as per income slab.",
+    exitStrategy:
+      "Good liquidity. Consider interest rate cycles and economic conditions.",
+    marketRisks: [
+      "Interest rate risk",
+      "Credit cycle",
+      "Regulatory changes",
+      "Economic downturns",
+    ],
     allocation: { conservative: 15, moderate: 20, aggressive: 15 },
   },
   {
@@ -1253,17 +1362,48 @@ export const growWealthStrategies: InvestmentStrategy[] = [
     minInvestment: 5000,
     expectedReturn: "12-16%",
     timeline: "5+ years",
-    description: "Defensive sector with consistent demand and growth in healthcare services.",
-    detailedDescription: "Healthcare is a defensive sector with consistent demand. Indian pharma companies also have global presence providing growth opportunities.",
-    howItWorks: "Invest in pharma companies, healthcare mutual funds, or ETFs focusing on pharmaceuticals and healthcare services.",
-    examples: ["Sun Pharma", "Dr. Reddy's", "Cipla", "Apollo Hospitals", "Healthcare funds"],
+    description:
+      "Defensive sector with consistent demand and growth in healthcare services.",
+    detailedDescription:
+      "Healthcare is a defensive sector with consistent demand. Indian pharma companies also have global presence providing growth opportunities.",
+    howItWorks:
+      "Invest in pharma companies, healthcare mutual funds, or ETFs focusing on pharmaceuticals and healthcare services.",
+    examples: [
+      "Sun Pharma",
+      "Dr. Reddy's",
+      "Cipla",
+      "Apollo Hospitals",
+      "Healthcare funds",
+    ],
     platforms: ["Stock exchanges", "Mutual fund platforms", "All brokers"],
-    pros: ["Defensive nature", "Consistent demand", "Global presence", "Aging population trend"],
-    cons: ["Regulatory risks", "Drug approval risks", "Price controls", "Patent expiry risks"],
-    whoShouldInvest: ["Defensive investors", "Long-term investors", "Healthcare believers", "Risk-averse growth seekers"],
-    taxImplications: "Standard equity taxation applies - LTCG 10% above ₹1L, STCG 15%.",
-    exitStrategy: "Good liquidity. Consider regulatory environment and drug pipeline.",
-    marketRisks: ["Regulatory changes", "Drug approval risks", "Patent cliff", "Pricing pressure"],
+    pros: [
+      "Defensive nature",
+      "Consistent demand",
+      "Global presence",
+      "Aging population trend",
+    ],
+    cons: [
+      "Regulatory risks",
+      "Drug approval risks",
+      "Price controls",
+      "Patent expiry risks",
+    ],
+    whoShouldInvest: [
+      "Defensive investors",
+      "Long-term investors",
+      "Healthcare believers",
+      "Risk-averse growth seekers",
+    ],
+    taxImplications:
+      "Standard equity taxation applies - LTCG 10% above ₹1L, STCG 15%.",
+    exitStrategy:
+      "Good liquidity. Consider regulatory environment and drug pipeline.",
+    marketRisks: [
+      "Regulatory changes",
+      "Drug approval risks",
+      "Patent cliff",
+      "Pricing pressure",
+    ],
     allocation: { conservative: 10, moderate: 15, aggressive: 10 },
   },
   {
@@ -1274,17 +1414,47 @@ export const growWealthStrategies: InvestmentStrategy[] = [
     minInvestment: 5000,
     expectedReturn: "11-17%",
     timeline: "5+ years",
-    description: "Benefit from India's infrastructure development and smart city initiatives.",
-    detailedDescription: "Infrastructure sector includes roads, railways, ports, power, and urban development. Government's focus on infrastructure provides growth opportunities.",
-    howItWorks: "Invest in infrastructure companies through mutual funds, ETFs, or individual stocks in construction, power, and transportation companies.",
-    examples: ["L&T", "UltraTech Cement", "Power Grid Corp", "Infrastructure funds"],
+    description:
+      "Benefit from India's infrastructure development and smart city initiatives.",
+    detailedDescription:
+      "Infrastructure sector includes roads, railways, ports, power, and urban development. Government's focus on infrastructure provides growth opportunities.",
+    howItWorks:
+      "Invest in infrastructure companies through mutual funds, ETFs, or individual stocks in construction, power, and transportation companies.",
+    examples: [
+      "L&T",
+      "UltraTech Cement",
+      "Power Grid Corp",
+      "Infrastructure funds",
+    ],
     platforms: ["Stock markets", "Mutual fund platforms", "ETF platforms"],
-    pros: ["Government support", "Long-term growth", "Economic multiplier", "Essential services"],
-    cons: ["Project execution risks", "Policy dependency", "High capital intensive", "Long gestation"],
-    whoShouldInvest: ["Long-term investors", "India growth story believers", "Patient capital", "Thematic investors"],
-    taxImplications: "Equity taxation rules - LTCG 10% above ₹1 lakh after 1 year.",
-    exitStrategy: "Monitor project execution and government policy support before exit.",
-    marketRisks: ["Project delays", "Policy changes", "Funding risks", "Economic cycles"],
+    pros: [
+      "Government support",
+      "Long-term growth",
+      "Economic multiplier",
+      "Essential services",
+    ],
+    cons: [
+      "Project execution risks",
+      "Policy dependency",
+      "High capital intensive",
+      "Long gestation",
+    ],
+    whoShouldInvest: [
+      "Long-term investors",
+      "India growth story believers",
+      "Patient capital",
+      "Thematic investors",
+    ],
+    taxImplications:
+      "Equity taxation rules - LTCG 10% above ₹1 lakh after 1 year.",
+    exitStrategy:
+      "Monitor project execution and government policy support before exit.",
+    marketRisks: [
+      "Project delays",
+      "Policy changes",
+      "Funding risks",
+      "Economic cycles",
+    ],
     allocation: { conservative: 8, moderate: 12, aggressive: 15 },
   },
 ];
@@ -1298,16 +1468,37 @@ export const fdOptionsStrategies: InvestmentStrategy[] = [
     minInvestment: 1000,
     expectedReturn: "6.5-7.5%",
     timeline: "1-10 years",
-    description: "Guaranteed returns with principal protection. FDIC insured up to ₹5 lakhs per bank.",
-    detailedDescription: "Bank FDs are the safest investment option with guaranteed returns and principal protection. Suitable for risk-averse investors.",
-    howItWorks: "Deposit money with bank for fixed tenure. Bank pays fixed interest rate. Principal and interest guaranteed by bank and DICGC insurance.",
+    description:
+      "Guaranteed returns with principal protection. FDIC insured up to ₹5 lakhs per bank.",
+    detailedDescription:
+      "Bank FDs are the safest investment option with guaranteed returns and principal protection. Suitable for risk-averse investors.",
+    howItWorks:
+      "Deposit money with bank for fixed tenure. Bank pays fixed interest rate. Principal and interest guaranteed by bank and DICGC insurance.",
     examples: ["SBI FD", "HDFC FD", "ICICI FD", "Axis Bank FD"],
     platforms: ["All banks", "Online banking", "Bank branches", "Mobile apps"],
-    pros: ["100% safe", "Guaranteed returns", "DICGC insurance", "Flexible tenures", "Senior citizen benefits"],
-    cons: ["Lower returns vs inflation", "Interest rate risk", "TDS on high interest", "Penalty on premature withdrawal"],
-    whoShouldInvest: ["Conservative investors", "Capital protection seekers", "Senior citizens", "Emergency fund parking"],
-    taxImplications: "Interest income taxable as per slab. TDS if interest exceeds ₹40,000 (₹50,000 for seniors).",
-    exitStrategy: "Can withdraw prematurely with penalty. Better to match tenure with needs.",
+    pros: [
+      "100% safe",
+      "Guaranteed returns",
+      "DICGC insurance",
+      "Flexible tenures",
+      "Senior citizen benefits",
+    ],
+    cons: [
+      "Lower returns vs inflation",
+      "Interest rate risk",
+      "TDS on high interest",
+      "Penalty on premature withdrawal",
+    ],
+    whoShouldInvest: [
+      "Conservative investors",
+      "Capital protection seekers",
+      "Senior citizens",
+      "Emergency fund parking",
+    ],
+    taxImplications:
+      "Interest income taxable as per slab. TDS if interest exceeds ₹40,000 (₹50,000 for seniors).",
+    exitStrategy:
+      "Can withdraw prematurely with penalty. Better to match tenure with needs.",
     marketRisks: ["Interest rate risk", "Inflation risk", "Reinvestment risk"],
     allocation: { conservative: 40, moderate: 25, aggressive: 10 },
   },
@@ -1319,17 +1510,44 @@ export const fdOptionsStrategies: InvestmentStrategy[] = [
     minInvestment: 10000,
     expectedReturn: "8.0-9.5%",
     timeline: "1-5 years",
-    description: "Higher returns than bank FDs from AAA-rated companies. Credit risk involved.",
-    detailedDescription: "Corporate FDs offer higher returns than bank FDs but carry credit risk. Issued by financially strong companies with good credit ratings.",
-    howItWorks: "Companies issue FDs to raise funds. Investors get higher interest than banks but need to assess company's financial health.",
+    description:
+      "Higher returns than bank FDs from AAA-rated companies. Credit risk involved.",
+    detailedDescription:
+      "Corporate FDs offer higher returns than bank FDs but carry credit risk. Issued by financially strong companies with good credit ratings.",
+    howItWorks:
+      "Companies issue FDs to raise funds. Investors get higher interest than banks but need to assess company's financial health.",
     examples: ["Bajaj Finance FD", "Mahindra Finance FD", "Shriram Finance FD"],
-    platforms: ["Company websites", "Financial distributors", "Online platforms"],
-    pros: ["Higher returns than bank FDs", "Flexible tenures", "Good for income generation", "AAA-rated options available"],
-    cons: ["Credit risk", "No insurance cover", "Limited liquidity", "Company-specific risks"],
-    whoShouldInvest: ["Income seekers", "Conservative investors willing to take slight credit risk", "Retirees"],
-    taxImplications: "Interest taxable as per income slab. TDS applicable on interest income.",
-    exitStrategy: "Limited premature withdrawal. Choose companies with strong credit ratings.",
-    marketRisks: ["Credit risk of issuing company", "Interest rate changes", "Liquidity risk"],
+    platforms: [
+      "Company websites",
+      "Financial distributors",
+      "Online platforms",
+    ],
+    pros: [
+      "Higher returns than bank FDs",
+      "Flexible tenures",
+      "Good for income generation",
+      "AAA-rated options available",
+    ],
+    cons: [
+      "Credit risk",
+      "No insurance cover",
+      "Limited liquidity",
+      "Company-specific risks",
+    ],
+    whoShouldInvest: [
+      "Income seekers",
+      "Conservative investors willing to take slight credit risk",
+      "Retirees",
+    ],
+    taxImplications:
+      "Interest taxable as per income slab. TDS applicable on interest income.",
+    exitStrategy:
+      "Limited premature withdrawal. Choose companies with strong credit ratings.",
+    marketRisks: [
+      "Credit risk of issuing company",
+      "Interest rate changes",
+      "Liquidity risk",
+    ],
     allocation: { conservative: 20, moderate: 15, aggressive: 5 },
   },
   {
@@ -1340,16 +1558,34 @@ export const fdOptionsStrategies: InvestmentStrategy[] = [
     minInvestment: 100,
     expectedReturn: "6.0-6.5%",
     timeline: "5 years",
-    description: "5-year lock-in with tax benefits under Section 80C. Lower returns but safe.",
-    detailedDescription: "Tax-saving FDs provide dual benefit of capital safety and tax deduction under Section 80C with mandatory 5-year lock-in period.",
-    howItWorks: "Invest in 5-year tax-saving FD and claim deduction under 80C. Money locked for 5 years with guaranteed returns.",
-    examples: ["SBI Tax Saving FD", "HDFC Tax Saving FD", "ICICI Tax Saving FD"],
+    description:
+      "5-year lock-in with tax benefits under Section 80C. Lower returns but safe.",
+    detailedDescription:
+      "Tax-saving FDs provide dual benefit of capital safety and tax deduction under Section 80C with mandatory 5-year lock-in period.",
+    howItWorks:
+      "Invest in 5-year tax-saving FD and claim deduction under 80C. Money locked for 5 years with guaranteed returns.",
+    examples: [
+      "SBI Tax Saving FD",
+      "HDFC Tax Saving FD",
+      "ICICI Tax Saving FD",
+    ],
     platforms: ["All banks", "Online banking", "Tax-saving platforms"],
-    pros: ["Tax deduction under 80C", "100% safe investment", "Guaranteed returns", "Disciplined saving"],
+    pros: [
+      "Tax deduction under 80C",
+      "100% safe investment",
+      "Guaranteed returns",
+      "Disciplined saving",
+    ],
     cons: ["5-year lock-in", "Lower returns", "No liquidity", "Inflation risk"],
-    whoShouldInvest: ["Taxpayers needing 80C deduction", "Ultra-conservative investors", "Forced saving seekers"],
-    taxImplications: "Investment qualifies for 80C deduction up to ₹1.5L. Interest taxable as per slab.",
-    exitStrategy: "No premature withdrawal allowed. Plan for 5-year lock-in before investing.",
+    whoShouldInvest: [
+      "Taxpayers needing 80C deduction",
+      "Ultra-conservative investors",
+      "Forced saving seekers",
+    ],
+    taxImplications:
+      "Investment qualifies for 80C deduction up to ₹1.5L. Interest taxable as per slab.",
+    exitStrategy:
+      "No premature withdrawal allowed. Plan for 5-year lock-in before investing.",
     marketRisks: ["Interest rate risk", "Inflation risk", "Opportunity cost"],
     allocation: { conservative: 25, moderate: 10, aggressive: 0 },
   },
@@ -1361,15 +1597,39 @@ export const fdOptionsStrategies: InvestmentStrategy[] = [
     minInvestment: 1000,
     expectedReturn: "7.0-8.0%",
     timeline: "1-10 years",
-    description: "Extra 0.5% interest rate for senior citizens (60+ years). Safe and guaranteed returns.",
-    detailedDescription: "Special FD schemes for senior citizens offering additional 0.5% interest rate over regular FDs for better retirement income.",
-    howItWorks: "Senior citizens (60+) get extra 0.5% interest rate on regular FDs. Some banks offer special senior citizen FD schemes.",
-    examples: ["Senior Citizen FDs at all major banks", "Special schemes for seniors"],
-    platforms: ["All banks with special senior citizen desks", "Online banking"],
-    pros: ["Higher interest rates", "100% safe", "Special customer service", "Flexible tenures"],
-    cons: ["Age restriction", "Still lower vs inflation", "Interest rate risk", "Limited to seniors only"],
-    whoShouldInvest: ["Senior citizens (60+ years)", "Retirees needing regular income", "Conservative elderly investors"],
-    taxImplications: "Higher TDS exemption limit of ₹50,000 for seniors. Interest taxable as per slab.",
+    description:
+      "Extra 0.5% interest rate for senior citizens (60+ years). Safe and guaranteed returns.",
+    detailedDescription:
+      "Special FD schemes for senior citizens offering additional 0.5% interest rate over regular FDs for better retirement income.",
+    howItWorks:
+      "Senior citizens (60+) get extra 0.5% interest rate on regular FDs. Some banks offer special senior citizen FD schemes.",
+    examples: [
+      "Senior Citizen FDs at all major banks",
+      "Special schemes for seniors",
+    ],
+    platforms: [
+      "All banks with special senior citizen desks",
+      "Online banking",
+    ],
+    pros: [
+      "Higher interest rates",
+      "100% safe",
+      "Special customer service",
+      "Flexible tenures",
+    ],
+    cons: [
+      "Age restriction",
+      "Still lower vs inflation",
+      "Interest rate risk",
+      "Limited to seniors only",
+    ],
+    whoShouldInvest: [
+      "Senior citizens (60+ years)",
+      "Retirees needing regular income",
+      "Conservative elderly investors",
+    ],
+    taxImplications:
+      "Higher TDS exemption limit of ₹50,000 for seniors. Interest taxable as per slab.",
     exitStrategy: "Flexible withdrawal options. Consider interest rate cycles.",
     marketRisks: ["Interest rate risk", "Inflation impact on real returns"],
     allocation: { conservative: 50, moderate: 30, aggressive: 10 },
@@ -1382,16 +1642,38 @@ export const fdOptionsStrategies: InvestmentStrategy[] = [
     minInvestment: 25000,
     expectedReturn: "6.5-7.25%",
     timeline: "Flexible",
-    description: "Partial withdrawal facility with FD rates. Best of both savings and FD.",
-    detailedDescription: "Flexi FDs combine benefits of savings account liquidity with FD returns. Auto-sweep facility available for excess funds.",
-    howItWorks: "Maintains minimum balance in savings account. Excess funds automatically converted to FDs. Can withdraw partially as needed.",
+    description:
+      "Partial withdrawal facility with FD rates. Best of both savings and FD.",
+    detailedDescription:
+      "Flexi FDs combine benefits of savings account liquidity with FD returns. Auto-sweep facility available for excess funds.",
+    howItWorks:
+      "Maintains minimum balance in savings account. Excess funds automatically converted to FDs. Can withdraw partially as needed.",
     examples: ["HDFC Flexi FD", "ICICI FleX-Rate", "Axis Bank Flexi FD"],
-    platforms: ["Major banks offering flexi products", "Online banking platforms"],
-    pros: ["Liquidity with FD returns", "Auto-sweep facility", "No penalty on withdrawal", "Convenient for regular needs"],
-    cons: ["Higher minimum balance", "Slightly lower returns", "Complex structure", "Limited bank options"],
-    whoShouldInvest: ["High-balance account holders", "Those needing liquidity with returns", "Business accounts"],
-    taxImplications: "Interest taxable as regular FD. TDS applicable as per rules.",
-    exitStrategy: "High liquidity - withdraw as needed. Ideal for emergency funds.",
+    platforms: [
+      "Major banks offering flexi products",
+      "Online banking platforms",
+    ],
+    pros: [
+      "Liquidity with FD returns",
+      "Auto-sweep facility",
+      "No penalty on withdrawal",
+      "Convenient for regular needs",
+    ],
+    cons: [
+      "Higher minimum balance",
+      "Slightly lower returns",
+      "Complex structure",
+      "Limited bank options",
+    ],
+    whoShouldInvest: [
+      "High-balance account holders",
+      "Those needing liquidity with returns",
+      "Business accounts",
+    ],
+    taxImplications:
+      "Interest taxable as regular FD. TDS applicable as per rules.",
+    exitStrategy:
+      "High liquidity - withdraw as needed. Ideal for emergency funds.",
     marketRisks: ["Interest rate changes", "Minimum balance requirements"],
     allocation: { conservative: 30, moderate: 20, aggressive: 15 },
   },
@@ -1403,17 +1685,45 @@ export const fdOptionsStrategies: InvestmentStrategy[] = [
     minInvestment: 500,
     expectedReturn: "6.5-7.25%",
     timeline: "1-10 years",
-    description: "Monthly investment with FD-like returns. Perfect for building discipline.",
-    detailedDescription: "RDs allow systematic monthly investments with FD-like returns. Good for building investment discipline and achieving specific financial goals.",
-    howItWorks: "Invest fixed amount monthly for chosen tenure. Bank compounds monthly investments at FD rates. Lump sum received at maturity.",
-    examples: ["RDs at all banks", "Online RD facilities", "Mobile banking RDs"],
+    description:
+      "Monthly investment with FD-like returns. Perfect for building discipline.",
+    detailedDescription:
+      "RDs allow systematic monthly investments with FD-like returns. Good for building investment discipline and achieving specific financial goals.",
+    howItWorks:
+      "Invest fixed amount monthly for chosen tenure. Bank compounds monthly investments at FD rates. Lump sum received at maturity.",
+    examples: [
+      "RDs at all banks",
+      "Online RD facilities",
+      "Mobile banking RDs",
+    ],
     platforms: ["All banks", "Online banking", "Mobile apps", "Bank branches"],
-    pros: ["Disciplined monthly saving", "FD-like returns", "Goal-based investing", "Flexible amounts"],
-    cons: ["Lower returns vs equity", "Missed installment penalties", "Interest rate risk", "Inflation impact"],
-    whoShouldInvest: ["Regular income earners", "Disciplined savers", "Goal-based investors", "Conservative SIP seekers"],
-    taxImplications: "Interest income taxable as per slab. TDS applicable on high interest amounts.",
-    exitStrategy: "Premature closure with penalty. Better to complete full tenure for optimal returns.",
-    marketRisks: ["Interest rate risk", "Inflation impact", "Penalty on missed payments"],
+    pros: [
+      "Disciplined monthly saving",
+      "FD-like returns",
+      "Goal-based investing",
+      "Flexible amounts",
+    ],
+    cons: [
+      "Lower returns vs equity",
+      "Missed installment penalties",
+      "Interest rate risk",
+      "Inflation impact",
+    ],
+    whoShouldInvest: [
+      "Regular income earners",
+      "Disciplined savers",
+      "Goal-based investors",
+      "Conservative SIP seekers",
+    ],
+    taxImplications:
+      "Interest income taxable as per slab. TDS applicable on high interest amounts.",
+    exitStrategy:
+      "Premature closure with penalty. Better to complete full tenure for optimal returns.",
+    marketRisks: [
+      "Interest rate risk",
+      "Inflation impact",
+      "Penalty on missed payments",
+    ],
     allocation: { conservative: 25, moderate: 15, aggressive: 5 },
   },
 ];

@@ -116,7 +116,12 @@ export default function Onboarding() {
       case 1:
         return data.userType !== undefined;
       case 2:
-        return data.fullName.trim() && data.age >= 18 && data.age <= 100 && data.occupation.trim();
+        return (
+          data.fullName.trim() &&
+          data.age >= 18 &&
+          data.age <= 100 &&
+          data.occupation.trim()
+        );
       case 3:
         return data.monthlySalary > 0;
       case 4:
@@ -361,7 +366,11 @@ export default function Onboarding() {
                         min="18"
                         max="100"
                         placeholder="Enter your age (18-100)"
-                        className={data.age < 18 || data.age > 100 ? "border-red-500" : ""}
+                        className={
+                          data.age < 18 || data.age > 100
+                            ? "border-red-500"
+                            : ""
+                        }
                       />
                       {(data.age < 18 || data.age > 100) && (
                         <p className="text-xs text-red-500 mt-1">

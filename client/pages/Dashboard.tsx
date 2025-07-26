@@ -219,7 +219,13 @@ export default function Dashboard() {
     setIsInvestmentFormOpen(true);
   };
 
-  const generatePersonalizedResponse = (query: string, profile: any, goals: Goal[], investments: any[], availableAmount: number) => {
+  const generatePersonalizedResponse = (
+    query: string,
+    profile: any,
+    goals: Goal[],
+    investments: any[],
+    availableAmount: number,
+  ) => {
     const lowerQuery = query.toLowerCase();
 
     // Analyze user's current situation
@@ -231,7 +237,10 @@ export default function Dashboard() {
 
     let response = "";
 
-    if (lowerQuery.includes("best investment") || lowerQuery.includes("investment option")) {
+    if (
+      lowerQuery.includes("best investment") ||
+      lowerQuery.includes("investment option")
+    ) {
       response = `Based on your profile:\n\n`;
       response += `Monthly Salary: ₹${profile.monthlySalary.toLocaleString()}\n`;
       response += `Available for Investment: ₹${availableAmount.toLocaleString()}\n\n`;
@@ -255,18 +264,24 @@ export default function Dashboard() {
         response += `• Increase gradually as income grows\n\n`;
         response += `Take time to learn before investing larger amounts.`;
       }
-    } else if (lowerQuery.includes("monthly") && (lowerQuery.includes("invest") || lowerQuery.includes("amount"))) {
+    } else if (
+      lowerQuery.includes("monthly") &&
+      (lowerQuery.includes("invest") || lowerQuery.includes("amount"))
+    ) {
       const suggestedAmount = Math.min(availableAmount * 0.8, 50000);
       response = `💰 MONTHLY INVESTMENT RECOMMENDATION:\n\n`;
       response += `Based on your available amount of ₹${availableAmount.toLocaleString()}, I suggest:\n\n`;
-      response += `• Target Investment: ₹${suggestedAmount.toLocaleString()}/month (${Math.round((suggestedAmount/profile.monthlySalary)*100)}% of salary)\n`;
+      response += `• Target Investment: ₹${suggestedAmount.toLocaleString()}/month (${Math.round((suggestedAmount / profile.monthlySalary) * 100)}% of salary)\n`;
       response += `• Keep ₹${(availableAmount - suggestedAmount).toLocaleString()} for unexpected expenses\n\n`;
       response += `ALLOCATION BREAKDOWN:\n`;
       response += `• Equity SIPs: 70% (₹${Math.round(suggestedAmount * 0.7).toLocaleString()})\n`;
       response += `• Debt/Gold: 20% (₹${Math.round(suggestedAmount * 0.2).toLocaleString()})\n`;
       response += `• Tax-saving: 10% (₹${Math.round(suggestedAmount * 0.1).toLocaleString()})\n\n`;
       response += `Start small and increase by 10-15% annually with salary hikes.`;
-    } else if (lowerQuery.includes("emergency fund") || lowerQuery.includes("emergency")) {
+    } else if (
+      lowerQuery.includes("emergency fund") ||
+      lowerQuery.includes("emergency")
+    ) {
       const emergencyAmount = profile.monthlySalary * 6;
       response = `🚨 EMERGENCY FUND STRATEGY:\n\n`;
       response += `Target Emergency Fund: ₹${emergencyAmount.toLocaleString()} (6 months expenses)\n\n`;
@@ -293,7 +308,10 @@ export default function Dashboard() {
       response += `• NPS: ₹4,000/month (₹50k under 80CCD1B)\n`;
       response += `• Health Insurance: Claim existing premiums\n\n`;
       response += `This can save you ₹46,800-78,000 in taxes annually depending on your bracket!`;
-    } else if (lowerQuery.includes("mutual fund") || lowerQuery.includes("sip")) {
+    } else if (
+      lowerQuery.includes("mutual fund") ||
+      lowerQuery.includes("sip")
+    ) {
       response = `📈 MUTUAL FUND STRATEGY:\n\n`;
       response += `For your investment capacity of ₹${availableAmount.toLocaleString()}/month:\n\n`;
       response += `RECOMMENDED SIPs:\n`;
@@ -902,7 +920,8 @@ export default function Dashboard() {
                 Grow Your Wealth
               </h2>
               <p className="text-gray-600 mb-6">
-                Investment suggestions in different sectors for people without specific goals
+                Investment suggestions in different sectors for people without
+                specific goals
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -953,8 +972,6 @@ export default function Dashboard() {
                     </CardContent>
                   </Card>
                 ))}
-
-
               </div>
             </div>
           </TabsContent>
@@ -965,7 +982,8 @@ export default function Dashboard() {
                 Fixed Deposit Options
               </h2>
               <p className="text-gray-600 mb-6">
-                Safe investment options for people less familiar with stocks - comparing plans and suggesting best options
+                Safe investment options for people less familiar with stocks -
+                comparing plans and suggesting best options
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -988,7 +1006,9 @@ export default function Dashboard() {
                             <Badge
                               className={`text-xs ${getRiskLevelColor(strategy.riskLevel)}`}
                             >
-                              {strategy.riskLevel === "Low" ? "Zero Risk" : strategy.riskLevel}
+                              {strategy.riskLevel === "Low"
+                                ? "Zero Risk"
+                                : strategy.riskLevel}
                             </Badge>
                           </div>
                         </div>
@@ -1004,7 +1024,9 @@ export default function Dashboard() {
                           <span className="text-gray-500">Min Investment:</span>
                           <span className="font-medium ml-1">
                             ₹{strategy.minInvestment.toLocaleString()}
-                            {strategy.id === "recurring_deposit" ? "/month" : ""}
+                            {strategy.id === "recurring_deposit"
+                              ? "/month"
+                              : ""}
                           </span>
                         </div>
                         <div>
@@ -1017,8 +1039,6 @@ export default function Dashboard() {
                     </CardContent>
                   </Card>
                 ))}
-
-
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-8">
@@ -1027,16 +1047,23 @@ export default function Dashboard() {
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <h4 className="font-medium text-blue-800 mb-2">For Beginners:</h4>
+                    <h4 className="font-medium text-blue-800 mb-2">
+                      For Beginners:
+                    </h4>
                     <ul className="list-disc list-inside space-y-1 text-blue-700">
                       <li>Start with bank FDs for complete safety</li>
-                      <li>Consider laddering (multiple FDs with different maturity)</li>
+                      <li>
+                        Consider laddering (multiple FDs with different
+                        maturity)
+                      </li>
                       <li>Keep some funds in liquid for emergencies</li>
                       <li>Don't invest all money in one FD</li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-medium text-blue-800 mb-2">Best Practices:</h4>
+                    <h4 className="font-medium text-blue-800 mb-2">
+                      Best Practices:
+                    </h4>
                     <ul className="list-disc list-inside space-y-1 text-blue-700">
                       <li>Compare rates across banks before investing</li>
                       <li>Consider tax implications on FD interest</li>
@@ -1761,8 +1788,12 @@ export default function Dashboard() {
                 </h3>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="userQuery" className="text-sm font-medium text-blue-800">
-                      What would you like to know about investments or financial planning?
+                    <Label
+                      htmlFor="userQuery"
+                      className="text-sm font-medium text-blue-800"
+                    >
+                      What would you like to know about investments or financial
+                      planning?
                     </Label>
                     <textarea
                       id="userQuery"
@@ -1779,7 +1810,15 @@ export default function Dashboard() {
                         setIsGeneratingResponse(true);
                         // Simulate AI response generation
                         setTimeout(() => {
-                          setQueryResponse(generatePersonalizedResponse(userQuery, userProfile, goals, investments, availableForInvestment));
+                          setQueryResponse(
+                            generatePersonalizedResponse(
+                              userQuery,
+                              userProfile,
+                              goals,
+                              investments,
+                              availableForInvestment,
+                            ),
+                          );
                           setIsGeneratingResponse(false);
                         }, 2000);
                       }
@@ -1807,12 +1846,16 @@ export default function Dashboard() {
                           <Lightbulb className="w-4 h-4 text-blue-600" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-blue-900 mb-2">Personalized Suggestion</h4>
+                          <h4 className="font-medium text-blue-900 mb-2">
+                            Personalized Suggestion
+                          </h4>
                           <div className="text-sm text-gray-700 whitespace-pre-line">
                             {queryResponse}
                           </div>
                           <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
-                            💡 This advice is based on your current profile. Consider consulting a financial advisor for detailed planning.
+                            💡 This advice is based on your current profile.
+                            Consider consulting a financial advisor for detailed
+                            planning.
                           </div>
                         </div>
                       </div>
@@ -1822,25 +1865,41 @@ export default function Dashboard() {
                   {/* Quick Question Templates */}
                   <div className="grid md:grid-cols-2 gap-2">
                     <button
-                      onClick={() => setUserQuery("What investment options are best for my current financial situation?")}
+                      onClick={() =>
+                        setUserQuery(
+                          "What investment options are best for my current financial situation?",
+                        )
+                      }
                       className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
                     >
                       💼 Best investments for my situation?
                     </button>
                     <button
-                      onClick={() => setUserQuery("How much should I invest monthly to achieve my financial goals?")}
+                      onClick={() =>
+                        setUserQuery(
+                          "How much should I invest monthly to achieve my financial goals?",
+                        )
+                      }
                       className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
                     >
                       💰 Monthly investment amount?
                     </button>
                     <button
-                      onClick={() => setUserQuery("Should I prioritize emergency fund or start investing immediately?")}
+                      onClick={() =>
+                        setUserQuery(
+                          "Should I prioritize emergency fund or start investing immediately?",
+                        )
+                      }
                       className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
                     >
                       🚨 Emergency fund vs investing?
                     </button>
                     <button
-                      onClick={() => setUserQuery("What are the tax implications of my current investment strategy?")}
+                      onClick={() =>
+                        setUserQuery(
+                          "What are the tax implications of my current investment strategy?",
+                        )
+                      }
                       className="text-left p-2 text-xs bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
                     >
                       📊 Tax implications?

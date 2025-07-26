@@ -40,7 +40,8 @@ export default function AboutUs() {
             About Weallth
           </h1>
           <p className="text-xl text-wealth-gray max-w-3xl mx-auto">
-            Empowering individuals to build wealth through smart financial planning and goal-based investing
+            Empowering individuals to build wealth through smart financial
+            planning and goal-based investing
           </p>
         </div>
 
@@ -55,7 +56,10 @@ export default function AboutUs() {
             </CardHeader>
             <CardContent>
               <p className="text-blue-800">
-                To democratize wealth creation by providing accessible, intelligent, and personalized financial planning tools that help every individual achieve their financial goals and build long-term wealth.
+                To democratize wealth creation by providing accessible,
+                intelligent, and personalized financial planning tools that help
+                every individual achieve their financial goals and build
+                long-term wealth.
               </p>
             </CardContent>
           </Card>
@@ -69,7 +73,9 @@ export default function AboutUs() {
             </CardHeader>
             <CardContent>
               <p className="text-green-800">
-                To become India's most trusted platform for financial planning, where technology meets human-centered design to create prosperity for millions of families across the country.
+                To become India's most trusted platform for financial planning,
+                where technology meets human-centered design to create
+                prosperity for millions of families across the country.
               </p>
             </CardContent>
           </Card>
@@ -90,7 +96,8 @@ export default function AboutUs() {
                   Goal-Based Planning
                 </h3>
                 <p className="text-gray-600">
-                  Help you set and achieve specific financial goals through systematic planning and investment strategies.
+                  Help you set and achieve specific financial goals through
+                  systematic planning and investment strategies.
                 </p>
               </CardContent>
             </Card>
@@ -104,7 +111,8 @@ export default function AboutUs() {
                   Investment Guidance
                 </h3>
                 <p className="text-gray-600">
-                  Provide personalized investment recommendations across multiple asset classes to optimize your portfolio.
+                  Provide personalized investment recommendations across
+                  multiple asset classes to optimize your portfolio.
                 </p>
               </CardContent>
             </Card>
@@ -118,7 +126,8 @@ export default function AboutUs() {
                   Education & Support
                 </h3>
                 <p className="text-gray-600">
-                  Educate users about financial concepts and provide ongoing support throughout their wealth-building journey.
+                  Educate users about financial concepts and provide ongoing
+                  support throughout their wealth-building journey.
                 </p>
               </CardContent>
             </Card>
@@ -133,11 +142,17 @@ export default function AboutUs() {
                 Erfinden Technologies
               </h2>
               <p className="text-purple-800 mb-4">
-                Weallth is a product of Erfinden Technologies, a fintech company dedicated to creating innovative solutions for personal finance and wealth management. We combine cutting-edge technology with deep financial expertise to deliver products that truly make a difference in people's lives.
+                Weallth is a product of Erfinden Technologies, a fintech company
+                dedicated to creating innovative solutions for personal finance
+                and wealth management. We combine cutting-edge technology with
+                deep financial expertise to deliver products that truly make a
+                difference in people's lives.
               </p>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-semibold text-purple-900 mb-2">Our Approach</h3>
+                  <h3 className="font-semibold text-purple-900 mb-2">
+                    Our Approach
+                  </h3>
                   <ul className="text-sm text-purple-700 space-y-1">
                     <li>• User-centric design and development</li>
                     <li>• Data-driven investment recommendations</li>
@@ -146,7 +161,9 @@ export default function AboutUs() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-purple-900 mb-2">Our Values</h3>
+                  <h3 className="font-semibold text-purple-900 mb-2">
+                    Our Values
+                  </h3>
                   <ul className="text-sm text-purple-700 space-y-1">
                     <li>• Transparency in all operations</li>
                     <li>• Customer-first mindset</li>
@@ -169,41 +186,58 @@ export default function AboutUs() {
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Shield className="w-6 h-6 text-blue-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Secure & Reliable</h3>
-              <p className="text-sm text-gray-600">Bank-grade security with encrypted data protection</p>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                Secure & Reliable
+              </h3>
+              <p className="text-sm text-gray-600">
+                Bank-grade security with encrypted data protection
+              </p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <TrendingUp className="w-6 h-6 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Expert Guidance</h3>
-              <p className="text-sm text-gray-600">Research-backed investment strategies and recommendations</p>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                Expert Guidance
+              </h3>
+              <p className="text-sm text-gray-600">
+                Research-backed investment strategies and recommendations
+              </p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Users className="w-6 h-6 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">User-Friendly</h3>
-              <p className="text-sm text-gray-600">Simple, intuitive interface designed for everyone</p>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                User-Friendly
+              </h3>
+              <p className="text-sm text-gray-600">
+                Simple, intuitive interface designed for everyone
+              </p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Target className="w-6 h-6 text-orange-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Goal-Focused</h3>
-              <p className="text-sm text-gray-600">Personalized plans to achieve your specific goals</p>
+              <p className="text-sm text-gray-600">
+                Personalized plans to achieve your specific goals
+              </p>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
         <div className="text-center bg-wealth-blue rounded-xl p-8 text-white">
-          <h2 className="text-2xl font-bold mb-4">Ready to Start Your Wealth Journey?</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            Ready to Start Your Wealth Journey?
+          </h2>
           <p className="mb-6 opacity-90">
-            Join thousands of users who are already building their financial future with Weallth
+            Join thousands of users who are already building their financial
+            future with Weallth
           </p>
           <Button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate("/dashboard")}
             className="bg-white text-wealth-blue hover:bg-gray-100"
           >
             Get Started Today
